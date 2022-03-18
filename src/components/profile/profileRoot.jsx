@@ -3,6 +3,6 @@ import axios from 'axios';
 
 export default function profileRoot() {
   return (
-    <div>Succesfully Rendered</div>
+    <div>Rendered Profile</div>
   );
 }

@@ -3,6 +3,6 @@ import axios from 'axios';
 
 export default function loginRoot() {
   return (
-    <div>Succesfully Rendered</div>
+    <div>Rendered Login</div>
   );
 }

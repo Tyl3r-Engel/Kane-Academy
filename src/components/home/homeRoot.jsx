@@ -3,6 +3,6 @@ import axios from 'axios';
 
 export default function homeRoot() {
   return (
-    <div>Succesfully Rendered</div>
+    <div>Rendered Home</div>
   );
 }
