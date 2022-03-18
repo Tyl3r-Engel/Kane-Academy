@@ -5,5 +5,17 @@ const app = express();
 
 app.use(express.static(path.join(__dirname, '../dist')));
 
+app.get('/login', (req, res) => {
+  res.sendFile('index.html', { root: path.join(__dirname, '../dist') });
+});
+
+app.get('/*/bundle.js', (req, res) => {
+  res.sendFile('bundle.js', { root: path.join(__dirname, '../dist') });
+});
+
+app.get('/profile', (req, res) => {
+  res.sendFile('index.html', { root: path.join(__dirname, '../dist') });
+});
+
 const port = process.env.PORT || 6969;
 app.listen(port);
