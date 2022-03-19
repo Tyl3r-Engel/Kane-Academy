@@ -6,7 +6,6 @@ import ProfileRoot from './profile/ProfileRoot';
 import LoginRoot from './login/LoginRoot';
 
 export default function App() {
-  console.log(window.location.pathname);
   return (
     <div className="App">
       <Router>
