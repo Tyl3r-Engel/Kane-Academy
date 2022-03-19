@@ -1,8 +1,8 @@
 const { pool } = require('../pool');
 
 const signup = (mentor, firstName, lastName, email, hash, cb) => {
-  const queryString = `INSERT INTO users (mentor, firstName, lastName, email, hash)
-  VALUES ($1, $2, $3, $4, $5)`;
+  const queryString = `INSERT INTO users (mentor, first_name, last_name, email, hash)
+  VALUES ($1, $2, $3, $4, crypt($5, gen_salt('bf')))`;
 
   pool.query(queryString, [mentor, firstName, lastName, email, hash], cb);
 }
