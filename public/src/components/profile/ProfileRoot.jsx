@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 
-export default function homeRoot() {
+export default function ProfileRoot() {
   return (
-    <div>Rendered Home</div>
+    <div>Rendered Profile</div>
   );
 }

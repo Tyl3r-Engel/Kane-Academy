@@ -3,18 +3,18 @@ const path = require('path');
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, '../dist')));
+app.use(express.static(path.join(__dirname, '../public/dist')));
 
 app.get('/login', (req, res) => {
-  res.sendFile('index.html', { root: path.join(__dirname, '../dist') });
+  res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
 });
 
 app.get('/*/bundle.js', (req, res) => {
-  res.sendFile('bundle.js', { root: path.join(__dirname, '../dist') });
+  res.sendFile('bundle.js', { root: path.join(__dirname, '../public/dist') });
 });
 
 app.get('/profile', (req, res) => {
-  res.sendFile('index.html', { root: path.join(__dirname, '../dist') });
+  res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
 });
 
 const port = process.env.PORT || 6969;
