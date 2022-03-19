@@ -1,7 +1,7 @@
 const path = require('path');
 
-const SRC_DIR = path.join(__dirname, '/src');
-const DIST_DIR = path.join(__dirname, '/dist');
+const SRC_DIR = path.join(__dirname, '/public/src');
+const DIST_DIR = path.join(__dirname, '/public/dist');
 
 module.exports = {
   mode: 'development',
