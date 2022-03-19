@@ -1,5 +1,5 @@
 .eslintrc.js
 package-lock.json
-dist/bundle.js
+public/dist/bundle.js
 node_modules/
 pool.js
