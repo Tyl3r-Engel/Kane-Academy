@@ -9,6 +9,7 @@ const { pool } = require('../db/pool');
 const auth = require('./auth');
 
 require('dotenv').config();
+const { generateData } = require('../db/fakeData.js')
 
 const app = express();
 app.use(cookieParser('David Snakehoff'));
@@ -41,6 +42,13 @@ app.get('/*/bundle.js', (req, res) => {
   res.sendFile('bundle.js', { root: path.join(__dirname, '../public/dist') });
 });
 
+app.get('/fakedata', (req, res) => {
+  res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
+  generateData((result) => {
+    res.send(result)
+  })
+});
+
 // NOTE TO TEAM: PLACE ALL QUERIES THAT REQUIRE LOGIN BELOW THIS AUTHORIZATION
 app.use(auth);
 
@@ -48,5 +56,5 @@ app.get('/profile', (req, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
 });
 
-const port = process.env.PORT || 6969;
+const port = process.env.PORT || 3001;
 app.listen(port);
