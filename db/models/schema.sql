@@ -11,14 +11,16 @@ CREATE EXTENSION pgcrypto;
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   mentor BOOLEAN,
-  first_name VARCHAR(25),
-  last_name VARCHAR(25),
-  email VARCHAR(40),
+  first_name VARCHAR(25) NOT NULL,
+  last_name VARCHAR(25) NOT NULL,
+  email VARCHAR(40) NOT NULL UNIQUE,
+  gid VARCHAR(32) UNIQUE,
   hash VARCHAR(60)
 );
 
 CREATE INDEX i ON users(hash);
 CREATE INDEX i0 ON users(email);
+CREATE INDEX i4 ON users(gid);
 
 DROP TABLE IF EXISTS messages;
 
@@ -44,15 +46,12 @@ DROP TABLE IF EXISTS sessions;
 
 CREATE TABLE sessions (
   id SERIAL PRIMARY KEY,
-  hash VARCHAR(50),
-  user_id INT NOT NULL,
-  CONSTRAINT fk_user_id_3
-    FOREIGN KEY(user_id)
-      REFERENCES users(id)
+  sid VARCHAR(32) UNIQUE,
+  expire TIMESTAMP,
+  sess VARCHAR(255)
 );
 
-CREATE INDEX i4 ON sessions(hash);
-CREATE INDEX i5 ON sessions(user_id);
+CREATE INDEX i5 ON sessions(sid);
 
 DROP TABLE IF EXISTS appointments;
 
