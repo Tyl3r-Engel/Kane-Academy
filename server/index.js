@@ -17,5 +17,5 @@ app.get('/profile', (req, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
 });
 
-const port = process.env.PORT || 6969;
+const port = process.env.PORT || 3000;
 app.listen(port);
