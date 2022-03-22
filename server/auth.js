@@ -1,5 +1,3 @@
-const { verifySession } = require('../db/controllers/auth');
-
 const auth = (req, res, next) => {
   if (req.session.passport) {
     console.log('Verified and authorized: ', req.session.passport.user);

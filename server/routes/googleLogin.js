@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oidc');
-const { signup } = require('../../db/controllers/auth');
+const { googleSignup } = require('../../db/controllers/auth');
 
 const router = express.Router();
 
@@ -11,7 +11,7 @@ passport.use(new GoogleStrategy({
   callbackURL: '/oauth2/redirect/google',
   scope: [ 'profile', 'email' ],
 },
-signup));
+googleSignup));
 
 passport.serializeUser(function(user, cb) {
   process.nextTick(function() {
@@ -28,7 +28,7 @@ passport.deserializeUser(function(user, cb) {
 router.get('/login/federated/google', passport.authenticate('google'));
 
 router.get('/oauth2/redirect/google', passport.authenticate('google', {
-  successRedirect: '/',
+  successRedirect: '/profile',
   failureRedirect: '/login'
 }));
 
