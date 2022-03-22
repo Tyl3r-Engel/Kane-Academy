@@ -15,6 +15,7 @@ const { addMentorProfile, getMentorProfile } = require('../db/controllers/mentor
 const { addReview, getReviews } = require('../db/controllers/reviews.js')
 const { getSkills } = require('../db/controllers/skills.js')
 const { getSession } = require('../db/controllers/sessions.js')
+const { v4: uuidV4 } = require('uuid')
 
 const app = express();
 app.use(cookieParser('David Snakehoff'));
@@ -104,6 +105,30 @@ app.get('/api/getSkills', (req, res) => {
     }
   })
 })
+    
+    // * socket io stuff & video call endpoints
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
+app.set('views', path.join(__dirname, '/videoCall/views'));
+app.set('view engine', 'ejs')
+
+app.get('/videoCall', (req, res) => {
+  res.redirect(`/videoCall/${uuidV4()}`)
+})
+
+app.get('/videoCall/:room', (req, res) => {
+  res.render('room', { roomId : req.params.room })
+})
+
+io.on('connection', socket => {
+  socket.on('join-room', (roomId, userId) => {
+    socket.join(roomId)
+    socket.broadcast.to(roomId).emit('user-connected', userId);
+    socket.on('disconnect', () => {
+      socket.broadcast.to(roomId).emit('user-disconnected', userId);
+    })
 
 const port = process.env.PORT || 3001;
-app.listen(port);
+server.listen(port);
