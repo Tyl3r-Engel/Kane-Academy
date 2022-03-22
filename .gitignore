@@ -3,3 +3,4 @@ package-lock.json
 public/dist/bundle.js
 node_modules/
 pool.js
+.env

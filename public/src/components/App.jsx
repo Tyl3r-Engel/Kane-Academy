@@ -4,6 +4,7 @@ import axios from 'axios';
 import HomeRoot from './home/HomeRoot';
 import ProfileRoot from './profile/ProfileRoot';
 import LoginRoot from './login/LoginRoot';
+import FakeData from './FakeData'
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
           <Route path="/" element={HomeRoot()} />
           <Route path="/login" element={LoginRoot()} />
           <Route path="/profile" element={ProfileRoot()} />
+          <Route path="/fakedata" element={FakeData()} />
         </Routes>
       </Router>
     </div>
