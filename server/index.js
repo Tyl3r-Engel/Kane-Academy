@@ -13,6 +13,7 @@ require('dotenv').config();
 
 const { login } = require('../db/controllers/auth');
 const { signup } = require('../db/controllers/signup');
+const morgan = require('morgan');
 const { generateData } = require('../db/fakeData.js')
 const { addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile } = require('../db/controllers/mentorProfiles.js')
 const { addMentorSkills, initMentorSkills, updateMentorSkills } = require('../db/controllers/mentorSkills.js')
@@ -28,6 +29,8 @@ app.use(logger('tiny'));
 app.use(express.json());
 const loginRouter = require('./routes/googleLogin');
 
+app.use(morgan('dev'));
+app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public/dist')));
 app.use(express.json());
 
@@ -45,6 +48,7 @@ app.use(session({
 app.use(passport.authenticate('session'));
 
 app.use('/', loginRouter);
+
 
 app.get('/login', (req, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
@@ -226,6 +230,14 @@ io.on('connection', socket => {
     })
   })
 })
+// app.get('/skills', (req, res) => {
+
+//   console.log(skills);
+//   skills
+//     .query('SELECT * FROM skills')
+//     .catch(err => console.log(err.stack))
+//     .then(results => res.json(results.rows))
+// })
 
 const port = process.env.PORT || 3001;
 server.listen(port);
