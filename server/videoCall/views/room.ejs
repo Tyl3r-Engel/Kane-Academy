@@ -28,7 +28,7 @@
     const videoGrid = document.getElementById('video-grid')
     const myPeer = new Peer(undefined, {
       host: '/',
-      port: '3000'
+      port: '6969'
     })
     const peers = {}
     const myVideo = document.createElement('video')
@@ -49,11 +49,11 @@
       })
 
       socket.on('user-connected', userId => {
+        console.log(userId)
         connectToNewUser(userId, stream)
       })
 
       socket.on('user-disconnected', userId => {
-        console.log(userId, peers)
         if(peers[userId]) peers[userId].close()
       })
     })
