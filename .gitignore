@@ -4,3 +4,5 @@ public/dist/bundle.js
 node_modules/
 pool.js
 .env
+apiGoogleconfig.json
+psql commands

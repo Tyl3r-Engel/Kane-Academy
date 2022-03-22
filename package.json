@@ -6,8 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "react-dev": "webpack --config ./webpack.config.js  -w",
-    "postgres-init": "psql --u mk -d ka -f ./db/models/schema.sql",
-    "start": "nodemon ./server/index.js"
+    "start": "nodemon ./server/index.js",
     "peer" : "peerjs --port 3000",
     "postgres-init": "psql -f ./db/models/schema.sql"
   },
