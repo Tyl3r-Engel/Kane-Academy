@@ -1,8 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function HomeRoot() {
+
+  const [skillsData, setSkillsData] = useState({});
+
+  function fetchSkills() {
+    axios
+      .get('/skills')
+      .then(results => setSkillsData(results))
+  }
+
+  useEffect(() => {
+    fetchSkills();
+  }, [])
+
   return (
-    <div>Rendered Home</div>
+    <div>
+      <div>Rendered Home</div>
+    </div>
+    
   );
 }

@@ -7,6 +7,7 @@ const skills = (name, category, description, cb) => {
   pool.query(queryString, [name, category, description], cb);
 }
 
+
 module.exports = {
   skills,
 };
