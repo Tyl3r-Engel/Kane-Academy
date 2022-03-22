@@ -1,0 +1,54 @@
+const express = require('express');
+const path = require('path');
+const bodyParser = require('body-parser');
+const { generateData } = require('../db/fakeData.js')
+const { addMentorProfile, getMentorProfile } = require('../db/controllers/mentorProfiles.js')
+const { addReview, getReviews } = require('../db/controllers/reviews.js')
+
+const app = express();
+
+app.use(express.static(path.join(__dirname, '../public/dist')));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+app.get('/login', (req, res) => {
+  res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
+});
+
+app.get('/*/bundle.js', (req, res) => {
+  res.sendFile('bundle.js', { root: path.join(__dirname, '../public/dist') });
+});
+
+app.get('/profile/*', (req, res) => {
+  res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
+});
+
+app.get('/fakedata', (req, res) => {
+  res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
+  generateData((result) => {
+    res.send(result)
+  })
+});
+
+app.get('/api/getProfile/*', (req, res) => {
+  getMentorProfile(req.params[0], (err, result) => {
+    if (err) {
+      res.send(err)
+    } else {
+      res.send(result.rows)
+    }
+  })
+})
+
+app.get('/api/getReviews/*', (req, res) => {
+  getReviews(req.params[0], (err, result) => {
+    if (err) {
+      res.send(err)
+    } else {
+      res.send(result.rows)
+    }
+  })
+})
+
+const port = process.env.PORT || 3001;
+app.listen(port);

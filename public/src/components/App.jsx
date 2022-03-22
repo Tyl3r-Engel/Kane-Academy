@@ -5,10 +5,10 @@ import HomeRoot from './home/HomeRoot';
 import ProfileRoot from './profile/ProfileRoot';
 import LoginRoot from './login/LoginRoot';
 import SignupRoot from './signup/SignupRoot';
+import MyProfile from './profile/MyProfile';
 import FakeData from './FakeData'
 
 export default function App() {
-  console.log(window.location.pathname);
   return (
     <div className="App">
       <Router>
@@ -16,8 +16,9 @@ export default function App() {
           <Route path="/" element={<HomeRoot />} />
           <Route path="/login" element={<LoginRoot />} />
           <Route path="/signup" element={<SignupRoot />} />
-          <Route path="/profile" element={<ProfileRoot />} />
-          <Route path="/fakedata" element={<FakeData />} />
+          <Route path="/profile/*" element={<ProfileRoot />} />
+          <Route path="/profile" element={<MyProfile />} />
+          <Route path="/fakedata" element={FakeData()} />
         </Routes>
       </Router>
     </div>
