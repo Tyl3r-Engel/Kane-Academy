@@ -1,6 +1,6 @@
 const { pool } = require('../pool');
 
-const signup = (issuer, profile, cb) => {
+const googleSignup = (issuer, profile, cb) => {
   const queryString = `INSERT INTO users
   (mentor, first_name, last_name, email, gid)
   VALUES (false, $1, $2, $3, $4)`
@@ -20,12 +20,14 @@ const signup = (issuer, profile, cb) => {
   });
 };
 
-const verifySession = (sessionId, cb) => {
-  const queryString = `SELECT * FROM sessions WHERE sid = $1`;
-  pool.query(queryString, [sessionId], cb);
-}
+const login = (email, password, cb) => {
+  const queryString = `SELECT * FROM users
+  WHERE email = $1`;
+  //  AND hash = crypt($2, gen_salt('bf'))
+  pool.query(queryString, [email], cb);
+};
 
 module.exports = {
-  signup,
-  verifySession,
+  googleSignup,
+  login,
 };

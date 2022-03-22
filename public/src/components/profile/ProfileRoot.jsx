@@ -1,3 +1,5 @@
+import axios from 'axios';
+import Logout from '../shared/Logout';
 import React, { useState, useMemo } from 'react';
 import requestProfile from './axios/requestProfile.js';
 import requestReviews from './axios/requestReviews.js'
@@ -72,6 +74,7 @@ export default function ProfileRoot() {
     return (
       // <Test />
       <ProfileContext.Provider value={ProfileProvider}>
+        <Logout />
         <Blurb />
         <Reviews />
         <PlansAndPricing />
