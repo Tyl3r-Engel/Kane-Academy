@@ -7,9 +7,14 @@ const cookieParser = require('cookie-parser');
 const pgSession = require('connect-pg-simple')(session);
 const { pool } = require('../db/pool');
 const auth = require('./auth');
+const bodyParser = require('body-parser');
 
 require('dotenv').config();
 const { generateData } = require('../db/fakeData.js')
+const { addMentorProfile, getMentorProfile } = require('../db/controllers/mentorProfiles.js')
+const { addReview, getReviews } = require('../db/controllers/reviews.js')
+const { getSkills } = require('../db/controllers/skills.js')
+const { getSession } = require('../db/controllers/sessions.js')
 const { v4: uuidV4 } = require('uuid')
 
 const app = express();
@@ -51,13 +56,57 @@ app.get('/fakedata', (req, res) => {
 });
 
 // NOTE TO TEAM: PLACE ALL QUERIES THAT REQUIRE LOGIN BELOW THIS AUTHORIZATION
-app.use(auth);
+// app.use(auth);
 
-app.get('/profile', (req, res) => {
+app.get('/profile*', (req, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
 });
 
-// * socket io stuff & video call endpoints
+// app.get('/profile/*', (req, res) => {
+//   res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
+// });
+
+app.get('/api/getSess', (req, res) => {
+  getSession((err, result) => {
+    if (err) {
+      res.send(err)
+    } else {
+      res.send(result.rows)
+    }
+  })
+})
+
+app.get('/api/getProfile/*', (req, res) => {
+  getMentorProfile(req.params[0], (err, result) => {
+    if (err) {
+      res.send(err)
+    } else {
+      res.send(result.rows)
+    }
+  })
+})
+
+app.get('/api/getReviews/*', (req, res) => {
+  getReviews(req.params[0], (err, result) => {
+    if (err) {
+      res.send(err)
+    } else {
+      res.send(result.rows)
+    }
+  })
+})
+
+app.get('/api/getSkills', (req, res) => {
+  getSkills((err, result) => {
+    if (err) {
+      res.send(err)
+    } else {
+      res.send(result.rows)
+    }
+  })
+})
+    
+    // * socket io stuff & video call endpoints
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
@@ -80,8 +129,6 @@ io.on('connection', socket => {
     socket.on('disconnect', () => {
       socket.broadcast.to(roomId).emit('user-disconnected', userId);
     })
-  })
-})
 
 const port = process.env.PORT || 3001;
 server.listen(port);
