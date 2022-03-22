@@ -5,7 +5,6 @@ import HomeRoot from './home/HomeRoot';
 import ProfileRoot from './profile/ProfileRoot';
 import LoginRoot from './login/LoginRoot';
 import SignupRoot from './signup/SignupRoot';
-import MyProfile from './profile/MyProfile';
 import FakeData from './FakeData'
 
 export default function App() {
@@ -17,7 +16,6 @@ export default function App() {
           <Route path="/login" element={<LoginRoot />} />
           <Route path="/signup" element={<SignupRoot />} />
           <Route path="/profile/*" element={<ProfileRoot />} />
-          <Route path="/profile" element={<MyProfile />} />
           <Route path="/fakedata" element={FakeData()} />
         </Routes>
       </Router>
