@@ -10,6 +10,7 @@ const auth = require('./auth');
 
 require('dotenv').config();
 const { generateData } = require('../db/fakeData.js')
+const { v4: uuidV4 } = require('uuid')
 
 const app = express();
 app.use(cookieParser('David Snakehoff'));
@@ -56,5 +57,31 @@ app.get('/profile', (req, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
 });
 
+// * socket io stuff & video call endpoints
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
+app.set('views', path.join(__dirname, '/videoCall/views'));
+app.set('view engine', 'ejs')
+
+app.get('/videoCall', (req, res) => {
+  res.redirect(`/videoCall/${uuidV4()}`)
+})
+
+app.get('/videoCall/:room', (req, res) => {
+  res.render('room', { roomId : req.params.room })
+})
+
+io.on('connection', socket => {
+  socket.on('join-room', (roomId, userId) => {
+    socket.join(roomId)
+    socket.broadcast.to(roomId).emit('user-connected', userId);
+    socket.on('disconnect', () => {
+      socket.broadcast.to(roomId).emit('user-disconnected', userId);
+    })
+  })
+})
+
 const port = process.env.PORT || 3001;
-app.listen(port);
+server.listen(port);
