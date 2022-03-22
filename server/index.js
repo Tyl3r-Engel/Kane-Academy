@@ -154,7 +154,7 @@ app.get('/api/getSkills', (req, res) => {
     }
   })
 })
-    
+
     // * socket io stuff & video call endpoints
 const http = require('http');
 const server = http.createServer(app);
@@ -178,6 +178,8 @@ io.on('connection', socket => {
     socket.on('disconnect', () => {
       socket.broadcast.to(roomId).emit('user-disconnected', userId);
     })
+  })
+})
 
 const port = process.env.PORT || 3001;
 server.listen(port);
