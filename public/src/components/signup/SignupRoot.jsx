@@ -38,8 +38,8 @@ export default function SignupRoot() {
             type="radio"
             value={true}
             name="mentor"
-            checked={mentor === false}
-            onChange={() => updateMentor(false)}
+            checked={mentor === true}
+            onChange={() => updateMentor(true)}
           />
           Learner:
           <input

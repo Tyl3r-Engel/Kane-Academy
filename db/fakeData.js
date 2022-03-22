@@ -5,7 +5,7 @@ const { sessions } = require('./controllers/sessions.js')
 const { appointments } = require('./controllers/appointments.js')
 const { addMentorProfile } = require('./controllers/mentorProfiles.js')
 const { addSkills } = require('./controllers/skills.js')
-const { mentorSkills } = require('./controllers/mentorSkills.js')
+const { addMentorSkills } = require('./controllers/mentorSkills.js')
 const { addReview } = require('./controllers/reviews.js')
 
 async function generateData() {
@@ -120,11 +120,13 @@ async function fakeMentorSkills() {
   for (var i = 1; i < 11; i++) {
     for (var j = 0; j < 5; j++) {
       let mentor_id = i
-      let skill_id = Math.floor(Math.random() * 30)
+      let skill_id = Math.floor(Math.random() * 31)
       let pricing = faker.commerce.price()
-      mentorSkills(mentor_id, skill_id, pricing, (err, result) => {
+      addMentorSkills(mentor_id, skill_id, pricing, (err, result) => {
         if (err) {
           console.log('Error in fakeMentorSkills', err)
+        } else {
+          console.log('success with', mentor_id, skill_id, pricing)
         }
       })
     }

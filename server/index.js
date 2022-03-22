@@ -14,9 +14,10 @@ require('dotenv').config();
 const { login } = require('../db/controllers/auth');
 const { signup } = require('../db/controllers/signup');
 const { generateData } = require('../db/fakeData.js')
-const { addMentorProfile, getMentorProfile } = require('../db/controllers/mentorProfiles.js')
+const { addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile } = require('../db/controllers/mentorProfiles.js')
+const { addMentorSkills, initMentorSkills, updateMentorSkills } = require('../db/controllers/mentorSkills.js')
 const { addReview, getReviews } = require('../db/controllers/reviews.js')
-const { getSkills } = require('../db/controllers/skills.js')
+const { addSkills, getSkills } = require('../db/controllers/skills.js')
 const { getSession } = require('../db/controllers/sessions.js')
 const { v4: uuidV4 } = require('uuid')
 
@@ -92,7 +93,11 @@ app.post('/signup', (req, res) => {
           id: results.rows[0].id,
           mentor: req.body.mentor,
         };
-        res.redirect('../profile');
+        addMentorProfile(req.session.passport.user.id, '', () => {
+          initMentorSkills(req.session.passport.user.id, 1, () => {
+            res.redirect('../profile');
+          })
+        })
       }
     });
 });
@@ -105,7 +110,7 @@ app.put('/logout', (req, res) => {
 });
 
 // NOTE TO TEAM: PLACE ALL QUERIES THAT REQUIRE LOGIN BELOW THIS AUTHORIZATION
-// app.use(auth);
+app.use(auth);
 
 app.get('/profile*', (req, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
@@ -128,7 +133,7 @@ app.get('/api/getSess', (req, res) => {
 app.get('/api/getProfile/*', (req, res) => {
   getMentorProfile(req.params[0], (err, result) => {
     if (err) {
-      res.send(err)
+      res.send(null)
     } else {
       res.send(result.rows)
     }
@@ -138,10 +143,8 @@ app.get('/api/getProfile/*', (req, res) => {
 app.get('/api/getReviews/*', (req, res) => {
   getReviews(req.params[0], (err, result) => {
     if (err) {
-      console.log('err')
       res.send(null)
     } else {
-      console.log('success')
       res.send(result.rows)
     }
   })
@@ -149,6 +152,47 @@ app.get('/api/getReviews/*', (req, res) => {
 
 app.get('/api/getSkills', (req, res) => {
   getSkills((err, result) => {
+    if (err) {
+      res.send('err')
+    } else {
+      res.send(result.rows)
+    }
+  })
+})
+
+app.put('/api/updateMentorSkills', (req, res) => {
+  updateMentorSkills(req.body, (err, result) => {
+    if (err) {
+      res.send('err')
+    } else {
+      res.send(result.rows)
+    }
+  })
+})
+
+app.put('/api/updateMentorProfile', (req, res) => {
+  console.log(req.body)
+  updateMentorProfile(req.body.id, req.body.about, (err, result) => {
+    if (err) {
+      res.send('err')
+    } else {
+      res.send(result.rows)
+    }
+  })
+})
+
+app.post('/api/addSkill', (req, res) => {
+  addSkills(req.body.name, req.body.category, req.body.description, (err, result) => {
+    if (err) {
+      res.send(err)
+    } else {
+      res.send(result.rows)
+    }
+  })
+})
+
+app.post('/api/addReview', (req, res) => {
+  addReview(req.body.mentor_id, req.body.learner_id, req.body.skill_id, req.body.rating, req.body.body, req.body.time, (err, result) => {
     if (err) {
       res.send('err')
     } else {

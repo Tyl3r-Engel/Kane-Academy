@@ -1,4 +1,3 @@
-import axios from 'axios';
 import Logout from '../shared/Logout';
 import React, { useState, useMemo } from 'react';
 import requestProfile from './axios/requestProfile.js';
@@ -13,14 +12,12 @@ import Reviews from './Reviews.jsx'
 export const ProfileContext = React.createContext();
 
 export default function ProfileRoot() {
-  const [loggedInUser, setLoggedInUser] = useState(null)
-  const [currentProfile, setCurrentProfile] = useState(null)
-  const [currentReviews, setCurrentReviews] = useState(null)
-  const [reviewsAverage, setReviewsAverage] = useState(null)
-  const [skillsList, setSkillsList] = useState(null)
-  const [editable, setEditable] = useState(false)
-
-  let mentor = window.location.href.replace('http://localhost:3001/profile/', '')
+  const [loggedInUser, setLoggedInUser] = useState(null) // null
+  const [currentProfile, setCurrentProfile] = useState(null) // undefined
+  const [currentReviews, setCurrentReviews] = useState(null) // ""
+  const [reviewsAverage, setReviewsAverage] = useState(null) // NaN
+  const [skillsList, setSkillsList] = useState(null) // []
+  const [editable, setEditable] = useState(false) // false
 
   if (loggedInUser === null) {
     requestCurrentSession((result) => {
@@ -30,13 +27,19 @@ export default function ProfileRoot() {
     })
   }
 
-  if (currentProfile === null) {
+  let mentor = window.location.href.replace('http://localhost:3001/profile/', '')
+
+  if (mentor === 'http://localhost:3001/profile' && loggedInUser !== null) {
+    mentor = loggedInUser.id
+  }
+
+  if (currentProfile === null && loggedInUser !== null) {
     requestProfile(mentor, (result) => {
       setCurrentProfile(result[0])
     })
   }
 
-  if (currentReviews === null) {
+  if (currentReviews === null && mentor !== 'http://localhost:3001/profile') {
     requestReviews(mentor, (result) => {
       if (result === null) {
         setCurrentReviews({})
@@ -46,7 +49,6 @@ export default function ProfileRoot() {
   }
 
   if (reviewsAverage === null && currentReviews !== null) {
-    console.log(currentReviews)
     setReviewsAverage(averageReviews(currentReviews))
   }
 
@@ -56,28 +58,26 @@ export default function ProfileRoot() {
     })
   }
 
-  if (loggedInUser !== null && currentProfile !== null && editable === false) {
-    console.log('loggedInUser', loggedInUser, 'currentProfile', currentProfile)
-    if (loggedInUser.user.id === currentProfile.id) {
+  if (window.location.href === 'http://localhost:3001/profile') {
+    if (!editable) {
       setEditable(true)
     }
-  }
-
-  if (editable === true && loggedInUser.id !== currentProfile.id) {
-    setEditable(false)
+  } else {
+    if (editable) {
+      setEditable(false)
+    }
   }
 
   const ProfileProvider = useMemo(() => (
     {
-      currentProfile, setCurrentProfile, currentReviews, reviewsAverage, loggedInUser, editable, skillsList
+      currentProfile, setCurrentProfile, currentReviews, setCurrentReviews, reviewsAverage, loggedInUser, editable, skillsList
     }
-  ), [currentProfile, setCurrentProfile, currentReviews, reviewsAverage, loggedInUser, editable, skillsList]);
+  ), [currentProfile, setCurrentProfile, currentReviews, setCurrentReviews, reviewsAverage, loggedInUser, editable, skillsList]);
 
   if (currentProfile === null || currentReviews === null) {
     return (null)
   } else {
     return (
-      // <Test />
       <ProfileContext.Provider value={ProfileProvider}>
         <Logout />
         <Blurb />
