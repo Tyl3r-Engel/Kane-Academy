@@ -24,6 +24,7 @@ const loginRouter = require('./routes/googleLogin');
 
 
 app.use(express.static(path.join(__dirname, '../public/dist')));
+app.use(express.json());
 
 app.use(session({
   store: new pgSession({

@@ -1,8 +1,12 @@
 import React from 'react';
 import axios from 'axios';
+import Search from '../search/Search';
 
 export default function HomeRoot() {
   return (
-    <div>Rendered Home</div>
+    <div>
+      <div>Rendered Home</div>
+      <Search />
+    </div>
   );
 }
