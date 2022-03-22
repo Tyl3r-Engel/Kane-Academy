@@ -138,8 +138,10 @@ app.get('/api/getProfile/*', (req, res) => {
 app.get('/api/getReviews/*', (req, res) => {
   getReviews(req.params[0], (err, result) => {
     if (err) {
-      res.send(err)
+      console.log('err')
+      res.send(null)
     } else {
+      console.log('success')
       res.send(result.rows)
     }
   })
@@ -148,7 +150,7 @@ app.get('/api/getReviews/*', (req, res) => {
 app.get('/api/getSkills', (req, res) => {
   getSkills((err, result) => {
     if (err) {
-      res.send(err)
+      res.send('err')
     } else {
       res.send(result.rows)
     }

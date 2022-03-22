@@ -3,6 +3,9 @@ import { ProfileContext } from './ProfileRoot'
 
 export default function PlansAndPricing() {
   const { currentProfile } = useContext(ProfileContext)
+  if (currentProfile === undefined) {
+    return (<div>There are currently no skills for this user.</div>)
+  }
   return(
     <div className="pricing">
       <table>

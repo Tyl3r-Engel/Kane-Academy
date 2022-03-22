@@ -4,6 +4,9 @@ import Ratings from 'react-ratings-declarative';
 
 export default function Reviews() {
   const {currentReviews} = useContext(ProfileContext)
+  if (currentReviews === null || currentReviews === undefined || currentReviews === '') {
+    return(<div>There are currently no reviews for this user.</div>)
+  }
   return(
     <div className="reviewsWindow">{currentReviews.map((review) => {
       return(

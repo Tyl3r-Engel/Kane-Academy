@@ -20,6 +20,9 @@ export default function Blurb() {
     console.log(currentProfile)
   }
 
+  if (currentProfile === undefined) {
+    return (<div>This user currently has an empty profile.</div>)
+  }
   if (editable) {
     if (skillsList !== null) {
       return(

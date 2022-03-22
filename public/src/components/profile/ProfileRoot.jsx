@@ -13,7 +13,7 @@ import Reviews from './Reviews.jsx'
 export const ProfileContext = React.createContext();
 
 export default function ProfileRoot() {
-  const [loggedInUser, setLoggedInUser] = useState({user: {id: 1}})
+  const [loggedInUser, setLoggedInUser] = useState(null)
   const [currentProfile, setCurrentProfile] = useState(null)
   const [currentReviews, setCurrentReviews] = useState(null)
   const [reviewsAverage, setReviewsAverage] = useState(null)
@@ -26,7 +26,7 @@ export default function ProfileRoot() {
     requestCurrentSession((result) => {
       result[0].sess.replace('/', '')
       result[0].sess.replace("\"", '')
-      setLoggedInUser(JSON.parse(result[0].sess).passport)
+      setLoggedInUser(JSON.parse(result[0].sess).passport.user)
     })
   }
 
@@ -38,11 +38,15 @@ export default function ProfileRoot() {
 
   if (currentReviews === null) {
     requestReviews(mentor, (result) => {
+      if (result === null) {
+        setCurrentReviews({})
+      }
       setCurrentReviews(result)
     })
   }
 
   if (reviewsAverage === null && currentReviews !== null) {
+    console.log(currentReviews)
     setReviewsAverage(averageReviews(currentReviews))
   }
 
@@ -53,12 +57,13 @@ export default function ProfileRoot() {
   }
 
   if (loggedInUser !== null && currentProfile !== null && editable === false) {
+    console.log('loggedInUser', loggedInUser, 'currentProfile', currentProfile)
     if (loggedInUser.user.id === currentProfile.id) {
       setEditable(true)
     }
   }
 
-  if (editable === true && loggedInUser.user.id !== currentProfile.id) {
+  if (editable === true && loggedInUser.id !== currentProfile.id) {
     setEditable(false)
   }
 
