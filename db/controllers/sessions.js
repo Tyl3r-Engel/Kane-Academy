@@ -7,6 +7,12 @@ const sessions = (hash, user_id, cb) => {
   pool.query(queryString, [hash, user_id], cb);
 }
 
+const getSession = (cb) => {
+  const queryString = `SELECT sess from sessions`
+
+  pool.query(queryString, cb)
+}
+
 module.exports = {
-  sessions,
+  sessions, getSession
 };
