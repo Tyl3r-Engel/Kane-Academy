@@ -12,7 +12,7 @@ import Messages from './message/Messages'
 export default function App() {
   return (
     <div className="App">
-      <Messages />
+      {/* <Messages /> */}
       <Router>
         <Routes>
           <Route path="/" element={<HomeRoot />} />
@@ -21,6 +21,7 @@ export default function App() {
           <Route path="/signup/complete" element={<CompleteSignup />} />
           <Route path="/profile/*" element={<ProfileRoot />} />
           <Route path="/profile" element={<ProfileRoot />} />
+          <Route path="/messages" element={<Messages />} />
           <Route path="/fakedata" element={FakeData()} />
         </Routes>
       </Router>
