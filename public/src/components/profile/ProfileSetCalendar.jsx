@@ -7,6 +7,7 @@ import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import requestCurrentSession from './axios/requestCurrentSession';
+import { PopupWidget } from "react-calendly";
 
 export default function ProfileSetCalendar() {
   // const [sign, setSign] = React.useState(false);
@@ -16,12 +17,11 @@ export default function ProfileSetCalendar() {
   const [avail, setAvail] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [hasSub, setHasSub] = React.useState(false);
-  const [calUrl, setCalUrl] = React.useState('');
+  const [calUrl, setCalUrl] = React.useState(null);
+  const [calUrlTemp, setCalUrlTemp] = React.useState(null);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const url = React.useRef('');
 
   const style = {
     position: 'absolute',
@@ -36,9 +36,16 @@ export default function ProfileSetCalendar() {
   };
 
   let urlInput = (e) => {
-    setCalUrl(e.target.value);
-    url.current = e.target.value;
+    setCalUrlTemp(e.target.value);
+    // if (hasSub) {
+    //   setCalUrl(calUrlTemp);
+    //   setHasSub(false);
+    // }
   }
+
+  // React.useEffect(() => {
+  //   setCalUrl(calUrlTemp);
+  // }, [hasSub])
 
   // let calInit = () => {
   //   Calendly.initInlineWidget({
@@ -55,11 +62,14 @@ export default function ProfileSetCalendar() {
       mId[0].sess.replace('/', '')
       mId[0].sess.replace("\"", '')
       axios.put('/api/calendly', {
-        calendly: calUrl,
+        calendly: calUrlTemp,
         mentId: JSON.parse(mId[0].sess).passport.user.id
       }, (result) => console.log(result))
     })
-    .then(() => handleClose());
+    .then(() => {
+      setCalUrl(calUrlTemp);
+      handleClose();
+    });
   }
 
   let urlGet = () => {
@@ -68,13 +78,18 @@ export default function ProfileSetCalendar() {
       mId[0].sess.replace("\"", '')
       axios.post('/api/calendly', {
         mentId: JSON.parse(mId[0].sess).passport.user.id
-      }, (result) => setCalUrl(result))
+      })
+      .then((result) => {
+        console.log(result.data)
+        setCalUrl(result.data)
+      })
     })
   }
 
   React.useEffect(() => {
-    urlGet();
-  }, [hasSub]);
+    urlGet()
+    console.log('calurl: ' + calUrl)
+  }, [calUrl]);
 
   // let handleItemClick = (event, name) => {
   //       if (name === 'sign-in') {
@@ -168,11 +183,27 @@ export default function ProfileSetCalendar() {
       </Modal>
 
 
-      <div className="calendly-inline-widget" data-url={calUrl} style={{"minWidth": "320px", "height": "750px"}}></div>
-
-
+      {/* <div className="calendly-inline-widget" data-url={calUrl} style={{"minWidth": "320px", "height": "750px"}}></div> */}
+      {calUrl ? (
+        <PopupWidget
+        url={calUrl}
+        // {calUrl}
+        /*
+         * react-calendly uses React's Portal feature (https://reactjs.org/docs/portals.html) to render the popup modal. As a result, you'll need to
+         * specify the rootElement property to ensure that the modal is inserted into the correct domNode.
+         */
+        rootElement={document.getElementById("allThingsCal")}
+        text="Click here to schedule!"
+        textColor="#ffffff"
+        color="#00a2ff"
+      />) : (<div>
       It seems you haven't linked your Calendly yet. Click the "Edit Schedule" button and follow the instructions provided to display your appointment screen here.
-      <Button id='backBtn' variant="contained" onClick={() => window.location.reload()}>Refresh Calendly</Button>
+      </div>
+      )
+
+      }
+
+
 
 
     </div>

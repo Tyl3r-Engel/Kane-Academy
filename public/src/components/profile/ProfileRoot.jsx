@@ -88,6 +88,7 @@ export default function ProfileRoot() {
         <Blurb />
         <Reviews />
         <PlansAndPricing />
+        <ProfileSetCalendar />
       </ProfileContext.Provider>
     );
   }
