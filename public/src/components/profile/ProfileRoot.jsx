@@ -8,6 +8,7 @@ import Blurb from './Blurb.jsx'
 import PlansAndPricing from './PlansAndPricing.jsx'
 import averageReviews from './helpers/averageReviews';
 import Reviews from './Reviews.jsx'
+import Search from './Search';
 
 export const ProfileContext = React.createContext();
 
@@ -79,6 +80,7 @@ export default function ProfileRoot() {
   } else {
     return (
       <ProfileContext.Provider value={ProfileProvider}>
+        <Search />
         <Logout />
         <Blurb />
         <Reviews />

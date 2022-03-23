@@ -8,7 +8,8 @@
     "react-dev": "webpack --config ./webpack.config.js  -w",
     "start": "nodemon ./server/index.js",
     "peer": "peerjs --port 3000",
-    "postgres-init": "psql -f ./db/models/schema.sql"
+    "postgres-init": "psql -f ./db/models/schema.sql",
+    "postgres-initMK": "psql --u mk -d ka -f ./db/models/schema.sql"
   },
   "repository": {
     "type": "git",

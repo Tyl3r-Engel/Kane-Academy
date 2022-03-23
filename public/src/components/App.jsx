@@ -5,7 +5,7 @@ import HomeRoot from './home/HomeRoot';
 import ProfileRoot from './profile/ProfileRoot';
 import LoginRoot from './login/LoginRoot';
 import SignupRoot from './signup/SignupRoot';
-import FakeData from './FakeData'
+import FakeData from './FakeData';
 
 export default function App() {
   return (

@@ -114,7 +114,7 @@ app.put('/logout', (req, res) => {
 });
 
 // NOTE TO TEAM: PLACE ALL QUERIES THAT REQUIRE LOGIN BELOW THIS AUTHORIZATION
-app.use(auth);
+// app.use(auth);
 
 app.get('/profile*', (req, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
@@ -143,6 +143,16 @@ app.get('/api/getProfile/*', (req, res) => {
     }
   })
 })
+
+// app.get('/api/getProfiles/*', (req, res) => {
+//   getMentorProfile(req.params[0], (err, result) => {
+//     if (err) {
+//       res.send(null)
+//     } else {
+//       res.send(result.rows)
+//     }
+//   })
+// })
 
 app.get('/api/getReviews/*', (req, res) => {
   getReviews(req.params[0], (err, result) => {
@@ -230,14 +240,6 @@ io.on('connection', socket => {
     })
   })
 })
-// app.get('/skills', (req, res) => {
-
-//   console.log(skills);
-//   skills
-//     .query('SELECT * FROM skills')
-//     .catch(err => console.log(err.stack))
-//     .then(results => res.json(results.rows))
-// })
 
 const port = process.env.PORT || 3001;
 server.listen(port);
