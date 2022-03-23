@@ -13,6 +13,7 @@ require('dotenv').config();
 
 const { login } = require('../db/controllers/auth');
 const { signup } = require('../db/controllers/signup');
+
 const { generateData } = require('../db/fakeData.js')
 const { addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile } = require('../db/controllers/mentorProfiles.js')
 const { addMentorSkills, initMentorSkills, updateMentorSkills } = require('../db/controllers/mentorSkills.js')
@@ -20,6 +21,7 @@ const { addReview, getReviews } = require('../db/controllers/reviews.js')
 const { addSkills, getSkills } = require('../db/controllers/skills.js')
 const { getSession } = require('../db/controllers/sessions.js')
 const { v4: uuidV4 } = require('uuid')
+
 
 
 const app = express();
@@ -31,17 +33,19 @@ const loginRouter = require('./routes/googleLogin');
 app.use(express.static(path.join(__dirname, '../public/dist')));
 app.use(express.json());
 
-app.use(session({
-  store: new pgSession({
-    pool,                       // Connection pool
-    tableName : 'sessions'      // Use another table-name than the default "session" one
-  }),
-  secret: 'David Snakehoff',
-  name: 'sessionId',
-  cookie: { maxAge: 60000 },
-  resave: false,
-  saveUninitialized: false,
-}));
+app.use(
+  session({
+    store: new pgSession({
+      pool, // Connection pool
+      tableName: 'sessions', // Use another table-name than the default "session" one
+    }),
+    secret: 'David Snakehoff',
+    name: 'sessionId',
+    cookie: { maxAge: 60000 },
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 app.use(passport.authenticate('session'));
 
 app.use('/', loginRouter);
@@ -61,8 +65,8 @@ app.get('/*/bundle.js', (req, res) => {
 app.get('/fakedata', (req, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
   generateData((result) => {
-    res.send(result)
-  })
+    res.send(result);
+  });
 });
 
 app.post('/login', (req, res) => {
@@ -83,7 +87,12 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/signup', (req, res) => {
-  signup(req.body.mentor, req.body.firstName, req.body.lastName, req.body.email, req.body.password,
+  signup(
+    req.body.mentor,
+    req.body.firstName,
+    req.body.lastName,
+    req.body.email,
+    req.body.password,
     (err, results) => {
       if (err) {
         res.status(401).send('Error: email already in use');
@@ -99,14 +108,15 @@ app.post('/signup', (req, res) => {
           })
         })
       }
-    });
+    }
+  );
 });
 
 app.put('/logout', (req, res) => {
   res.clearCookie('sessionId');
   req.session.destroy(() => {
     res.send('/');
-  })
+  });
 });
 
 // NOTE TO TEAM: PLACE ALL QUERIES THAT REQUIRE LOGIN BELOW THIS AUTHORIZATION
@@ -123,22 +133,24 @@ app.get('/profile*', (req, res) => {
 app.get('/api/getSess', (req, res) => {
   getSession((err, result) => {
     if (err) {
-      res.send(err)
+      res.send(err);
     } else {
-      res.send(result.rows)
+      res.send(result.rows);
     }
-  })
-})
+  });
+});
 
 app.get('/api/getProfile/*', (req, res) => {
   getMentorProfile(req.params[0], (err, result) => {
     if (err) {
+
+
       res.send(null)
     } else {
-      res.send(result.rows)
+      res.send(result.rows);
     }
-  })
-})
+  });
+});
 
 app.get('/api/getReviews/*', (req, res) => {
   getReviews(req.params[0], (err, result) => {
@@ -147,18 +159,19 @@ app.get('/api/getReviews/*', (req, res) => {
     } else {
       res.send(result.rows)
     }
-  })
-})
+  });
+});
 
 app.get('/api/getSkills', (req, res) => {
   getSkills((err, result) => {
     if (err) {
-      res.send('err')
+      res.send('err');
     } else {
-      res.send(result.rows)
+      res.send(result.rows);
     }
-  })
-})
+  });
+});
+
 
 app.put('/api/updateMentorSkills', (req, res) => {
   updateMentorSkills(req.body, (err, result) => {
@@ -202,30 +215,60 @@ app.post('/api/addReview', (req, res) => {
 })
 
     // * socket io stuff & video call endpoints
+
 const http = require('http');
 const server = http.createServer(app);
-const { Server } = require("socket.io");
+const { Server } = require('socket.io');
 const io = new Server(server);
 app.set('views', path.join(__dirname, '/videoCall/views'));
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs');
 
 app.get('/videoCall', (req, res) => {
-  res.redirect(`/videoCall/${uuidV4()}`)
-})
+  res.redirect(`/videoCall/${uuidV4()}`);
+});
 
 app.get('/videoCall/:room', (req, res) => {
-  res.render('room', { roomId : req.params.room })
-})
+  res.render('room', { roomId: req.params.room });
+});
 
-io.on('connection', socket => {
+io.on('connection', (socket) => {
   socket.on('join-room', (roomId, userId) => {
-    socket.join(roomId)
+    socket.join(roomId);
     socket.broadcast.to(roomId).emit('user-connected', userId);
     socket.on('disconnect', () => {
       socket.broadcast.to(roomId).emit('user-disconnected', userId);
-    })
-  })
-})
+    });
+  });
+});
+///////////////////////////////////////
+
+const chat = new Server(server, {
+  cors: {
+    origin: 'http://localhost:3001',
+  },
+});
+
+chat.on('connection', (socket) => {
+  console.log(`User Connected: ${socket.id}`);
+  const users = [];
+  for (let [id, socket] of io.of('/').sockets) {
+    users.push({
+      userID: id,
+      username: socket.username,
+    });
+  }
+  socket.join('123123');
+  socket.emit('users', users);
+  console.log(`User with ID: ${socket.id} joined room`);
+
+  socket.on('send', (data) => {
+    socket.to('123123').emit('receive', data);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('User Disconnected', socket.id);
+  });
+});
 
 const port = process.env.PORT || 3001;
 server.listen(port);
