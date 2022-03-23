@@ -27,7 +27,7 @@ export default function Chat({ socket, username }) {
 
   return (
     <div className="chat-window">
-  
+
       <div className="chatBody">
         <p>Chat History</p>
       </div>

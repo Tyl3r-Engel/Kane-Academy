@@ -274,9 +274,7 @@ app.post('/api/addSkill', (req, res) => {
         res.send(result.rows);
       }
     }
-
-  })
-});
+)});
 
 app.post('/api/addReview', (req, res) => {
   addReview(
@@ -293,24 +291,22 @@ app.post('/api/addReview', (req, res) => {
         res.send(result.rows);
       }
     }
-
-  })
-
-});
+)});
 
 // * socket io stuff & video call endpoints
 
 const { Server } = require('socket.io');
-const cors = require('cors')
+
 const server = require('http').createServer(app);
 
+const cors = require('cors');
+app.use(cors())
 const io = require('socket.io')(server, {
   cors: {
     origin: '*',
     methods: ['GET', 'POST']
   }
 })
-app.use(cors())
 
 io.of('videoCall').on('connection', socket => {
   socket.emit('me', socket.id)
@@ -327,7 +323,6 @@ io.of('videoCall').on('connection', socket => {
 
 
 ///////////////////////////////////////
-const cors = require('cors');
 io.use(cors);
 const chat = io.of('/chat');
 chat.on('connection', (socket) => {

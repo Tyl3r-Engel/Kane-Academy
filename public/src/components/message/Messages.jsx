@@ -40,7 +40,8 @@ export default function Messages() {
             }}
           />
 
-          <button
+          <Button
+            variant='contained'
             onClick={(e) => {
               e.preventDefault();
               join(username, setUsername);
@@ -48,7 +49,7 @@ export default function Messages() {
             }}
           >
             Join
-          </button>
+          </Button>
 
         </div>
       ) : (

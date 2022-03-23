@@ -4,6 +4,7 @@ import NavBar from '../shared/navBar';
 import ApiCalendar from 'react-google-calendar-api';
 import VideoCall from '../videoCall/VideoCall';
 import Button from '@mui/material/Button';
+import Search from '../profile/Search';
 
 export default function HomeRoot() {
   const [sign, setSign] = React.useState(false);
@@ -47,6 +48,7 @@ export default function HomeRoot() {
   return (
     <div>
       <NavBar></NavBar>
+      <Search />
 
       {!sign
       &&

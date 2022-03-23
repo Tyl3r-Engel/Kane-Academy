@@ -10,7 +10,6 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import requestSkills from './axios/requestSkills';
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 
 export default function Search() {
   const [query, setQuery] = useState('')
@@ -90,7 +89,7 @@ export default function Search() {
                 <Button size="small">Share</Button>
               </CardActions>
             </Card>
-          </div>)) 
+          </div>))
           : null}
       </ul>
     </div>
