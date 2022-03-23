@@ -9,6 +9,7 @@ import PlansAndPricing from './PlansAndPricing.jsx'
 import averageReviews from './helpers/averageReviews';
 import Reviews from './Reviews.jsx'
 import Search from './Search';
+import ProfileSetCalendar from './ProfileSetCalendar';
 
 export const ProfileContext = React.createContext();
 
@@ -49,15 +50,16 @@ export default function ProfileRoot() {
     })
   }
 
-  if (reviewsAverage === null && currentReviews !== null) {
-    setReviewsAverage(averageReviews(currentReviews))
-  }
+  // if (currentReviews === null) {
+  //   requestReviews(mentor, (result) => {
+  //     setCurrentReviews(result)
+  //   })
+  // }
 
-  if (skillsList === null) {
-    requestSkills((result) => {
-      setSkillsList(result)
-    })
-  }
+  // if (reviewsAverage === null && currentReviews !== null) {
+  //   setReviewsAverage(averageReviews(currentReviews))
+  // }
+
 
   if (window.location.href === 'http://localhost:3001/profile') {
     if (!editable) {
