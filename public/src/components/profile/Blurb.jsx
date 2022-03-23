@@ -57,7 +57,7 @@ export default function Blurb() {
     }
   }
 
-  if (loggedInUser !== undefined) {
+  if (loggedInUser !== undefined && currentProfile !== undefined) {
     if (loggedInUser.mentor === false && currentProfile.id === loggedInUser.id) {
       return (
         <div>

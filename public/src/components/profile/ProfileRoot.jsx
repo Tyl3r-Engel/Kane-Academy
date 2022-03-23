@@ -30,9 +30,9 @@ export default function ProfileRoot() {
   }
 
 
-  let mentor = window.location.href.replace('http://localhost:3001/profile/', '')
+  let mentor = window.location.href.replace('http://localhost:3002/profile/', '')
 
-  if (mentor === 'http://localhost:3001/profile' && loggedInUser !== null) {
+  if (mentor === 'http://localhost:3002/profile' && loggedInUser !== null) {
     mentor = loggedInUser.id
   }
 

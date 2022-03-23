@@ -14,7 +14,7 @@ const { signup } = require('../db/controllers/signup');
 const morgan = require('morgan');
 const { addMentorCalendar, getMentorCalendar} = require('../db/controllers/mentorCalendars');
 const { generateData } = require('../db/fakeData.js');
-const { addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile } = require('../db/controllers/mentorProfiles.js');
+const { addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile, searchProfiles } = require('../db/controllers/mentorProfiles.js');
 const { addMentorSkills, initMentorSkills, updateMentorSkills } = require('../db/controllers/mentorSkills.js');
 const { addReview, getReviews } = require('../db/controllers/reviews.js');
 const { addSkills, getSkills } = require('../db/controllers/skills.js');
@@ -144,10 +144,6 @@ app.get('/profile*', (req, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
 });
 
-// app.get('/profile/*', (req, res) => {
-//   res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
-// });
-
 app.get('/api/getSess', (req, res) => {
   getSession((err, result) => {
     if (err) {
@@ -161,24 +157,12 @@ app.get('/api/getSess', (req, res) => {
 app.get('/api/getProfile/*', (req, res) => {
   getMentorProfile(req.params[0], (err, result) => {
     if (err) {
-
-
       res.send(null)
     } else {
       res.send(result.rows);
     }
   });
 });
-
-// app.get('/api/getProfiles/*', (req, res) => {
-//   getMentorProfile(req.params[0], (err, result) => {
-//     if (err) {
-//       res.send(null)
-//     } else {
-//       res.send(result.rows)
-//     }
-//   })
-// })
 
 app.get('/api/getReviews/*', (req, res) => {
   getReviews(req.params[0], (err, result) => {
@@ -240,6 +224,16 @@ app.get('/api/getProfile/*', (req, res) => {
     }
   });
 });
+
+app.get('/api/searchProfiles', (req, res) => {
+  searchProfiles((err, result) => {
+    if (err) {
+      res.send(null)
+    } else {
+      res.send(result.rows)
+    }
+  })
+})
 
 app.put('/api/updateMentorProfile', (req, res) => {
   console.log(req.body)
@@ -303,7 +297,7 @@ io.on('connection', (socket) => {
 
 const chat = new Server(server, {
   cors: {
-    origin: 'http://localhost:3001',
+    origin: 'http://localhost:3002',
   },
 });
 
@@ -329,5 +323,5 @@ chat.on('connection', (socket) => {
   });
 });
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3002;
 server.listen(port);

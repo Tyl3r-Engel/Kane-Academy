@@ -13,6 +13,26 @@ const queryMentorProfile = (mentor_id, cb) => {
   pool.query(queryString, [mentor_id], cb)
 }
 
+const searchProfiles = (cb) => {
+  const queryString = `SELECT mp.about, users.id, users.mentor, users.first_name, users.last_name, users.email, (
+    SELECT JSON_OBJECT_AGG(
+      ms.id, JSON_BUILD_OBJECT(
+        'id', ms.id,
+        'skill_id', ms.skill_id,
+        'skill', (SELECT name FROM skills WHERE ms.skill_id = skills.id),
+        'price', ms.pricing
+      )
+    )
+    FROM mentor_skills AS ms WHERE ms.mentor_id = mp.mentor_id
+  ) as skills
+  FROM mentor_profiles as mp
+  LEFT JOIN users ON mp.mentor_id = users.id
+  WHERE users.mentor = true
+  `
+
+  pool.query(queryString, cb)
+}
+
 const getMentorProfile = (mentor_id, cb) => {
   const queryString = `
   SELECT mp.about, users.id, users.mentor, users.first_name, users.last_name, users.email, (
@@ -40,5 +60,5 @@ const updateMentorProfile = (mentor_id, about, cb) => {
 }
 
 module.exports = {
-  addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile
+  addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile, searchProfiles
 };
