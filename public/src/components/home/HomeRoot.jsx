@@ -1,6 +1,7 @@
 import React from 'react';
 import NavBar from '../shared/navBar';
 import ApiCalendar from 'react-google-calendar-api';
+import VideoCall from '../videoCall/VideoCall';
 
 export default function HomeRoot() {
   const [sign, setSign] = React.useState(false);
@@ -66,6 +67,14 @@ export default function HomeRoot() {
       style={{"border": "0"}} width="800" height="600" frameBorder="0" scrolling="no"></iframe>
       }
 
-    </div>
-  );
+
+
+
+// export default function HomeRoot() {
+//  return (
+//    <div>
+//      <div>Rendered Home</div>
+//      <VideoCall />
+//    </div>
+//  );
 }
