@@ -8,6 +8,9 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import requestSkills from './axios/requestSkills';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 export default function Search() {
   const [query, setQuery] = useState('')
@@ -34,7 +37,7 @@ export default function Search() {
     distance: 5,
     threshold: 0.3
   })
-  
+
   const fuseSearchResults = fuse.search(query);
 
   function handleOnSearch(event) {
@@ -57,8 +60,10 @@ export default function Search() {
       <h1>Search</h1>
       <form>
         <label>Looking for a genius?</label>
-        <input type="text" value={query} onChange={handleOnSearch} />
-        <button>Search</button>
+        <br />
+        <br />
+        <TextField id='outlined-basic' label='Search Mentor Skill' autoComplete='false' value={query} onChange={handleOnSearch} />
+        <Button variant='contained'>Search</Button>
       </form>
 
       <h2>Genius Skills</h2>

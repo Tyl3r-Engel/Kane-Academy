@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
 export default function Chat({ socket, username }) {
   console.log(username);
@@ -50,10 +52,10 @@ export default function Chat({ socket, username }) {
         })}
       </div>
       <div className="chatInput">
-        <input
-          type="text"
+        <TextField
+          id='outlined-basic'
+          label='Chat'
           value={currentMessage}
-          placeholder="Hey..."
           onChange={(event) => {
             setCurrentMessage(event.target.value);
           }}
@@ -61,7 +63,7 @@ export default function Chat({ socket, username }) {
             event.key === 'Enter' && sendMessage();
           }}
         />
-        <button onClick={sendMessage}>&#9658;</button>
+        <Button variant='contained' onClick={sendMessage}>&#9658;</Button>
       </div>
     </div>
   );
