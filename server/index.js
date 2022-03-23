@@ -3,15 +3,13 @@ const path = require('path');
 const logger = require('morgan');
 const session = require('express-session');
 const passport = require('passport');
-// const cookieParser = require('cookie-parser');
 const pgSession = require('connect-pg-simple')(session);
 const { pool } = require('../db/pool');
 const auth = require('./auth');
-const bodyParser = require('body-parser');
 
 require('dotenv').config();
 
-const { login } = require('../db/controllers/auth');
+const { login, completeSignup } = require('../db/controllers/auth');
 const { signup } = require('../db/controllers/signup');
 const { generateData } = require('../db/fakeData.js')
 const { addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile } = require('../db/controllers/mentorProfiles.js')
@@ -23,13 +21,11 @@ const { v4: uuidV4 } = require('uuid')
 
 
 const app = express();
-// app.use(cookieParser('David Snakehoff'));
 app.use(logger('tiny'));
 app.use(express.json());
 const loginRouter = require('./routes/googleLogin');
 
 app.use(express.static(path.join(__dirname, '../public/dist')));
-app.use(express.json());
 
 app.use(session({
   store: new pgSession({
@@ -38,7 +34,7 @@ app.use(session({
   }),
   secret: 'David Snakehoff',
   name: 'sessionId',
-  cookie: { maxAge: 60000 },
+  cookie: { maxAge: 60000000 },
   resave: false,
   saveUninitialized: false,
 }));
@@ -51,6 +47,10 @@ app.get('/login', (req, res) => {
 });
 
 app.get('/signup', (req, res) => {
+  res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
+});
+
+app.get('/signup/complete', (req, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
 });
 
@@ -75,7 +75,7 @@ app.post('/login', (req, res) => {
         id: results.rows[0].id,
         mentor: results.rows[0].mentor,
       };
-      res.redirect('../profile');
+      res.redirect('../');
     } else {
       res.status(401).send('Login Failed');
     }
@@ -98,6 +98,19 @@ app.post('/signup', (req, res) => {
             res.redirect('../profile');
           })
         })
+      }
+    });
+});
+
+app.post('/signup/complete', (req, res) => {
+  completeSignup(req.body.mentor, req.session.passport.user.id,
+    (err, results) => {
+      if (err) {
+        res.status(401).send('Error: invalid id');
+      } else {
+        console.log('marked as mentor/learner: ', req.body.mentor);
+        req.session.passport.user.mentor = req.body.mentor;
+        res.redirect('/');
       }
     });
 });
