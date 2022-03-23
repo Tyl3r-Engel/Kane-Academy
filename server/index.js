@@ -224,9 +224,13 @@ app.put('/api/calendly', (req, res) => {
 })
 
 app.post('/api/calendly', (req, res) => {
-  getMentorCalendar(req.params[0], (err, result) => {
+  getMentorCalendar(req.body, (err, result) => {
     if (err) {
+      console.log(err)
       res.send(err)
+    } else {
+      console.log('getting url: ' + result.rows[0].calendly)
+      res.send(result.rows[0].calendly)
     }
   })
 });
