@@ -88,12 +88,14 @@ export default function ProfileRoot() {
     return (null)
   } else {
     return (
-      <ProfileContext.Provider value={ProfileProvider}>
-        <Search />
-        <Logout />
-        <Blurb />
-        <Reviews />
-      </ProfileContext.Provider>
+      <div className="profileRoot">
+        <ProfileContext.Provider value={ProfileProvider}>
+          <Search />
+          <Logout />
+          <Blurb />
+          <Reviews />
+        </ProfileContext.Provider>
+      </div>
     );
   }
 }

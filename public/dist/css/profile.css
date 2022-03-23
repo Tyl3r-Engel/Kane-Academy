@@ -11,10 +11,14 @@ table, th, td {
   width: 60%
 }
 
-.reviewsWindow {
+.profileRoot {
+  margin: auto;
   width: 60%;
+}
+
+.reviewsWindow {
   min-height: 10px;
-  max-height: 600px;
+  max-height: 300px;
   padding-left: 1em;
   overflow-y:scroll;
   -ms-overflow-style: none;  /* IE and Edge */
