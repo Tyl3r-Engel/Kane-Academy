@@ -297,7 +297,7 @@ io.on('connection', (socket) => {
 
 const chat = new Server(server, {
   cors: {
-    origin: 'http://localhost:3002',
+    origin: 'http://localhost:3001',
   },
 });
 
@@ -323,5 +323,5 @@ chat.on('connection', (socket) => {
   });
 });
 
-const port = process.env.PORT || 3002;
+const port = process.env.PORT || 3001;
 server.listen(port);
