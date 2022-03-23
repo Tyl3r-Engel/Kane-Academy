@@ -5,7 +5,7 @@ import Peer from 'simple-peer'
 const AppContext = React.createContext({});
 
 const VideoCallContext = createContext({})
-let socket = io('http://localhost:3001')
+const socket = io('http://localhost:3001/videoCall')
 
 const VideoCallProvider = ({ children }) => {
   const [stream, setStream] = useState(null)
