@@ -21,20 +21,22 @@ export default function LoginRoot() {
   };
 
   return (
-    <div>
-      <h1>Log in</h1>
+    <div style={{margin: '0 auto', width: '250px'}}>
+      <h1 style={{margin: '0 auto', width: '100px'}}>Log in</h1>
       <form onSubmit={handleSubmit}>
         <label>
           email:
           <input type="email" value={email} onChange={(e) => updateEmail(e.target.value)} required />
         </label>
+        <br />
         <label>
           password:
           <input type="password" value={password} onChange={(e) => updatePassword(e.target.value)} required />
         </label>
-        <input type="submit" value="Submit" />
+        <br />
+        <input type="submit" value="Submit" style={{marginLeft: '90px'}}/>
       </form>
-      <a className="button google" href="/login/federated/google">Sign in with Google</a>
+      <a className="button google" href="/login/federated/google" style={{marginLeft: '50px'}}>Sign in with Google</a>
     </div>
   );
 }
