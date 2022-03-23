@@ -63,7 +63,7 @@ export default function Chat({ socket, username }) {
             event.key === 'Enter' && sendMessage();
           }}
         />
-        <Button variant='contained' onClick={sendMessage}>&#9658;</Button>
+        <Button id='muiPrimary' variant='contained' onClick={sendMessage}>&#9658;</Button>
       </div>
     </div>
   );

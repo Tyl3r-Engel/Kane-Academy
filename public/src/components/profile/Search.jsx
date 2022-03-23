@@ -61,14 +61,14 @@ export default function Search() {
         <br />
         <br />
         <TextField id='outlined-basic' label='Search Mentor Skill' autoComplete='false' value={query} onChange={handleOnSearch} />
-        <Button variant='contained'>Search</Button>
+        <Button id='muiPrimary' variant='contained'>Search</Button>
       </form>
 
       <h2>Genius Skills</h2>
       <ul>
         {query ? fuseSearchResults.map((elem, i) => (
           <div key={i} onClick={handleClick} data-index={elem.item.id} style={{display: 'inline-block', padding: '10px'}}>
-            <Card sx={{ maxWidth: 345 }}>
+            <Card id='muiPrimary' sx={{ maxWidth: 345 }}>
               <CardMedia
                 component="img"
                 height="140"
@@ -79,13 +79,13 @@ export default function Search() {
                 <Typography gutterBottom variant="h5" component="div">
                   {JSON.stringify(elem.item.first_name+" "+elem.item.last_name)}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2">
                   {JSON.stringify(elem.item.skills)}
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small">Learn</Button>
-                <Button size="small">Share</Button>
+                <Button id='muiSecondary'size="small">Learn</Button>
+                <Button id='muiSecondary'size="small">Share</Button>
               </CardActions>
             </Card>
           </div>))

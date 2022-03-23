@@ -18,11 +18,11 @@ export default function CreateVideoCall () {
           <Grid item>
             <TextField id='outline-basic' label='Make Call' value={idToCall} onChange={e => setIdToCall(e.target.value)}/>
             {callAccepted && !callEnded ? (
-              <Button variant='contained' onClick={(e) => {e.preventDefault(); leaveCall()}}>
+              <Button id='muiPrimary' variant='contained' onClick={(e) => {e.preventDefault(); leaveCall()}}>
                 Leave
               </Button>
             ) : (
-              <Button variant='contained' onClick={(e) => {e.preventDefault(); callUser(idToCall)}}>
+              <Button id='muiPrimary' variant='contained' onClick={(e) => {e.preventDefault(); callUser(idToCall)}}>
                 Call
               </Button>
             )}
