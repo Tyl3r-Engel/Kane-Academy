@@ -40,7 +40,7 @@ export default function CompleteSignup() {
             />
             <FormControlLabel
               value="true"
-              label="Mentor"
+              label="Learner"
               control={(
                 <Radio
                   type="radio"
