@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const { generateData } = require('../db/fakeData.js')
 const logger = require('morgan');
 const session = require('express-session');
 const passport = require('passport');
@@ -13,7 +14,6 @@ const { login, completeSignup } = require('../db/controllers/auth');
 const { signup } = require('../db/controllers/signup');
 const morgan = require('morgan');
 const { addMentorCalendar, getMentorCalendar} = require('../db/controllers/mentorCalendars');
-const { generateData } = require('../db/fakeData.js');
 const { addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile, searchProfiles } = require('../db/controllers/mentorProfiles.js');
 const { addMentorSkills, initMentorSkills, updateMentorSkills } = require('../db/controllers/mentorSkills.js');
 const { addReview, getReviews } = require('../db/controllers/reviews.js');
@@ -26,7 +26,6 @@ app.use(logger('tiny'));
 app.use(express.json());
 const loginRouter = require('./routes/googleLogin');
 
-app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public/dist')));
 
@@ -329,6 +328,15 @@ chat.on('connection', (socket) => {
     console.log('User Disconnected', socket.id);
   });
 });
+
+// app.get('/skills', (req, res) => {
+
+//   console.log(skills);
+//   skills
+//     .query('SELECT * FROM skills')
+//     .catch(err => console.log(err.stack))
+//     .then(results => res.json(results.rows))
+// })
 
 const port = process.env.PORT || 3001;
 server.listen(port);
