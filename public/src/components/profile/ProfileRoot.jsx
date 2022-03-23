@@ -49,15 +49,15 @@ export default function ProfileRoot() {
     })
   }
 
-  // if (currentReviews === null) {
-  //   requestReviews(mentor, (result) => {
-  //     setCurrentReviews(result)
-  //   })
-  // }
+  if (currentReviews === null) {
+    requestReviews(mentor, (result) => {
+      setCurrentReviews(result)
+    })
+  }
 
-  // if (reviewsAverage === null && currentReviews !== null) {
-  //   setReviewsAverage(averageReviews(currentReviews))
-  // }
+  if (reviewsAverage === null && currentReviews !== null) {
+    setReviewsAverage(averageReviews(currentReviews))
+  }
 
 
   if (window.location.href === 'http://localhost:3001/profile') {

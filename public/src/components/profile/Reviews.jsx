@@ -15,7 +15,7 @@ export default function Reviews() {
           <div className="review" key={review.id}>
             <div>
               Rating: {<Ratings
-              rating={review.rating}
+              rating={review.rating || 0}
               widgetRatedColors="purple"
             >
               <Ratings.Widget className="reviewStar" widgetDimension="15px"/>
