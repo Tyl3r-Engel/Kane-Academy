@@ -11,7 +11,7 @@ require('dotenv').config();
 
 const { login, completeSignup } = require('../db/controllers/auth');
 const { signup } = require('../db/controllers/signup');
-
+const { addMentorCalendar, getMentorCalendar} = require('../db/controllers/mentorCalendars');
 const { generateData } = require('../db/fakeData.js')
 const { addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile } = require('../db/controllers/mentorProfiles.js')
 const { addMentorSkills, initMentorSkills, updateMentorSkills } = require('../db/controllers/mentorSkills.js')
@@ -193,9 +193,35 @@ app.put('/api/updateMentorSkills', (req, res) => {
   })
 })
 
+
+app.put('/api/calendly', (req, res) => {
+  console.log(req.body);
+  addMentorCalendar(req.body, (err, result) => {
+    if (err) {
+      console.log(err)
+      res.send(err)
+    } else {
+      console.log(result)
+      res.send(result)
+    }
+  })
+})
+
+app.post('/api/calendly', (req, res) => {
+  getMentorCalendar(req.params[0], (err, result) => {
+    if (err) {
+      res.send(err)
+    }
+  })
+})
+
+app.get('/api/getProfile/*', (req, res) => {
+  getMentorProfile(req.params[0], (err, result) => {
+
 app.put('/api/updateMentorProfile', (req, res) => {
   console.log(req.body)
   updateMentorProfile(req.body.id, req.body.about, (err, result) => {
+
     if (err) {
       res.send('err')
     } else {
