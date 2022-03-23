@@ -96,6 +96,8 @@ CREATE TABLE skills (
 CREATE INDEX i10 ON skills(category);
 CREATE INDEX i11 ON skills(name);
 
+INSERT INTO skills(name, category, description) VALUES('', '', '');
+
 DROP TABLE IF EXISTS mentor_skills;
 
 CREATE TABLE mentor_skills (

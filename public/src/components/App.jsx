@@ -18,6 +18,7 @@ export default function App() {
           <Route path="/login" element={<LoginRoot />} />
           <Route path="/signup" element={<SignupRoot />} />
           <Route path="/profile/*" element={<ProfileRoot />} />
+          <Route path="/profile" element={<ProfileRoot />} />
           <Route path="/fakedata" element={FakeData()} />
         </Routes>
       </Router>
