@@ -278,8 +278,11 @@ app.post('/api/addReview', (req, res) => {
 });
 
     // * socket io stuff & video call endpoints
-const server = require('http').createServer(app);
+
+const { Server } = require('socket.io');
 const cors = require('cors')
+const server = require('http').createServer(app);
+
 const io = require('socket.io')(server, {
   cors: {
     origin: '*',
@@ -288,7 +291,7 @@ const io = require('socket.io')(server, {
 })
 app.use(cors())
 
-io.on('connection', socket => {
+io.of('videoCall').on('connection', socket => {
   socket.emit('me', socket.id)
   socket.on('disconnect', () => {
     socket.broadcast.emit('callEnded')
@@ -301,36 +304,35 @@ io.on('connection', socket => {
   })
 })
 
-const { Server } = require('socket.io');
 ///////////////////////////////////////
 
-const chat = new Server(server, {
-  cors: {
-    origin: 'http://localhost:3001',
-  },
-});
+// const chat = new Server(server, {
+//   cors: {
+//     origin: 'http://localhost:3001',
+//   },
+// });
 
-chat.on('connection', (socket) => {
-  console.log(`User Connected: ${socket.id}`);
-  const users = [];
-  for (let [id, socket] of io.of('/').sockets) {
-    users.push({
-      userID: id,
-      username: socket.username,
-    });
-  }
-  socket.join('123123');
-  socket.emit('users', users);
-  console.log(`User with ID: ${socket.id} joined room`);
+// chat.on('connection', (socket) => {
+//   console.log(`User Connected: ${socket.id}`);
+//   const users = [];
+//   for (let [id, socket] of io.of('/').sockets) {
+//     users.push({
+//       userID: id,
+//       username: socket.username,
+//     });
+//   }
+//   socket.join('123123');
+//   socket.emit('users', users);
+//   console.log(`User with ID: ${socket.id} joined room`);
 
-  socket.on('send', (data) => {
-    socket.to('123123').emit('receive', data);
-  });
+//   socket.on('send', (data) => {
+//     socket.to('123123').emit('receive', data);
+//   });
 
-  socket.on('disconnect', () => {
-    console.log('User Disconnected', socket.id);
-  });
-});
+//   socket.on('disconnect', () => {
+//     console.log('User Disconnected', socket.id);
+//   });
+// });
 
 const port = process.env.PORT || 3001;
 server.listen(port);
