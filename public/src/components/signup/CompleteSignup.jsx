@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { FormControl, Button, Radio, RadioGroup, Typography, FormLabel, FormControlLabel } from '@mui/material';
 
 export default function CompleteSignup() {
   const [mentor, updateMentor] = React.useState(false);
@@ -20,29 +21,40 @@ export default function CompleteSignup() {
 
   return (
     <div style={{margin: '0 auto', width: '300px'}}>
-      <h1 style={{margin: '0 auto', width: '270px'}} >Complete Sign Up:</h1>
-      <form onSubmit={handleSubmit} style={{marginLeft: '60px'}}>
-        <label>
-          Mentor:
-          <input
-            type="radio"
-            value={true}
-            name="mentor"
-            checked={mentor === true}
-            onChange={() => updateMentor(true)}
-          />
-          Learner:
-          <input
-            type="radio"
-            value={false}
-            name="mentor"
-            checked={mentor === false}
-            onChange={() => updateMentor(false)}
-          />
-        </label>
+      <Typography variant="h2" component="div" gutterBottom align="center">Complete Sign Up:</Typography>
+      <FormControl fullWidth align="center">
+        <FormLabel>Account Type</FormLabel>
+          <label>
+            <FormControlLabel
+              value="true"
+              label="Mentor"
+              control={(
+                <Radio
+                  type="radio"
+                  value={true}
+                  label="mentor"
+                  checked={mentor === true}
+                  onChange={() => updateMentor(true)}
+                />
+              )}
+            />
+            <FormControlLabel
+              value="true"
+              label="Mentor"
+              control={(
+                <Radio
+                  type="radio"
+                  value={false}
+                  label="learner"
+                  checked={mentor === false}
+                  onChange={() => updateMentor(false)}
+                />
+              )}
+            />
+          </label>
         <br/>
-        <input type="submit" value="Submit" style={{marginLeft: '50px'}}/>
-      </form>
+        <Button variant="contained" onClick={handleSubmit}>Submit</Button>
+      </FormControl>
     </div>
   );
 }
