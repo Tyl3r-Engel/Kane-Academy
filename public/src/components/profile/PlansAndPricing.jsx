@@ -28,14 +28,13 @@ export default function PlansAndPricing() {
             <tr key={Math.random() * 10000}>
               <td>{row.skill}</td>
               <td>30 Minutes</td>
-              <td>${row.price}</td>
+              <td>{row.price}</td>
               <td><input type="checkbox" name={row.skill_id} />&nbsp;</td>
             </tr>
           )
         })}
         </tbody>
       </table>
-      <button>Schedule</button>
     </div>
   )
 }
