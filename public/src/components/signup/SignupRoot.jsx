@@ -1,5 +1,7 @@
 import React from 'react';
 import axios from 'axios';
+import ErrorMessage from '../login/ErrorMessage';
+import { FormControl, Button, Radio, Typography, FormLabel, FormControlLabel, TextField } from '@mui/material';
 
 export default function SignupRoot() {
   const [mentor, updateMentor] = React.useState(false);
@@ -7,9 +9,14 @@ export default function SignupRoot() {
   const [lastName, updateLastName] = React.useState('');
   const [email, updateEmail] = React.useState('');
   const [password, updatePassword] = React.useState('');
+  const [error, updateError] = React.useState('');
 
   const handleSubmit = (e) => {
     // Note: Add more verification to ensure good inputs
+    if (email === '' || password === '' || firstName === '' || lastName === '') {
+      updateError('Please fill in all required fields');
+      return;
+    }
     e.preventDefault();
     const body = {
       mentor,
@@ -18,62 +25,98 @@ export default function SignupRoot() {
       email,
       password,
     };
-    console.log(body);
     axios.post('/signup', body)
       .then((results) => {
-        window.location = '/profile';
+        window.location = '/';
       })
       .catch((err) => {
-        console.log('Signup Failed: Try again');
+        updateError('Signup Failed: Email already registered');
       });
   };
 
   return (
-    <div>
-      <h1>Sign Up</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Mentor:
-          <input
-            type="radio"
-            value={true}
-            name="mentor"
-            checked={mentor === true}
-            onChange={() => updateMentor(true)}
+    <div style={{margin: '0 auto', width: '250px'}}>
+      <Typography variant="h2" component="div" gutterBottom align="center">Sign Up:</Typography>
+      <FormControl fullWidth align="center">
+        <FormLabel>Account Type</FormLabel>
+          <FormControlLabel
+            value="true"
+            label="Mentor"
+            control={(
+              <Radio
+                type="radio"
+                value={true}
+                label="mentor"
+                checked={mentor === true}
+                onChange={() => updateMentor(true)}
+              />
+            )}
           />
-          Learner:
-          <input
-            type="radio"
-            value={false}
-            name="mentor"
-            checked={mentor === false}
-            onChange={() => updateMentor(false)}
+          <FormControlLabel
+            value="true"
+            label="Mentor"
+            control={(
+              <Radio
+                type="radio"
+                value={false}
+                label="learner"
+                checked={mentor === false}
+                onChange={() => updateMentor(false)}
+              />
+            )}
           />
-        </label>
         <br/>
-        <label>
-          First Name:
-          <input type="text" value={firstName} onChange={(e) => updateFirstName(e.target.value)} required />
-        </label>
+        <TextField
+          label="First Name"
+          type="text"
+          value={firstName}
+          inputProps={{
+            minLength: 1,
+            maxLength: 25
+          }}
+          onChange={(e) => updateFirstName(e.target.value)}
+          required />
         <br/>
-        <label>
-          Last Name:
-          <input type="text" value={lastName} onChange={(e) => updateLastName(e.target.value)} required />
-        </label>
+        <TextField
+          label="Last Name"
+          type="text"
+          value={lastName}
+          inputProps={{
+            minLength: 1,
+            maxLength: 25
+          }}
+          onChange={(e) => updateLastName(e.target.value)}
+          required />
         <br/>
-        <label>
-          email:
-          <input type="email" value={email} onChange={(e) => updateEmail(e.target.value)} required />
-        </label>
-        <br/>
-        <label>
-          password:
-          <input type="password" value={password} onChange={(e) => updatePassword(e.target.value)} required />
-        </label>
-        <br/>
-        <input type="submit" value="Submit" />
-      </form>
-      <a className="button google" href="/login/federated/google">Sign Up with Google</a>
+        <TextField
+          inputProps={{
+            minLength: 1,
+            maxLength: 40
+          }}
+          label="email"
+          type="email"
+          value={email}
+          onChange={(e) => updateEmail(e.target.value)}
+          required />
+        <br />
+        <TextField
+          label="password"
+          type="password"
+          width="250px"
+          value={password}
+          inputProps={{
+            minLength: 1,
+            maxLength: 255
+          }}
+          onChange={(e) => updatePassword(e.target.value)}
+          required
+        />
+        <br />
+        <Button variant="contained" onClick={handleSubmit}>Submit</Button>
+        <br />
+        <Button variant="contained" href="/login/federated/google" color="secondary">Sign in with Google</Button>
+      </FormControl>
+      {error && (<ErrorMessage error={error} />)}
     </div>
   );
 }

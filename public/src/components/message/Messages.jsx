@@ -1,6 +1,8 @@
 import io from 'socket.io-client';
 import React, { useEffect, useState } from 'react';
 import Chat from './chat';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
 const socket = io('http://localhost:3001/chat', {
   autoConnect: false,
@@ -28,15 +30,16 @@ export default function Messages() {
     <div className="message">
       {!showChat ? (
         <div className="joinChatContainer">
-          <h3>Chat</h3>
-          <input
-            type="text"
-            placeholder="name..."
+          <h3>Text Chat</h3>
+          <TextField
+            id='outlined-basic'
+            label="Display Name"
             onChange={(event) => {
               e.preventDefault();
               setUsername(event.target.value);
             }}
           />
+
           <button
             onClick={(e) => {
               e.preventDefault();
@@ -46,6 +49,7 @@ export default function Messages() {
           >
             Join
           </button>
+
         </div>
       ) : (
         <Chat socket={socket} username={username} />

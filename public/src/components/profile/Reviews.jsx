@@ -2,6 +2,7 @@ import React, {useContext} from 'react'
 import { ProfileContext } from './ProfileRoot'
 import Ratings from 'react-ratings-declarative';
 import AddReview from './AddReview';
+import date from './helpers/date.js'
 
 export default function Reviews() {
   const {currentReviews} = useContext(ProfileContext)
@@ -15,7 +16,7 @@ export default function Reviews() {
           <div className="review" key={review.id}>
             <div>
               Rating: {<Ratings
-              rating={review.rating}
+              rating={review.rating || 0}
               widgetRatedColors="purple"
             >
               <Ratings.Widget className="reviewStar" widgetDimension="15px"/>
@@ -25,7 +26,7 @@ export default function Reviews() {
               <Ratings.Widget className="reviewStar" widgetDimension="15px"/>
             </Ratings>}
             </div>
-            <span>From {review.first_name} {review.last_name} on {Date(review.time)}</span>
+            <span>From {review.first_name} {review.last_name} on {date(review.time)}</span>
             <div>
               {review.body}
             </div>

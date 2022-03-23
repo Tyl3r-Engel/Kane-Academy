@@ -1,0 +1,27 @@
+table, th, td {
+  border: 1px solid;
+}
+
+.review {
+  margin-bottom: 10px;
+  border-bottom: 1px solid black;
+}
+
+.blurb {
+  width: 60%
+}
+
+.profileRoot {
+  margin: auto;
+  width: 60%;
+}
+
+.reviewsWindow {
+  min-height: 10px;
+  max-height: 300px;
+  padding-left: 1em;
+  overflow-y:scroll;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  border-style:ridge
+}

@@ -8,6 +8,9 @@ import Blurb from './Blurb.jsx'
 import PlansAndPricing from './PlansAndPricing.jsx'
 import averageReviews from './helpers/averageReviews';
 import Reviews from './Reviews.jsx'
+import Search from './Search';
+import ProfileSetCalendar from './ProfileSetCalendar';
+import NavBar from '../shared/navBar';
 
 export const ProfileContext = React.createContext();
 
@@ -26,6 +29,7 @@ export default function ProfileRoot() {
       setLoggedInUser(JSON.parse(result[0].sess).passport.user)
     })
   }
+
 
   let mentor = window.location.href.replace('http://localhost:3001/profile/', '')
 
@@ -48,8 +52,10 @@ export default function ProfileRoot() {
     })
   }
 
-  if (reviewsAverage === null && currentReviews !== null) {
-    setReviewsAverage(averageReviews(currentReviews))
+  if (currentReviews === null) {
+    requestReviews(mentor, (result) => {
+      setCurrentReviews(result)
+    })
   }
 
   if (skillsList === null) {
@@ -57,6 +63,11 @@ export default function ProfileRoot() {
       setSkillsList(result)
     })
   }
+
+  if (reviewsAverage === null && currentReviews !== null && currentReviews !== "") {
+    setReviewsAverage(averageReviews(currentReviews))
+  }
+
 
   if (window.location.href === 'http://localhost:3001/profile') {
     if (!editable) {
@@ -78,12 +89,19 @@ export default function ProfileRoot() {
     return (null)
   } else {
     return (
-      <ProfileContext.Provider value={ProfileProvider}>
-        <Logout />
-        <Blurb />
-        <Reviews />
-        <PlansAndPricing />
-      </ProfileContext.Provider>
+      <>
+        <NavBar />
+        <div className="profileRoot">
+          <ProfileContext.Provider value={ProfileProvider}>
+            <Search />
+            <Logout />
+            <Blurb />
+            <Reviews />
+            {/* <PlansAndPricing /> */}
+            <ProfileSetCalendar />
+          </ProfileContext.Provider>
+        </div>
+      </>
     );
   }
 }
