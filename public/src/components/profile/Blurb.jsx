@@ -63,7 +63,7 @@ export default function Blurb() {
         <div>
           Your Average Learner Rating:&nbsp;
             {<Ratings
-                rating={reviewsAverage}
+                rating={reviewsAverage || 0}
                 widgetRatedColors="purple"
               >
               <Ratings.Widget className="reviewStar" widgetDimension="25px"/>
@@ -90,7 +90,7 @@ export default function Blurb() {
           <div>
           Average Rating:&nbsp;
             {<Ratings
-                rating={reviewsAverage}
+                rating={reviewsAverage || 0}
                 widgetRatedColors="purple"
               >
               <Ratings.Widget className="reviewStar" widgetDimension="25px"/>
@@ -194,7 +194,7 @@ export default function Blurb() {
         </div>
         <div>
           {<Ratings
-              rating={reviewsAverage}
+              rating={reviewsAverage || 0}
               widgetRatedColors="purple"
             >
             <Ratings.Widget className="reviewStar" widgetDimension="25px"/>

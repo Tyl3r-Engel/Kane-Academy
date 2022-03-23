@@ -13,13 +13,13 @@ const { login, completeSignup } = require('../db/controllers/auth');
 const { signup } = require('../db/controllers/signup');
 const morgan = require('morgan');
 const { addMentorCalendar, getMentorCalendar} = require('../db/controllers/mentorCalendars');
-const { generateData } = require('../db/fakeData.js')
-const { addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile } = require('../db/controllers/mentorProfiles.js')
-const { addMentorSkills, initMentorSkills, updateMentorSkills } = require('../db/controllers/mentorSkills.js')
-const { addReview, getReviews } = require('../db/controllers/reviews.js')
-const { addSkills, getSkills } = require('../db/controllers/skills.js')
-const { getSession } = require('../db/controllers/sessions.js')
-const { v4: uuidV4 } = require('uuid')
+const { generateData } = require('../db/fakeData.js');
+const { addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile } = require('../db/controllers/mentorProfiles.js');
+const { addMentorSkills, initMentorSkills, updateMentorSkills } = require('../db/controllers/mentorSkills.js');
+const { addReview, getReviews } = require('../db/controllers/reviews.js');
+const { addSkills, getSkills } = require('../db/controllers/skills.js');
+const { getSession } = require('../db/controllers/sessions.js');
+const { v4: uuidV4 } = require('uuid');
 
 const app = express();
 app.use(logger('tiny'));
@@ -200,7 +200,6 @@ app.get('/api/getSkills', (req, res) => {
   });
 });
 
-
 app.put('/api/updateMentorSkills', (req, res) => {
   updateMentorSkills(req.body, (err, result) => {
     if (err) {
@@ -209,8 +208,7 @@ app.put('/api/updateMentorSkills', (req, res) => {
       res.send(result.rows)
     }
   })
-})
-
+});
 
 app.put('/api/calendly', (req, res) => {
   console.log(req.body);
@@ -231,10 +229,17 @@ app.post('/api/calendly', (req, res) => {
       res.send(err)
     }
   })
-})
+});
 
 app.get('/api/getProfile/*', (req, res) => {
   getMentorProfile(req.params[0], (err, result) => {
+    if (err) {
+      res.send(null)
+    } else {
+      res.send(result.rows);
+    }
+  });
+});
 
 app.put('/api/updateMentorProfile', (req, res) => {
   console.log(req.body)
@@ -246,7 +251,7 @@ app.put('/api/updateMentorProfile', (req, res) => {
       res.send(result.rows)
     }
   })
-})
+});
 
 app.post('/api/addSkill', (req, res) => {
   addSkills(req.body.name, req.body.category, req.body.description, (err, result) => {
@@ -256,7 +261,7 @@ app.post('/api/addSkill', (req, res) => {
       res.send(result.rows)
     }
   })
-})
+});
 
 app.post('/api/addReview', (req, res) => {
   addReview(req.body.mentor_id, req.body.learner_id, req.body.skill_id, req.body.rating, req.body.body, req.body.time, (err, result) => {
@@ -266,7 +271,7 @@ app.post('/api/addReview', (req, res) => {
       res.send(result.rows)
     }
   })
-})
+});
 
     // * socket io stuff & video call endpoints
 
