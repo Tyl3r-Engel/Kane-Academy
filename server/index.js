@@ -11,6 +11,7 @@ require('dotenv').config();
 
 const { login, completeSignup } = require('../db/controllers/auth');
 const { signup } = require('../db/controllers/signup');
+const morgan = require('morgan');
 const { addMentorCalendar, getMentorCalendar} = require('../db/controllers/mentorCalendars');
 const { generateData } = require('../db/fakeData.js')
 const { addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile } = require('../db/controllers/mentorProfiles.js')
@@ -25,6 +26,8 @@ app.use(logger('tiny'));
 app.use(express.json());
 const loginRouter = require('./routes/googleLogin');
 
+app.use(morgan('dev'));
+app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public/dist')));
 
 app.use(session({
@@ -42,6 +45,7 @@ app.use(session({
 app.use(passport.authenticate('session'));
 
 app.use('/', loginRouter);
+
 
 app.get('/login', (req, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
@@ -134,7 +138,7 @@ app.put('/logout', (req, res) => {
 });
 
 // NOTE TO TEAM: PLACE ALL QUERIES THAT REQUIRE LOGIN BELOW THIS AUTHORIZATION
-app.use(auth);
+// app.use(auth);
 
 app.get('/profile*', (req, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
@@ -165,6 +169,16 @@ app.get('/api/getProfile/*', (req, res) => {
     }
   });
 });
+
+// app.get('/api/getProfiles/*', (req, res) => {
+//   getMentorProfile(req.params[0], (err, result) => {
+//     if (err) {
+//       res.send(null)
+//     } else {
+//       res.send(result.rows)
+//     }
+//   })
+// })
 
 app.get('/api/getReviews/*', (req, res) => {
   getReviews(req.params[0], (err, result) => {
