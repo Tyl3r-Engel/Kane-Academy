@@ -14,15 +14,22 @@ require('dotenv').config();
 const { login } = require('../db/controllers/auth');
 const { signup } = require('../db/controllers/signup');
 
-const { generateData } = require('../db/fakeData.js')
-const { addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile } = require('../db/controllers/mentorProfiles.js')
-const { addMentorSkills, initMentorSkills, updateMentorSkills } = require('../db/controllers/mentorSkills.js')
-const { addReview, getReviews } = require('../db/controllers/reviews.js')
-const { addSkills, getSkills } = require('../db/controllers/skills.js')
-const { getSession } = require('../db/controllers/sessions.js')
-const { v4: uuidV4 } = require('uuid')
-
-
+const { generateData } = require('../db/fakeData.js');
+const {
+  addMentorProfile,
+  getMentorProfile,
+  updateMentorProfile,
+  queryMentorProfile,
+} = require('../db/controllers/mentorProfiles.js');
+const {
+  addMentorSkills,
+  initMentorSkills,
+  updateMentorSkills,
+} = require('../db/controllers/mentorSkills.js');
+const { addReview, getReviews } = require('../db/controllers/reviews.js');
+const { addSkills, getSkills } = require('../db/controllers/skills.js');
+const { getSession } = require('../db/controllers/sessions.js');
+const { v4: uuidV4 } = require('uuid');
 
 const app = express();
 // app.use(cookieParser('David Snakehoff'));
@@ -105,8 +112,8 @@ app.post('/signup', (req, res) => {
         addMentorProfile(req.session.passport.user.id, '', () => {
           initMentorSkills(req.session.passport.user.id, 1, () => {
             res.redirect('../profile');
-          })
-        })
+          });
+        });
       }
     }
   );
@@ -143,9 +150,7 @@ app.get('/api/getSess', (req, res) => {
 app.get('/api/getProfile/*', (req, res) => {
   getMentorProfile(req.params[0], (err, result) => {
     if (err) {
-
-
-      res.send(null)
+      res.send(null);
     } else {
       res.send(result.rows);
     }
@@ -155,9 +160,9 @@ app.get('/api/getProfile/*', (req, res) => {
 app.get('/api/getReviews/*', (req, res) => {
   getReviews(req.params[0], (err, result) => {
     if (err) {
-      res.send(null)
+      res.send(null);
     } else {
-      res.send(result.rows)
+      res.send(result.rows);
     }
   });
 });
@@ -172,49 +177,61 @@ app.get('/api/getSkills', (req, res) => {
   });
 });
 
-
 app.put('/api/updateMentorSkills', (req, res) => {
   updateMentorSkills(req.body, (err, result) => {
     if (err) {
-      res.send('err')
+      res.send('err');
     } else {
-      res.send(result.rows)
+      res.send(result.rows);
     }
-  })
-})
+  });
+});
 
 app.put('/api/updateMentorProfile', (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
   updateMentorProfile(req.body.id, req.body.about, (err, result) => {
     if (err) {
-      res.send('err')
+      res.send('err');
     } else {
-      res.send(result.rows)
+      res.send(result.rows);
     }
-  })
-})
+  });
+});
 
 app.post('/api/addSkill', (req, res) => {
-  addSkills(req.body.name, req.body.category, req.body.description, (err, result) => {
-    if (err) {
-      res.send(err)
-    } else {
-      res.send(result.rows)
+  addSkills(
+    req.body.name,
+    req.body.category,
+    req.body.description,
+    (err, result) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(result.rows);
+      }
     }
-  })
-})
+  );
+});
 
 app.post('/api/addReview', (req, res) => {
-  addReview(req.body.mentor_id, req.body.learner_id, req.body.skill_id, req.body.rating, req.body.body, req.body.time, (err, result) => {
-    if (err) {
-      res.send('err')
-    } else {
-      res.send(result.rows)
+  addReview(
+    req.body.mentor_id,
+    req.body.learner_id,
+    req.body.skill_id,
+    req.body.rating,
+    req.body.body,
+    req.body.time,
+    (err, result) => {
+      if (err) {
+        res.send('err');
+      } else {
+        res.send(result.rows);
+      }
     }
-  })
-})
+  );
+});
 
-    // * socket io stuff & video call endpoints
+// * socket io stuff & video call endpoints
 
 const http = require('http');
 const server = http.createServer(app);
@@ -231,7 +248,7 @@ app.get('/videoCall/:room', (req, res) => {
   res.render('room', { roomId: req.params.room });
 });
 
-io.on('connection', (socket) => {
+io.of('/video').on('connection', (socket) => {
   socket.on('join-room', (roomId, userId) => {
     socket.join(roomId);
     socket.broadcast.to(roomId).emit('user-connected', userId);
@@ -241,22 +258,19 @@ io.on('connection', (socket) => {
   });
 });
 ///////////////////////////////////////
-
-const chat = new Server(server, {
-  cors: {
-    origin: 'http://localhost:3001',
-  },
-});
-
+const cors = require('cors');
+io.use(cors);
+const chat = io.of('/chat');
 chat.on('connection', (socket) => {
   console.log(`User Connected: ${socket.id}`);
   const users = [];
-  for (let [id, socket] of io.of('/').sockets) {
+  for (let [id, socket] of chat.sockets) {
     users.push({
       userID: id,
-      username: socket.username,
+      username: socket.handshake.auth.name,
     });
   }
+  console.log(users, ' users');
   socket.join('123123');
   socket.emit('users', users);
   console.log(`User with ID: ${socket.id} joined room`);
@@ -269,6 +283,14 @@ chat.on('connection', (socket) => {
     console.log('User Disconnected', socket.id);
   });
 });
+chat.use((socket, next) => {
+  const username = socket.handshake.auth.name;
+  if (!username) {
+    return next(new Error("invalid username"));
+  }
+  socket.username = username;
+  next();
+});
 
 const port = process.env.PORT || 3001;
-server.listen(port);
+server.listen(port, () => console.log('listening on port ', port));

@@ -36,6 +36,7 @@
     "babel-loader": "^8.2.3",
     "connect-pg-simple": "^7.0.0",
     "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "ejs": "^3.1.6",
     "express": "^4.17.3",
