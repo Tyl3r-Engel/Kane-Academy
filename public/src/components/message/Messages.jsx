@@ -4,22 +4,27 @@ import Chat from './chat';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
-const socket = io.connect('http://localhost:3001', { autoConnect: false });
+const socket = io('http://localhost:3001/chat', {
+  autoConnect: false,
+  transports: ['websocket'],
+});
+function join(username, setUsername) {
+  let name = username;
+  if (!name) {
+    name = 'NoBody' + Math.floor(Math.random() * 1000);
+  }
+  // console.log(name);
+  if (!username) {
+    setUsername(name);
+  }
+  socket.auth = { name };
+  socket.connect('http://localhost:3001/chat');
+}
 
 export default function Messages() {
   const [username, setUsername] = useState(null);
   // const [room, setRoom] = useState('');
   const [showChat, setShowChat] = useState(false);
-
-  const join = (e) => {
-    e.preventDefault();
-    socket.userName = username;
-    if (!username) {
-      setUsername('NoBody' + Math.floor(Math.random() * 1000));
-    }
-    socket.connect();
-    setShowChat(true);
-  };
 
   return (
     <div className="message">
@@ -30,10 +35,21 @@ export default function Messages() {
             id='outlined-basic'
             label="Display Name"
             onChange={(event) => {
+              e.preventDefault();
               setUsername(event.target.value);
             }}
           />
-          <Button variant='contained' onClick={join}>Join</Button>
+
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              join(username, setUsername);
+              setShowChat(true);
+            }}
+          >
+            Join
+          </button>
+
         </div>
       ) : (
         <Chat socket={socket} username={username} />
