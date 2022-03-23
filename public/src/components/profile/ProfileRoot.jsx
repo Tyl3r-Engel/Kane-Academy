@@ -28,6 +28,7 @@ export default function ProfileRoot() {
     })
   }
 
+
   let mentor = window.location.href.replace('http://localhost:3001/profile/', '')
 
   if (mentor === 'http://localhost:3001/profile' && loggedInUser !== null) {
