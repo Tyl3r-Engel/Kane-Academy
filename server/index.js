@@ -278,31 +278,30 @@ app.post('/api/addReview', (req, res) => {
 });
 
     // * socket io stuff & video call endpoints
+const server = require('http').createServer(app);
+const cors = require('cors')
+const io = require('socket.io')(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST']
+  }
+})
+app.use(cors())
 
-const http = require('http');
-const server = http.createServer(app);
+io.on('connection', socket => {
+  socket.emit('me', socket.id)
+  socket.on('disconnect', () => {
+    socket.broadcast.emit('callEnded')
+  })
+  socket.on('callUser', ({ userToCall, signalData, from, name}) => {
+    io.to(userToCall).emit('callUser', { signal: signalData, from, name })
+  })
+  socket.on('answerCall', data => {
+    io.to(data.to).emit('callAccepted', data.signal)
+  })
+})
+
 const { Server } = require('socket.io');
-const io = new Server(server);
-app.set('views', path.join(__dirname, '/videoCall/views'));
-app.set('view engine', 'ejs');
-
-app.get('/videoCall', (req, res) => {
-  res.redirect(`/videoCall/${uuidV4()}`);
-});
-
-app.get('/videoCall/:room', (req, res) => {
-  res.render('room', { roomId: req.params.room });
-});
-
-io.on('connection', (socket) => {
-  socket.on('join-room', (roomId, userId) => {
-    socket.join(roomId);
-    socket.broadcast.to(roomId).emit('user-connected', userId);
-    socket.on('disconnect', () => {
-      socket.broadcast.to(roomId).emit('user-disconnected', userId);
-    });
-  });
-});
 ///////////////////////////////////////
 
 const chat = new Server(server, {
