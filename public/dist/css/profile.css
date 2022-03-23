@@ -25,3 +25,18 @@ table, th, td {
   scrollbar-width: none;  /* Firefox */
   border-style:ridge
 }
+
+#muiPrimary {
+  background-color: #4F80AD;
+  color: white;
+}
+
+#muiSecondary {
+  background-color: #C0A0CA;
+  color: white;
+}
+
+html {
+  background-color: #DDE9F9;
+  color: darkslateblue;
+}

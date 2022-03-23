@@ -12,10 +12,12 @@ require('dotenv').config();
 
 const { login, completeSignup } = require('../db/controllers/auth');
 const { signup } = require('../db/controllers/signup');
+
 const morgan = require('morgan');
 const { addMentorCalendar, getMentorCalendar} = require('../db/controllers/mentorCalendars');
 const { addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile, searchProfiles } = require('../db/controllers/mentorProfiles.js');
 const { addMentorSkills, initMentorSkills, updateMentorSkills, getMentorSkills } = require('../db/controllers/mentorSkills.js');
+
 const { addReview, getReviews } = require('../db/controllers/reviews.js');
 const { addSkills, getSkills } = require('../db/controllers/skills.js');
 const { getSession } = require('../db/controllers/sessions.js');
@@ -113,8 +115,8 @@ app.post('/signup', (req, res) => {
         addMentorProfile(req.session.passport.user.id, '', () => {
           initMentorSkills(req.session.passport.user.id, 1, () => {
             res.redirect('../profile');
-          })
-        })
+          });
+        });
       }
     }
   );
@@ -160,7 +162,9 @@ app.get('/api/getSess', (req, res) => {
 app.get('/api/getProfile/*', (req, res) => {
   getMentorProfile(req.params[0], (err, result) => {
     if (err) {
+
       res.send(null)
+
     } else {
       res.send(result.rows);
     }
@@ -170,9 +174,9 @@ app.get('/api/getProfile/*', (req, res) => {
 app.get('/api/getReviews/*', (req, res) => {
   getReviews(req.params[0], (err, result) => {
     if (err) {
-      res.send(null)
+      res.send(null);
     } else {
-      res.send(result.rows)
+      res.send(result.rows);
     }
   });
 });
@@ -190,10 +194,11 @@ app.get('/api/getSkills', (req, res) => {
 app.put('/api/updateMentorSkills', (req, res) => {
   updateMentorSkills(req.body, (err, result) => {
     if (err) {
-      res.send('err')
+      res.send('err');
     } else {
-      res.send(result.rows)
+      res.send(result.rows);
     }
+
   })
 });
 
@@ -253,102 +258,112 @@ app.get('/api/searchData', (req, res) => {
 })
 
 app.put('/api/updateMentorProfile', (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
   updateMentorProfile(req.body.id, req.body.about, (err, result) => {
 
     if (err) {
-      res.send('err')
+      res.send('err');
     } else {
-      res.send(result.rows)
+      res.send(result.rows);
     }
+
   })
+
 });
 
 app.post('/api/addSkill', (req, res) => {
-  addSkills(req.body.name, req.body.category, req.body.description, (err, result) => {
-    if (err) {
-      res.send(err)
-    } else {
-      res.send(result.rows)
+  addSkills(
+    req.body.name,
+    req.body.category,
+    req.body.description,
+    (err, result) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(result.rows);
+      }
     }
-  })
-});
+)});
 
 app.post('/api/addReview', (req, res) => {
-  addReview(req.body.mentor_id, req.body.learner_id, req.body.skill_id, req.body.rating, req.body.body, req.body.time, (err, result) => {
-    if (err) {
-      res.send('err')
-    } else {
-      res.send(result.rows)
+  addReview(
+    req.body.mentor_id,
+    req.body.learner_id,
+    req.body.skill_id,
+    req.body.rating,
+    req.body.body,
+    req.body.time,
+    (err, result) => {
+      if (err) {
+        res.send('err');
+      } else {
+        res.send(result.rows);
+      }
     }
-  })
-});
+)});
 
-    // * socket io stuff & video call endpoints
+// * socket io stuff & video call endpoints
 
 const { Server } = require('socket.io');
-const cors = require('cors')
+
 const server = require('http').createServer(app);
 
+const cors = require('cors');
+app.use(cors())
 const io = require('socket.io')(server, {
   cors: {
     origin: '*',
     methods: ['GET', 'POST']
   }
 })
-app.use(cors())
-
-io.of('videoCall').on('connection', socket => {
-  socket.emit('me', socket.id)
+const videoCall = io.of('videoCall')
+videoCall.on('connection', socket => {
+  socket.on('rendered', () => {
+    socket.emit('me', socket.id)
+  })
   socket.on('disconnect', () => {
     socket.broadcast.emit('callEnded')
   })
   socket.on('callUser', ({ userToCall, signalData, from, name}) => {
-    io.to(userToCall).emit('callUser', { signal: signalData, from, name })
+    videoCall.to(userToCall).emit('callUser', { signal: signalData, from, name })
   })
   socket.on('answerCall', data => {
-    io.to(data.to).emit('callAccepted', data.signal)
+    videoCall.to(data.to).emit('callAccepted', data.signal)
   })
 })
 
+
 ///////////////////////////////////////
+io.use(cors);
+const chat = io.of('/chat');
+chat.on('connection', (socket) => {
+  console.log(`User Connected: ${socket.id}`);
+  const users = [];
+  for (let [id, socket] of chat.sockets) {
+    users.push({
+      userID: id,
+      username: socket.handshake.auth.name,
+    });
+  }
+  console.log(users, ' users');
+  socket.join('123123');
+  socket.emit('users', users);
+  console.log(`User with ID: ${socket.id} joined room`);
 
-// const chat = new Server(server, {
-//   cors: {
-//     origin: 'http://localhost:3001',
-//   },
-// });
 
-// chat.on('connection', (socket) => {
-//   console.log(`User Connected: ${socket.id}`);
-//   const users = [];
-//   for (let [id, socket] of io.of('/').sockets) {
-//     users.push({
-//       userID: id,
-//       username: socket.username,
-//     });
-//   }
-//   socket.join('123123');
-//   socket.emit('users', users);
-//   console.log(`User with ID: ${socket.id} joined room`);
+  socket.on('disconnect', () => {
+    console.log('User Disconnected', socket.id);
+  });
+});
+chat.use((socket, next) => {
+  const username = socket.handshake.auth.name;
+  if (!username) {
+    return next(new Error("invalid username"));
+  }
+  socket.username = username;
+  next();
+});
 
-//   socket.on('send', (data) => {
-//     socket.to('123123').emit('receive', data);
-//   });
-
-//   socket.on('disconnect', () => {
-//     console.log('User Disconnected', socket.id);
-//   });
-// });
-
-// app.get('/skills', (req, res) => {
-
-//   console.log(skills);
-//   skills
-//     .query('SELECT * FROM skills')
-//     .catch(err => console.log(err.stack))
-//     .then(results => res.json(results.rows))
-// })
 
 const port = process.env.PORT || 3001;
-server.listen(port);
+server.listen(port, () => console.log('listening on port ', port));

@@ -71,7 +71,7 @@ export default function ProfileSetCalendar() {
 
   return (
     <div id='allThingsCal'>
-      <Button variant="contained" onClick={() => handleOpen()}>Edit Schedule</Button>
+      <Button id='muiPrimary' variant="contained" onClick={() => handleOpen()}>Edit Schedule</Button>
 
       <Modal
         open={open}
@@ -97,7 +97,7 @@ export default function ProfileSetCalendar() {
             </ul>
           </Typography>
           <TextField id="outlined-basic" fullWidth={true} label="Calendar URL" variant="outlined" onChange={(e) => urlInput(e)}></TextField>
-          <Button id='subURL' fullWidth={true} variant="contained" onClick={() => urlSubmit()}>Finish</Button>
+          <Button id='muiPrimary' fullWidth={true} variant="contained" onClick={() => urlSubmit()}>Finish</Button>
         </Box>
       </Modal>
 
@@ -105,7 +105,7 @@ export default function ProfileSetCalendar() {
 
       {calUrl ? (
         <div id='popArea'>
-        <Button id='openPop' variant="contained" onClick={() => setOpenC(true)}>Schedule Time w/ Me</Button>
+        <Button id='muiSecondary' variant="contained" onClick={() => setOpenC(true)}>Schedule Time w/ Me</Button>
         <PopupModal
         url={calUrl}
         rootElement={document.getElementById("popArea")}

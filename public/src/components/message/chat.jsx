@@ -3,7 +3,6 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
 export default function Chat({ socket, username }) {
-  console.log(username);
   const [currentMessage, setCurrentMessage] = useState('');
   const [messageLog, setMessageLog] = useState([]);
   const sendMessage = async () => {
@@ -18,7 +17,7 @@ export default function Chat({ socket, username }) {
     }
   };
 
-  socket.on('users', (data) => console.log(data));
+  socket.on('users', (data) => console.log(data, ' data from emitter'));
 
   useEffect(() => {
     socket.on('receive', (data) => {
@@ -28,6 +27,7 @@ export default function Chat({ socket, username }) {
 
   return (
     <div className="chat-window">
+
       <div className="chatBody">
         <p>Chat History</p>
       </div>
@@ -63,7 +63,7 @@ export default function Chat({ socket, username }) {
             event.key === 'Enter' && sendMessage();
           }}
         />
-        <Button variant='contained' onClick={sendMessage}>&#9658;</Button>
+        <Button id='muiPrimary' variant='contained' onClick={sendMessage}>&#9658;</Button>
       </div>
     </div>
   );
