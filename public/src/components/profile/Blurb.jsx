@@ -28,7 +28,6 @@ export default function Blurb() {
   function submitAbout(event) {
     event.preventDefault();
     updateMentorProfile(currentProfile.id, currentProfile.about, (data) => {
-      console.log(data)
     })
   }
 
@@ -57,7 +56,7 @@ export default function Blurb() {
     }
   }
 
-  if (loggedInUser !== undefined) {
+  if (loggedInUser !== undefined && currentProfile !== undefined) {
     if (loggedInUser.mentor === false && currentProfile.id === loggedInUser.id) {
       return (
         <div>
@@ -179,6 +178,7 @@ export default function Blurb() {
           <form onSubmit={submitAbout}>
             <p>Tell students a little bit about yourself!:</p>
             <textarea name="about" rows="5" cols="50" value={currentProfile.about} onChange={handleChange}></textarea>
+            <br></br>
             <input type="submit" value="Save Changes"></input>
           </form>
         </div>

@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const { generateData } = require('../db/fakeData.js')
 const logger = require('morgan');
 const session = require('express-session');
 const passport = require('passport');
@@ -13,8 +14,7 @@ const { login, completeSignup } = require('../db/controllers/auth');
 const { signup } = require('../db/controllers/signup');
 const morgan = require('morgan');
 const { addMentorCalendar, getMentorCalendar} = require('../db/controllers/mentorCalendars');
-const { generateData } = require('../db/fakeData.js');
-const { addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile } = require('../db/controllers/mentorProfiles.js');
+const { addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile, searchProfiles } = require('../db/controllers/mentorProfiles.js');
 const { addMentorSkills, initMentorSkills, updateMentorSkills } = require('../db/controllers/mentorSkills.js');
 const { addReview, getReviews } = require('../db/controllers/reviews.js');
 const { addSkills, getSkills } = require('../db/controllers/skills.js');
@@ -26,7 +26,6 @@ app.use(logger('tiny'));
 app.use(express.json());
 const loginRouter = require('./routes/googleLogin');
 
-app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public/dist')));
 
@@ -65,6 +64,10 @@ app.get('/*/bundle.js', (req, res) => {
 
 app.get('/*/profile.css', (req, res) => {
   res.sendFile('profile.css', { root: path.join(__dirname, '../public/dist/css') });
+});
+
+app.get('/messages', (req, res) => {
+  res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
 });
 
 app.get('/fakedata', (req, res) => {
@@ -138,15 +141,11 @@ app.put('/logout', (req, res) => {
 });
 
 // NOTE TO TEAM: PLACE ALL QUERIES THAT REQUIRE LOGIN BELOW THIS AUTHORIZATION
-// app.use(auth);
+app.use(auth);
 
 app.get('/profile*', (req, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
 });
-
-// app.get('/profile/*', (req, res) => {
-//   res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
-// });
 
 app.get('/api/getSess', (req, res) => {
   getSession((err, result) => {
@@ -161,24 +160,12 @@ app.get('/api/getSess', (req, res) => {
 app.get('/api/getProfile/*', (req, res) => {
   getMentorProfile(req.params[0], (err, result) => {
     if (err) {
-
-
       res.send(null)
     } else {
       res.send(result.rows);
     }
   });
 });
-
-// app.get('/api/getProfiles/*', (req, res) => {
-//   getMentorProfile(req.params[0], (err, result) => {
-//     if (err) {
-//       res.send(null)
-//     } else {
-//       res.send(result.rows)
-//     }
-//   })
-// })
 
 app.get('/api/getReviews/*', (req, res) => {
   getReviews(req.params[0], (err, result) => {
@@ -244,6 +231,16 @@ app.get('/api/getProfile/*', (req, res) => {
     }
   });
 });
+
+app.get('/api/searchProfiles', (req, res) => {
+  searchProfiles((err, result) => {
+    if (err) {
+      res.send(null)
+    } else {
+      res.send(result.rows)
+    }
+  })
+})
 
 app.put('/api/updateMentorProfile', (req, res) => {
   console.log(req.body)
@@ -333,6 +330,15 @@ io.of('videoCall').on('connection', socket => {
 //     console.log('User Disconnected', socket.id);
 //   });
 // });
+
+// app.get('/skills', (req, res) => {
+
+//   console.log(skills);
+//   skills
+//     .query('SELECT * FROM skills')
+//     .catch(err => console.log(err.stack))
+//     .then(results => res.json(results.rows))
+// })
 
 const port = process.env.PORT || 3001;
 server.listen(port);

@@ -7,12 +7,12 @@ import LoginRoot from './login/LoginRoot';
 import SignupRoot from './signup/SignupRoot';
 import FakeData from './FakeData';
 import CompleteSignup from './signup/CompleteSignup';
-import Messages from './message/Messages'
+import MsgRoot from './message/msgRoot';
 
 export default function App() {
   return (
     <div className="App">
-      <Messages />
+      {/* <Messages /> */}
       <Router>
         <Routes>
           <Route path="/" element={<HomeRoot />} />
@@ -21,6 +21,7 @@ export default function App() {
           <Route path="/signup/complete" element={<CompleteSignup />} />
           <Route path="/profile/*" element={<ProfileRoot />} />
           <Route path="/profile" element={<ProfileRoot />} />
+          <Route path="/messages" element={<MsgRoot />} />
           <Route path="/fakedata" element={FakeData()} />
         </Routes>
       </Router>

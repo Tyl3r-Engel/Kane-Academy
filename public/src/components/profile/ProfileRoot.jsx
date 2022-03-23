@@ -10,6 +10,7 @@ import averageReviews from './helpers/averageReviews';
 import Reviews from './Reviews.jsx'
 import Search from './Search';
 import ProfileSetCalendar from './ProfileSetCalendar';
+import NavBar from '../shared/navBar';
 
 export const ProfileContext = React.createContext();
 
@@ -57,7 +58,13 @@ export default function ProfileRoot() {
     })
   }
 
-  if (reviewsAverage === null && currentReviews !== null) {
+  if (skillsList === null) {
+    requestSkills((result) => {
+      setSkillsList(result)
+    })
+  }
+
+  if (reviewsAverage === null && currentReviews !== null && currentReviews !== "") {
     setReviewsAverage(averageReviews(currentReviews))
   }
 
@@ -82,14 +89,19 @@ export default function ProfileRoot() {
     return (null)
   } else {
     return (
-      <ProfileContext.Provider value={ProfileProvider}>
-        <Search />
-        <Logout />
-        <Blurb />
-        <Reviews />
-        <PlansAndPricing />
-        <ProfileSetCalendar />
-      </ProfileContext.Provider>
+      <>
+        <NavBar />
+        <div className="profileRoot">
+          <ProfileContext.Provider value={ProfileProvider}>
+            <Search />
+            <Logout />
+            <Blurb />
+            <Reviews />
+            {/* <PlansAndPricing /> */}
+            <ProfileSetCalendar />
+          </ProfileContext.Provider>
+        </div>
+      </>
     );
   }
 }
