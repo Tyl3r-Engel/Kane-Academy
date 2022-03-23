@@ -57,7 +57,13 @@ export default function ProfileRoot() {
     })
   }
 
-  if (reviewsAverage === null && currentReviews !== null) {
+  if (skillsList === null) {
+    requestSkills((result) => {
+      setSkillsList(result)
+    })
+  }
+
+  if (reviewsAverage === null && currentReviews !== null && currentReviews !== "") {
     setReviewsAverage(averageReviews(currentReviews))
   }
 
@@ -87,7 +93,6 @@ export default function ProfileRoot() {
         <Logout />
         <Blurb />
         <Reviews />
-        <PlansAndPricing />
       </ProfileContext.Provider>
     );
   }

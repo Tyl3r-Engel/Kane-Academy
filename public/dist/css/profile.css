@@ -4,4 +4,20 @@ table, th, td {
 
 .review {
   margin-bottom: 10px;
+  border-bottom: 1px solid black;
+}
+
+.blurb {
+  width: 60%
+}
+
+.reviewsWindow {
+  width: 60%;
+  min-height: 10px;
+  max-height: 600px;
+  padding-left: 1em;
+  overflow-y:scroll;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  border-style:ridge
 }

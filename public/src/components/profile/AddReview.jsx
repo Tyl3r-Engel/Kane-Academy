@@ -7,7 +7,7 @@ import requestReviews from './axios/requestReviews.js'
 export default function AddReview() {
   const { currentProfile, currentReviews, setCurrentReviews, loggedInUser } = useContext(ProfileContext)
   const [ reviewText, setReviewText ] = useState('')
-  const [ rating, setRating ] = useState(5)
+  const [ rating, setRating ] = useState(3)
 
   function handleChange(event) {
     setReviewText(event.target.value)
@@ -26,7 +26,6 @@ export default function AddReview() {
     }
 
     postReview(payload, (data) => {
-      console.log(data)
       requestReviews(currentProfile.id, (result) => {
         setCurrentReviews(result)
       })
@@ -50,7 +49,7 @@ export default function AddReview() {
             <Ratings.Widget widgetHoverColor="#b19cd9" widgetDimension="25px"/>
           </Ratings>
         <form onSubmit={submitReview}>
-          <div>What skill are you reviewing?</div>
+          <span>What skill are you reviewing?&nbsp;</span>
           <select name="skills" id="skills">
             {Object.values(currentProfile.skills).map((skill) => {
               return(
@@ -58,14 +57,17 @@ export default function AddReview() {
               )
             })}
           </select>
+          <br></br>
           <textarea
             rows="5"
             cols="50"
             value={reviewText}
             name={reviewText}
             onChange={handleChange}
-            placeholder="Your Review...">
+            placeholder="Your Review..."
+            required>
           </textarea>
+          <br></br>
           <input type="submit" value="Submit Review"></input>
         </form>
       </div>
