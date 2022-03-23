@@ -8,7 +8,6 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import requestSkills from './axios/requestSkills';
 import TextField from '@mui/material/TextField';
 
 export default function Search() {

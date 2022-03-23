@@ -56,7 +56,7 @@ export default function SignupRoot() {
           />
           <FormControlLabel
             value="true"
-            label="Mentor"
+            label="Learner"
             control={(
               <Radio
                 type="radio"

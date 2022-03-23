@@ -40,9 +40,9 @@ const completeSignup = (mentor, id, cb) => {
 
 const login = (email, password, cb) => {
   const queryString = `SELECT * FROM users
-  WHERE email = $1`;
+  WHERE email = $1 AND hash = crypt($2, hash)`;
   //  AND hash = crypt($2, gen_salt('bf'))
-  pool.query(queryString, [email], cb);
+  pool.query(queryString, [email, password], cb);
 };
 
 module.exports = {
