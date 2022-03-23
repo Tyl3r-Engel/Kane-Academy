@@ -53,7 +53,7 @@ export default function CompleteSignup() {
             />
           </label>
         <br/>
-        <Button variant="contained" onClick={handleSubmit}>Submit</Button>
+        <Button id='muiPrimary' variant="contained" onClick={handleSubmit}>Submit</Button>
       </FormControl>
     </div>
   );
