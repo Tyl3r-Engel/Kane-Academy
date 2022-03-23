@@ -1,21 +1,27 @@
 import React, { useContext } from 'react'
 import { VideoCallContext } from '../../context'
+import { Grid, Typography, Paper } from '@mui/material'
 
 export default function VideoPlayer () {
-  const { call, callAccepted, callEnded, stream, myVideo, userVideo } = useContext(VideoCallContext)
+  const { call, name, callAccepted, callEnded, stream, myVideo, userVideo } = useContext(VideoCallContext)
   return (
-    <div>
+    <Grid container style={{ justifyContent: 'center', backgroundColor: '#DDE9F9' }}>
       { stream && (
-        <div>ME
-          <video style={{width: '500px'}} playsInline muted ref={myVideo} autoPlay />
-        </div>
-
+        <Paper style={{ padding: '10px', border: '2px solid black', margin: '10px' }}>
+          <Grid item md={6}>
+            <Typography variant='h5' gutterBottom>{name}</Typography>
+            <video style={{width: '500px'}} playsInline muted ref={myVideo} autoPlay />
+          </Grid>
+        </Paper>
       )}
       { (callAccepted && !callEnded) && (
-        <div>{call.name}
-          <video style={{width: '500px'}} playsInline ref={userVideo} autoPlay />
-        </div>
+      <Paper style={{ padding: '10px', border: '2px solid black', margin: '10px' }}>
+        <Grid item md={6}>
+          <Typography variant='h5' gutterBottom>{call.name}</Typography>
+          <video style={{width: '500px'}} playsInline muted ref={userVideo} autoPlay />
+        </Grid>
+      </Paper>
       )}
-    </div>
+    </Grid>
   )
 }

@@ -307,17 +307,19 @@ const io = require('socket.io')(server, {
     methods: ['GET', 'POST']
   }
 })
-
-io.of('videoCall').on('connection', socket => {
-  socket.emit('me', socket.id)
+const videoCall = io.of('videoCall')
+videoCall.on('connection', socket => {
+  socket.on('rendered', () => {
+    socket.emit('me', socket.id)
+  })
   socket.on('disconnect', () => {
     socket.broadcast.emit('callEnded')
   })
   socket.on('callUser', ({ userToCall, signalData, from, name}) => {
-    io.to(userToCall).emit('callUser', { signal: signalData, from, name })
+    videoCall.to(userToCall).emit('callUser', { signal: signalData, from, name })
   })
   socket.on('answerCall', data => {
-    io.to(data.to).emit('callAccepted', data.signal)
+    videoCall.to(data.to).emit('callAccepted', data.signal)
   })
 })
 
