@@ -58,7 +58,13 @@ export default function ProfileRoot() {
     })
   }
 
-  if (reviewsAverage === null && currentReviews !== null) {
+  if (skillsList === null) {
+    requestSkills((result) => {
+      setSkillsList(result)
+    })
+  }
+
+  if (reviewsAverage === null && currentReviews !== null && currentReviews !== "") {
     setReviewsAverage(averageReviews(currentReviews))
   }
 
@@ -83,15 +89,19 @@ export default function ProfileRoot() {
     return (null)
   } else {
     return (
-      <ProfileContext.Provider value={ProfileProvider}>
+      <>
         <NavBar />
-        <Search />
-        <Logout />
-        <Blurb />
-        <Reviews />
-        {/* <PlansAndPricing /> */}
-        <ProfileSetCalendar />
-      </ProfileContext.Provider>
+        <div className="profileRoot">
+          <ProfileContext.Provider value={ProfileProvider}>
+            <Search />
+            <Logout />
+            <Blurb />
+            <Reviews />
+            {/* <PlansAndPricing /> */}
+            <ProfileSetCalendar />
+          </ProfileContext.Provider>
+        </div>
+      </>
     );
   }
 }
