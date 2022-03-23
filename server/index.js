@@ -13,12 +13,13 @@ require('dotenv').config();
 
 const { login } = require('../db/controllers/auth');
 const { signup } = require('../db/controllers/signup');
-const { generateData } = require('../db/fakeData.js')
-const { addMentorProfile, getMentorProfile } = require('../db/controllers/mentorProfiles.js')
-const { addReview, getReviews } = require('../db/controllers/reviews.js')
-const { getSkills } = require('../db/controllers/skills.js')
-const { getSession } = require('../db/controllers/sessions.js')
-const { v4: uuidV4 } = require('uuid')
+const { generateData } = require('../db/fakeData.js');
+const { addMentorProfile, getMentorProfile } = require('../db/controllers/mentorProfiles.js');
+const { addReview, getReviews } = require('../db/controllers/reviews.js');
+const { getSkills } = require('../db/controllers/skills.js');
+const { getSession } = require('../db/controllers/sessions.js');
+const { v4: uuidV4 } = require('uuid');
+const { addMentorCalendar, getMentorCalendar} = require('../db/controllers/mentorCalendars');
 
 
 const app = express();
@@ -105,7 +106,7 @@ app.put('/logout', (req, res) => {
 });
 
 // NOTE TO TEAM: PLACE ALL QUERIES THAT REQUIRE LOGIN BELOW THIS AUTHORIZATION
-// app.use(auth);
+app.use(auth);
 
 app.get('/profile*', (req, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
@@ -121,6 +122,27 @@ app.get('/api/getSess', (req, res) => {
       res.send(err)
     } else {
       res.send(result.rows)
+    }
+  })
+})
+
+app.put('/api/calendly', (req, res) => {
+  console.log(req.body);
+  addMentorCalendar(req.body, (err, result) => {
+    if (err) {
+      console.log(err)
+      res.send(err)
+    } else {
+      console.log(result)
+      res.send(result)
+    }
+  })
+})
+
+app.post('/api/calendly', (req, res) => {
+  getMentorCalendar(req.params[0], (err, result) => {
+    if (err) {
+      res.send(err)
     }
   })
 })

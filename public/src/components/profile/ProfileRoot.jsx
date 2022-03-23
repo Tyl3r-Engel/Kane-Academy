@@ -9,76 +9,80 @@ import Blurb from './Blurb.jsx'
 import PlansAndPricing from './PlansAndPricing.jsx'
 import averageReviews from './helpers/averageReviews';
 import Reviews from './Reviews.jsx'
+import ProfileSetCalendar from './ProfileSetCalendar';
 
 export const ProfileContext = React.createContext();
 
 export default function ProfileRoot() {
-  const [loggedInUser, setLoggedInUser] = useState({user: {id: 1}})
-  const [currentProfile, setCurrentProfile] = useState(null)
-  const [currentReviews, setCurrentReviews] = useState(null)
-  const [reviewsAverage, setReviewsAverage] = useState(null)
-  const [skillsList, setSkillsList] = useState(null)
-  const [editable, setEditable] = useState(false)
 
-  let mentor = window.location.href.replace('http://localhost:3001/profile/', '')
+  return(
+  <ProfileSetCalendar />)
+  // const [loggedInUser, setLoggedInUser] = useState({user: {id: 1}})
+  // const [currentProfile, setCurrentProfile] = useState(null)
+  // const [currentReviews, setCurrentReviews] = useState(null)
+  // const [reviewsAverage, setReviewsAverage] = useState(null)
+  // const [skillsList, setSkillsList] = useState(null)
+  // const [editable, setEditable] = useState(false)
 
-  if (loggedInUser === null) {
-    requestCurrentSession((result) => {
-      result[0].sess.replace('/', '')
-      result[0].sess.replace("\"", '')
-      setLoggedInUser(JSON.parse(result[0].sess).passport)
-    })
-  }
+  // let mentor = window.location.href.replace('http://localhost:3001/profile/', '')
 
-  if (currentProfile === null) {
-    requestProfile(mentor, (result) => {
-      setCurrentProfile(result[0])
-    })
-  }
+  // if (loggedInUser === null) {
+  //   requestCurrentSession((result) => {
+  //     result[0].sess.replace('/', '')
+  //     result[0].sess.replace("\"", '')
+  //     setLoggedInUser(JSON.parse(result[0].sess).passport)
+  //   })
+  // }
 
-  if (currentReviews === null) {
-    requestReviews(mentor, (result) => {
-      setCurrentReviews(result)
-    })
-  }
+  // if (currentProfile === null) {
+  //   requestProfile(mentor, (result) => {
+  //     setCurrentProfile(result[0])
+  //   })
+  // }
 
-  if (reviewsAverage === null && currentReviews !== null) {
-    setReviewsAverage(averageReviews(currentReviews))
-  }
+  // if (currentReviews === null) {
+  //   requestReviews(mentor, (result) => {
+  //     setCurrentReviews(result)
+  //   })
+  // }
 
-  if (skillsList === null) {
-    requestSkills((result) => {
-      setSkillsList(result)
-    })
-  }
+  // if (reviewsAverage === null && currentReviews !== null) {
+  //   setReviewsAverage(averageReviews(currentReviews))
+  // }
 
-  if (loggedInUser !== null && currentProfile !== null && editable === false) {
-    if (loggedInUser.user.id === currentProfile.id) {
-      setEditable(true)
-    }
-  }
+  // if (skillsList === null) {
+  //   requestSkills((result) => {
+  //     setSkillsList(result)
+  //   })
+  // }
 
-  if (editable === true && loggedInUser.user.id !== currentProfile.id) {
-    setEditable(false)
-  }
+  // if (loggedInUser !== null && currentProfile !== null && editable === false) {
+  //   if (loggedInUser.user.id === currentProfile.id) {
+  //     setEditable(true)
+  //   }
+  // }
 
-  const ProfileProvider = useMemo(() => (
-    {
-      currentProfile, setCurrentProfile, currentReviews, reviewsAverage, loggedInUser, editable, skillsList
-    }
-  ), [currentProfile, setCurrentProfile, currentReviews, reviewsAverage, loggedInUser, editable, skillsList]);
+  // if (editable === true && loggedInUser.user.id !== currentProfile.id) {
+  //   setEditable(false)
+  // }
 
-  if (currentProfile === null || currentReviews === null) {
-    return (null)
-  } else {
-    return (
-      // <Test />
-      <ProfileContext.Provider value={ProfileProvider}>
-        <Logout />
-        <Blurb />
-        <Reviews />
-        <PlansAndPricing />
-      </ProfileContext.Provider>
-    );
-  }
+  // const ProfileProvider = useMemo(() => (
+  //   {
+  //     currentProfile, setCurrentProfile, currentReviews, reviewsAverage, loggedInUser, editable, skillsList
+  //   }
+  // ), [currentProfile, setCurrentProfile, currentReviews, reviewsAverage, loggedInUser, editable, skillsList]);
+
+  // if (currentProfile === null || currentReviews === null) {
+  //   return (null)
+  // } else {
+  //   return (
+  //     // <Test />
+  //     <ProfileContext.Provider value={ProfileProvider}>
+  //       <Logout />
+  //       <Blurb />
+  //       <Reviews />
+  //       <PlansAndPricing />
+  //     </ProfileContext.Provider>
+  //   );
+  // }
 }
