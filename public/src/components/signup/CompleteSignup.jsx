@@ -24,34 +24,32 @@ export default function CompleteSignup() {
       <Typography variant="h2" component="div" gutterBottom align="center">Complete Sign Up:</Typography>
       <FormControl fullWidth align="center">
         <FormLabel>Account Type</FormLabel>
-          <label>
-            <FormControlLabel
-              value="true"
-              label="Mentor"
-              control={(
-                <Radio
-                  type="radio"
-                  value={true}
-                  label="mentor"
-                  checked={mentor === true}
-                  onChange={() => updateMentor(true)}
-                />
-              )}
-            />
-            <FormControlLabel
-              value="true"
-              label="Learner"
-              control={(
-                <Radio
-                  type="radio"
-                  value={false}
-                  label="learner"
-                  checked={mentor === false}
-                  onChange={() => updateMentor(false)}
-                />
-              )}
-            />
-          </label>
+          <FormControlLabel
+            value="true"
+            label="Mentor"
+            control={(
+              <Radio
+                type="radio"
+                value={true}
+                label="mentor"
+                checked={mentor === true}
+                onChange={() => updateMentor(true)}
+              />
+            )}
+          />
+          <FormControlLabel
+            value="true"
+            label="Learner"
+            control={(
+              <Radio
+                type="radio"
+                value={false}
+                label="learner"
+                checked={mentor === false}
+                onChange={() => updateMentor(false)}
+              />
+            )}
+          />
         <br/>
         <Button variant="contained" onClick={handleSubmit}>Submit</Button>
       </FormControl>
