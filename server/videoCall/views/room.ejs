@@ -49,11 +49,11 @@
       })
 
       socket.on('user-connected', userId => {
+        console.log(userId)
         connectToNewUser(userId, stream)
       })
 
       socket.on('user-disconnected', userId => {
-        console.log(userId, peers)
         if(peers[userId]) peers[userId].close()
       })
     })

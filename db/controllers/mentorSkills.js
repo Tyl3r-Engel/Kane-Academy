@@ -1,12 +1,27 @@
 const { pool } = require('../pool');
 
-const mentorSkills = (mentor_id, skill_id, pricing, cb) => {
+const addMentorSkills = (mentor_id, skill_id, pricing, cb) => {
   const queryString = `INSERT INTO mentor_skills (mentor_id, skill_id, pricing)
   VALUES ($1, $2, $3)`;
 
   pool.query(queryString, [mentor_id, skill_id, pricing], cb);
 }
 
+const initMentorSkills = (mentor_id, skill_id, cb) => {
+  const queryString = `INSERT INTO mentor_skills(mentor_id, skill_id, pricing) VALUES($1, $2, null)`;
+
+  for (var i = 0; i < 5; i++) {
+    pool.query(queryString, [mentor_id, skill_id])
+  }
+  cb('hey')
+}
+
+const updateMentorSkills = (mentorObj, cb) => {
+  const queryString = `UPDATE mentor_skills SET skill_id = $2, pricing = $3 WHERE id = $1`
+
+  pool.query(queryString, [mentorObj.id, mentorObj.skill_id, mentorObj.pricing], cb)
+}
+
 module.exports = {
-  mentorSkills,
+  addMentorSkills, initMentorSkills, updateMentorSkills
 };
