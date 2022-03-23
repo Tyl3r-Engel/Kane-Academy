@@ -1,12 +1,13 @@
 import React from 'react';
 import axios from 'axios';
+import ErrorMessage from './ErrorMessage';
 
 export default function LoginRoot() {
   const [email, updateEmail] = React.useState('');
   const [password, updatePassword] = React.useState('');
+  const [error, updateError] = React.useState('');
 
   const handleSubmit = (e) => {
-    // Note: Add more verification to ensure good inputs
     e.preventDefault();
     axios.post('/login', {
       email,
@@ -16,7 +17,7 @@ export default function LoginRoot() {
         window.location = '/profile';
       })
       .catch((err) => {
-        console.log('Login Failed: Try again');
+        updateError('Login Failed: Invalid Password or Username');
       });
   };
 
@@ -26,17 +27,29 @@ export default function LoginRoot() {
       <form onSubmit={handleSubmit}>
         <label>
           email:
-          <input type="email" value={email} onChange={(e) => updateEmail(e.target.value)} required />
+          <input
+            type="email"
+            value={email}
+            maxLength={40}
+            onChange={(e) => updateEmail(e.target.value)}
+            required />
         </label>
         <br />
         <label>
           password:
-          <input type="password" value={password} onChange={(e) => updatePassword(e.target.value)} required />
+          <input
+            type="password"
+            value={password}
+            maxLength={255}
+            onChange={(e) => updatePassword(e.target.value)}
+            required
+          />
         </label>
         <br />
         <input type="submit" value="Submit" style={{marginLeft: '90px'}}/>
       </form>
       <a className="button google" href="/login/federated/google" style={{marginLeft: '50px'}}>Sign in with Google</a>
+      {error && (<ErrorMessage error={error} />)}
     </div>
   );
 }

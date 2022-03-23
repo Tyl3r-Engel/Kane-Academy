@@ -138,7 +138,7 @@ app.put('/logout', (req, res) => {
 });
 
 // NOTE TO TEAM: PLACE ALL QUERIES THAT REQUIRE LOGIN BELOW THIS AUTHORIZATION
-// app.use(auth);
+app.use(auth);
 
 app.get('/profile*', (req, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
