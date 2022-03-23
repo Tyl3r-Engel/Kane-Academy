@@ -1,5 +1,4 @@
 import React from 'react';
-// import ApiCalendar from 'react-google-calendar-api';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -7,15 +6,12 @@ import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import requestCurrentSession from './axios/requestCurrentSession';
-import { PopupWidget } from "react-calendly";
+import { PopupModal } from "react-calendly";
 
 export default function ProfileSetCalendar() {
-  // const [sign, setSign] = React.useState(false);
-  // const [myEvents, setMyEvents] = React.useState([]);
-  // const [uMail, setUMail] = React.useState('');
-  // const [timeZ, setTimeZ] = React.useState('');
   const [avail, setAvail] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+  const [openC, setOpenC] = React.useState(false);
   const [hasSub, setHasSub] = React.useState(false);
   const [calUrl, setCalUrl] = React.useState(null);
   const [calUrlTemp, setCalUrlTemp] = React.useState(null);
@@ -37,25 +33,7 @@ export default function ProfileSetCalendar() {
 
   let urlInput = (e) => {
     setCalUrlTemp(e.target.value);
-    // if (hasSub) {
-    //   setCalUrl(calUrlTemp);
-    //   setHasSub(false);
-    // }
   }
-
-  // React.useEffect(() => {
-  //   setCalUrl(calUrlTemp);
-  // }, [hasSub])
-
-  // let calInit = () => {
-  //   Calendly.initInlineWidget({
-  //     'url': url,
-  //     'parentElement': document.getElementById('allThingsCal'),
-  //     'prefill': {},
-  //     'utm': {}
-  //   });
-  // }
-
 
   let urlSubmit = () => {
     requestCurrentSession((mId) => {
@@ -91,67 +69,8 @@ export default function ProfileSetCalendar() {
     console.log('calurl: ' + calUrl)
   }, [calUrl]);
 
-  // let handleItemClick = (event, name) => {
-  //       if (name === 'sign-in') {
-  //         ApiCalendar.handleAuthClick()
-  //         .then(() => {
-  //           console.log('Sign in successful!');
-  //           setSign(true);
-  //         })
-  //         .catch((e) => {
-  //           console.error(`Sign in failed ${e}`);
-  //         })
-  //       } else if (name === 'sign-out') {
-  //         ApiCalendar.handleSignoutClick();
-  //         setSign(false);
-  //         setMyEvents([]);
-  //         setUMail('');
-  //         setTimeZ('');
-  //       }
-  //     }
-
-  let showAvail = () => {
-    setAvail(!avail);
-  }
-
-
-  // React.useEffect(() => {
-  //   if (sign) {
-  //     ApiCalendar.listUpcomingEvents(10, ApiCalendar.calendar)
-  //     .then(({ result }) => {
-  //       console.log(result.items);
-  //       setMyEvents(result.items);
-  //       let mail = result.items[0].attendees[0].email;
-  //       let zone = result.items[0].start.timeZone;
-  //       setUMail(mail.slice(0, mail.indexOf('@')));
-  //       setTimeZ(zone.slice(zone.indexOf('/') + 1, zone.length));
-  //     });
-  //   }
-  // }, [sign])
-
   return (
     <div id='allThingsCal'>
-      {/* {!sign
-      &&
-      <button
-        onClick={(e) => handleItemClick(e, 'sign-in')}
-      >
-        Sign-in
-      </button>
-      }
-      {sign
-      &&
-      <button
-          onClick={(e) => handleItemClick(e, 'sign-out')}
-      >
-        Sign-out
-      </button>
-      }
-      {myEvents.length !== 0
-      &&
-      <iframe src={`https://calendar.google.com/calendar/embed?src=${uMail}%40gmail.com&ctz=America%2F${timeZ}`}
-      style={{"border": "0"}} width="800" height="600" frameBorder="0" scrolling="no"></iframe>
-      } */}
       <Button variant="contained" onClick={() => handleOpen()}>Edit Schedule</Button>
 
       <Modal
@@ -183,21 +102,20 @@ export default function ProfileSetCalendar() {
       </Modal>
 
 
-      {/* <div className="calendly-inline-widget" data-url={calUrl} style={{"minWidth": "320px", "height": "750px"}}></div> */}
+
       {calUrl ? (
-        <PopupWidget
+        <div id='popArea'>
+        <Button id='openPop' variant="contained" onClick={() => setOpenC(true)}>Schedule Time w/ Me</Button>
+        <PopupModal
         url={calUrl}
-        // {calUrl}
-        /*
-         * react-calendly uses React's Portal feature (https://reactjs.org/docs/portals.html) to render the popup modal. As a result, you'll need to
-         * specify the rootElement property to ensure that the modal is inserted into the correct domNode.
-         */
-        rootElement={document.getElementById("allThingsCal")}
-        text="Click here to schedule!"
+        rootElement={document.getElementById("popArea")}
         textColor="#ffffff"
         color="#00a2ff"
-      />) : (<div>
-      It seems you haven't linked your Calendly yet. Click the "Edit Schedule" button and follow the instructions provided to display your appointment screen here.
+        onModalClose={() => setOpenC(false)}
+        open={openC}
+        />
+        </div>) : (<div>
+      It seems this mentor hasn't linked their Calendly yet. If this is you, click the "Edit Schedule" button and follow the instructions provided to display your scheduling button here.
       </div>
       )
 

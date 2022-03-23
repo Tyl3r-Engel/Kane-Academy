@@ -67,6 +67,10 @@ app.get('/*/profile.css', (req, res) => {
   res.sendFile('profile.css', { root: path.join(__dirname, '../public/dist/css') });
 });
 
+app.get('/messages', (req, res) => {
+  res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
+});
+
 app.get('/fakedata', (req, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, '../public/dist') });
   generateData((result) => {
