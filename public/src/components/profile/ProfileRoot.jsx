@@ -10,6 +10,7 @@ import averageReviews from './helpers/averageReviews';
 import Reviews from './Reviews.jsx'
 import Search from './Search';
 import ProfileSetCalendar from './ProfileSetCalendar';
+import NavBar from '../shared/navBar';
 
 export const ProfileContext = React.createContext();
 
@@ -83,11 +84,12 @@ export default function ProfileRoot() {
   } else {
     return (
       <ProfileContext.Provider value={ProfileProvider}>
+        <NavBar />
         <Search />
         <Logout />
         <Blurb />
         <Reviews />
-        <PlansAndPricing />
+        {/* <PlansAndPricing /> */}
         <ProfileSetCalendar />
       </ProfileContext.Provider>
     );

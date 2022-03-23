@@ -2,6 +2,7 @@ import React from 'react';
 import NavBar from '../shared/navBar';
 import ApiCalendar from 'react-google-calendar-api';
 import VideoCall from '../videoCall/VideoCall';
+import Button from '@mui/material/Button';
 
 export default function HomeRoot() {
   const [sign, setSign] = React.useState(false);
@@ -44,37 +45,34 @@ export default function HomeRoot() {
 
   return (
     <div>
+
       <NavBar></NavBar>
+
       {!sign
       &&
-      <button
-        onClick={(e) => handleItemClick(e, 'sign-in')}
-      >
-        Sign-in
-      </button>
+        <Button
+          variant='contained'
+          onClick={(e) => handleItemClick(e, 'sign-in')}
+        >
+          Sign-in
+        </Button>
       }
+
       {sign
       &&
-      <button
+        <Button
+          variant='contained'
           onClick={(e) => handleItemClick(e, 'sign-out')}
-      >
-        Sign-out
-      </button>
+        >
+          Sign-out
+        </Button>
       }
+
       {myEvents.length !== 0
       &&
-      <iframe src={`https://calendar.google.com/calendar/embed?src=${uMail}%40gmail.com&ctz=America%2F${timeZ}`}
-      style={{"border": "0"}} width="800" height="600" frameBorder="0" scrolling="no"></iframe>
+        <iframe src={`https://calendar.google.com/calendar/embed?src=${uMail}%40gmail.com&ctz=America%2F${timeZ}`}
+        style={{"border": "0"}} width="800" height="600" frameBorder="0" scrolling="no"></iframe>
       }
 
-
-
-
-// export default function HomeRoot() {
-//  return (
-//    <div>
-//      <div>Rendered Home</div>
-//      <VideoCall />
-//    </div>
-//  );
-}
+    </div>
+  )}

@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import Button from '@mui/material/Button';
 
 export default function Logout() {
   const logout = (e) => {
@@ -15,8 +16,8 @@ export default function Logout() {
   }
 
   return (
-    <button onClick={(e) => logout(e)}>
+    <Button variant='contained' onClick={(e) => logout(e)}>
       Logout
-    </button>
+    </Button>
   )
 }
