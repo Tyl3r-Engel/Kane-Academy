@@ -11,14 +11,16 @@ CREATE EXTENSION pgcrypto;
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   mentor BOOLEAN,
-  first_name VARCHAR(25),
-  last_name VARCHAR(25),
-  email VARCHAR(40),
+  first_name VARCHAR(25) NOT NULL,
+  last_name VARCHAR(25) NOT NULL,
+  email VARCHAR(40) NOT NULL UNIQUE,
+  gid VARCHAR(32) UNIQUE,
   hash VARCHAR(60)
 );
 
 CREATE INDEX i ON users(hash);
 CREATE INDEX i0 ON users(email);
+CREATE INDEX i4 ON users(gid);
 
 DROP TABLE IF EXISTS messages;
 
@@ -44,15 +46,12 @@ DROP TABLE IF EXISTS sessions;
 
 CREATE TABLE sessions (
   id SERIAL PRIMARY KEY,
-  hash VARCHAR(50),
-  user_id INT NOT NULL,
-  CONSTRAINT fk_user_id_3
-    FOREIGN KEY(user_id)
-      REFERENCES users(id)
+  sid VARCHAR(32) UNIQUE,
+  expire TIMESTAMP,
+  sess VARCHAR(255)
 );
 
-CREATE INDEX i4 ON sessions(hash);
-CREATE INDEX i5 ON sessions(user_id);
+CREATE INDEX i5 ON sessions(sid);
 
 DROP TABLE IF EXISTS appointments;
 
@@ -80,6 +79,7 @@ CREATE TABLE mentor_profiles (
   id SERIAL PRIMARY KEY,
   mentor_id INT NOT NULL,
   about TEXT,
+  calendly TEXT,
   CONSTRAINT fk_user_id_6
     FOREIGN KEY(mentor_id)
       REFERENCES users(id)
@@ -137,3 +137,17 @@ CREATE INDEX i14 ON reviews(mentor_id);
 CREATE INDEX i15 ON reviews(learner_id);
 CREATE INDEX i16 ON reviews(skill_id);
 CREATE INDEX i17 ON reviews(time DESC);
+
+
+-- Dummy Data for Search Feature --
+INSERT INTO skills (name, category, description) VALUES ('Guitar', 'Instrument', 'Skill lessons on guitar!');
+INSERT INTO skills (name, category, description) VALUES ('Baking', 'culinary', 'Skill lessons on baking!');
+INSERT INTO skills (name, category, description) VALUES ('Snowboarding', 'Activity', 'Skill lessons on snowboarding!');
+INSERT INTO skills (name, category, description) VALUES ('DJ', 'Music', 'Skill lessons on guitar!');
+INSERT INTO skills (name, category, description) VALUES ('Skydiving', 'Activity', 'Skill lessons on skydiving!');
+INSERT INTO skills (name, category, description) VALUES ('Snorkeling', 'Activity', 'Skill lessons on snorkeling!');
+INSERT INTO skills (name, category, description) VALUES ('Biking', 'Activity', 'Skill lessons on Biking!');
+INSERT INTO skills (name, category, description) VALUES ('Singing', 'Music', 'Skill lessons on Singing!');
+INSERT INTO skills (name, category, description) VALUES ('Gaming', 'Activity', 'Skill lessons on gaming!');
+INSERT INTO skills (name, category, description) VALUES ('Meditation', 'Activity', 'Skill lessons on meditation!');
+INSERT INTO skills (name, category, description) VALUES ('English', 'Language', 'Master English!');

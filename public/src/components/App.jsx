@@ -4,17 +4,24 @@ import axios from 'axios';
 import HomeRoot from './home/HomeRoot';
 import ProfileRoot from './profile/ProfileRoot';
 import LoginRoot from './login/LoginRoot';
-import FakeData from './FakeData'
+import SignupRoot from './signup/SignupRoot';
+import FakeData from './FakeData';
+import CompleteSignup from './signup/CompleteSignup';
+import Messages from './message/Messages'
 
 export default function App() {
-  console.log(window.location.pathname);
   return (
     <div className="App">
+      {/* <Messages /> */}
       <Router>
         <Routes>
-          <Route path="/" element={HomeRoot()} />
-          <Route path="/login" element={LoginRoot()} />
-          <Route path="/profile" element={ProfileRoot()} />
+          <Route path="/" element={<HomeRoot />} />
+          <Route path="/login" element={<LoginRoot />} />
+          <Route path="/signup" element={<SignupRoot />} />
+          <Route path="/signup/complete" element={<CompleteSignup />} />
+          <Route path="/profile/*" element={<ProfileRoot />} />
+          <Route path="/profile" element={<ProfileRoot />} />
+          <Route path="/messages" element={<Messages />} />
           <Route path="/fakedata" element={FakeData()} />
         </Routes>
       </Router>
