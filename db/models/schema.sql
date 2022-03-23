@@ -79,6 +79,7 @@ CREATE TABLE mentor_profiles (
   id SERIAL PRIMARY KEY,
   mentor_id INT NOT NULL,
   about TEXT,
+  calendly TEXT,
   CONSTRAINT fk_user_id_6
     FOREIGN KEY(mentor_id)
       REFERENCES users(id)
@@ -136,3 +137,17 @@ CREATE INDEX i14 ON reviews(mentor_id);
 CREATE INDEX i15 ON reviews(learner_id);
 CREATE INDEX i16 ON reviews(skill_id);
 CREATE INDEX i17 ON reviews(time DESC);
+
+
+-- Dummy Data for Search Feature --
+INSERT INTO skills (name, category, description) VALUES ('Guitar', 'Instrument', 'Skill lessons on guitar!');
+INSERT INTO skills (name, category, description) VALUES ('Baking', 'culinary', 'Skill lessons on baking!');
+INSERT INTO skills (name, category, description) VALUES ('Snowboarding', 'Activity', 'Skill lessons on snowboarding!');
+INSERT INTO skills (name, category, description) VALUES ('DJ', 'Music', 'Skill lessons on guitar!');
+INSERT INTO skills (name, category, description) VALUES ('Skydiving', 'Activity', 'Skill lessons on skydiving!');
+INSERT INTO skills (name, category, description) VALUES ('Snorkeling', 'Activity', 'Skill lessons on snorkeling!');
+INSERT INTO skills (name, category, description) VALUES ('Biking', 'Activity', 'Skill lessons on Biking!');
+INSERT INTO skills (name, category, description) VALUES ('Singing', 'Music', 'Skill lessons on Singing!');
+INSERT INTO skills (name, category, description) VALUES ('Gaming', 'Activity', 'Skill lessons on gaming!');
+INSERT INTO skills (name, category, description) VALUES ('Meditation', 'Activity', 'Skill lessons on meditation!');
+INSERT INTO skills (name, category, description) VALUES ('English', 'Language', 'Master English!');

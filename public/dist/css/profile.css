@@ -5,3 +5,7 @@ table, th, td {
 .review {
   margin-bottom: 10px;
 }
+
+body {
+  background-color: aqua;
+}

@@ -18,10 +18,9 @@ export default function SignupRoot() {
       email,
       password,
     };
-    console.log(body);
     axios.post('/signup', body)
       .then((results) => {
-        window.location = '/profile';
+        window.location = '/';
       })
       .catch((err) => {
         console.log('Signup Failed: Try again');
@@ -29,17 +28,17 @@ export default function SignupRoot() {
   };
 
   return (
-    <div>
-      <h1>Sign Up</h1>
+    <div style={{margin: '0 auto', width: '250px'}}>
+      <h1 style={{margin: '0 auto', width: '125px'}}>Sign Up</h1>
       <form onSubmit={handleSubmit}>
-        <label>
+        <label style={{marginLeft: '40px'}}>
           Mentor:
           <input
             type="radio"
             value={true}
             name="mentor"
-            checked={mentor === false}
-            onChange={() => updateMentor(false)}
+            checked={mentor === true}
+            onChange={() => updateMentor(true)}
           />
           Learner:
           <input
@@ -71,9 +70,9 @@ export default function SignupRoot() {
           <input type="password" value={password} onChange={(e) => updatePassword(e.target.value)} required />
         </label>
         <br/>
-        <input type="submit" value="Submit" />
+        <input type="submit" value="Submit" style={{marginLeft: '90px'}}/>
       </form>
-      <a className="button google" href="/login/federated/google">Sign Up with Google</a>
+      <a className="button google" href="/login/federated/google" style={{marginLeft: '50px'}}>Sign Up with Google</a>
     </div>
   );
 }
