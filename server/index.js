@@ -14,7 +14,6 @@ const { login, completeSignup } = require('../db/controllers/auth');
 const { signup } = require('../db/controllers/signup');
 const morgan = require('morgan');
 const { addMentorCalendar, getMentorCalendar} = require('../db/controllers/mentorCalendars');
-const { generateData } = require('../db/fakeData.js');
 const { addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile, searchProfiles } = require('../db/controllers/mentorProfiles.js');
 const { addMentorSkills, initMentorSkills, updateMentorSkills } = require('../db/controllers/mentorSkills.js');
 const { addReview, getReviews } = require('../db/controllers/reviews.js');
