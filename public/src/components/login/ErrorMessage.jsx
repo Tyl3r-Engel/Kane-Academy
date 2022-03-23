@@ -1,9 +1,10 @@
 import React from 'react';
+import { Typography } from '@mui/material';
 
 export default function ErrorMessage({ error }) {
   return (
-    <div className='LoginErrorMessage' style={{color: 'red'}}>
+    <Typography variant="subtitle1" component="div" gutterBottom align="center" color="red">
       {error}
-    </div>
+    </Typography>
   );
 }
