@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import { VideoCallContext } from '../../context'
-import { Button } from '@mui/material';
 import { Grid, Button, Paper } from '@mui/material'
 
 export default function VideoNotification() {
