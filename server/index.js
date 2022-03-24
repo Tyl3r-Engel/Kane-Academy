@@ -14,6 +14,7 @@ const { login, completeSignup } = require('../db/controllers/auth');
 const { signup } = require('../db/controllers/signup');
 
 const morgan = require('morgan');
+const { getFName} = require('../db/controllers/currentUserName');
 const { addMentorCalendar, getMentorCalendar} = require('../db/controllers/mentorCalendars');
 const { addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile, searchProfiles } = require('../db/controllers/mentorProfiles.js');
 const { addMentorSkills, initMentorSkills, updateMentorSkills } = require('../db/controllers/mentorSkills.js');
@@ -228,6 +229,17 @@ app.get('/api/getProfile/*', (req, res) => {
       res.send(null)
     } else {
       res.send(result.rows);
+    }
+  });
+});
+
+app.get('/api/getFirstName/*', (req, res) => {
+  getFName(req.params[0], (err, result) => {
+    if (err) {
+      res.send(null)
+    } else {
+      console.log(result.rows[0].first_name)
+      res.send(result.rows[0].first_name);
     }
   });
 });

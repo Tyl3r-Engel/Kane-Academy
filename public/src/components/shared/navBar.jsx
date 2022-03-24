@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -15,6 +15,12 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import logo from '../../../dist/kaLogoBlack.png';
 import proPic from '../../../dist/blankProf.png';
+import requestFirstName from '../profile/axios/requestFirstName';
+// import { ProfileContext } from '../profile/ProfileRoot';
+// import { HomeContext } from '../home/HomeRoot';
+// import requestCurrentSession from '../profile/axios/requestCurrentSession';
+
+export const NavContext = React.createContext();
 
 const pages = ['Home', 'Messages'];
 const settings = ['Profile', 'Logout'];
@@ -31,9 +37,40 @@ const logout = (e) => {
     })
 }
 
-const NavBar = () => {
+export default function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  // const loggedInUser = React.useContext(ProfileContext);
+  // const loggedInUserH = React.useContext(HomeContext);
+  // const [fName, setFName] = React.useState('')
+  // const [loggedInUserN, setLoggedInUserN] = React.useState(null);
+
+  // if (loggedInUserN === null) {
+  //   requestCurrentSession((result) => {
+  //     result[0].sess.replace('/', '')
+  //     result[0].sess.replace("\"", '')
+  //     setLoggedInUserN(JSON.parse(result[0].sess).passport.user)
+  //   })
+  // }
+
+  // const NavProvider = React.useMemo(() => (
+  //   {
+  //     loggedInUserN
+  //   }
+  // ), [loggedInUserN]);
+
+  // let nameGet = () => {
+  //     requestFirstName(loggedInUser.id, (result) => {
+  //       console.log('res: ' + result)
+  //       setFName(result)
+  //     })
+  // }
+
+
+  // React.useEffect(() => {
+  //   console.log(loggedInUser)
+  //   nameGet()
+  // }, [loggedInUser]);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -137,6 +174,7 @@ const NavBar = () => {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
+            {/* {fName}{' '} */}
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="KA Profile" src={proPic} />
@@ -170,4 +208,3 @@ const NavBar = () => {
     </AppBar>
   );
 };
-export default NavBar;

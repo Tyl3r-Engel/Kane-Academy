@@ -59,7 +59,9 @@ export default function ProfileSetCalendar() {
 
   return (
     <div id='allThingsCal'>
-      <Button id='muiPrimary' variant="contained" onClick={() => handleOpen()}>Edit Schedule</Button>
+      {editable
+      &&
+      <Button id='muiPrimary' variant="contained" onClick={() => handleOpen()}>Edit Schedule</Button>}
 
       <Modal
         open={open}

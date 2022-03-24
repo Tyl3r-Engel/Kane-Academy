@@ -90,9 +90,9 @@ export default function ProfileRoot() {
   } else {
     return (
       <>
-        <NavBar />
         <div className="profileRoot">
           <ProfileContext.Provider value={ProfileProvider}>
+            <NavBar />
             <Search />
             <Logout />
             <Blurb />
