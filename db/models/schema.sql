@@ -140,6 +140,7 @@ CREATE INDEX i17 ON reviews(time DESC);
 
 
 -- Dummy Data for Search Feature --
+INSERT INTO skills (name, category, description) VALUES (null, null, null);
 INSERT INTO skills (name, category, description) VALUES ('Guitar', 'Instrument', 'Skill lessons on guitar!');
 INSERT INTO skills (name, category, description) VALUES ('Baking', 'culinary', 'Skill lessons on baking!');
 INSERT INTO skills (name, category, description) VALUES ('Snowboarding', 'Activity', 'Skill lessons on snowboarding!');
