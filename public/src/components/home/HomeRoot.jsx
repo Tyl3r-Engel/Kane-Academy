@@ -5,16 +5,12 @@ import ApiCalendar from 'react-google-calendar-api';
 import VideoCall from '../videoCall/VideoCall';
 import Button from '@mui/material/Button';
 import Search from '../profile/Search';
-import { purple } from '@mui/material/colors';
 
 export default function HomeRoot() {
   const [sign, setSign] = React.useState(false);
   const [myEvents, setMyEvents] = React.useState([]);
   const [uMail, setUMail] = React.useState('');
   const [timeZ, setTimeZ] = React.useState('');
-
-  const prim = purple[600];
-  const seco = purple[400];
 
   let handleItemClick = (event, name) => {
         if (name === 'sign-in') {
@@ -50,8 +46,8 @@ export default function HomeRoot() {
   }, [sign])
 
   return (
-    <div>
-      <NavBar></NavBar>
+    <div id='homeContainer'>
+      <NavBar />
       <Search />
 
       {!sign
@@ -61,7 +57,7 @@ export default function HomeRoot() {
           variant='contained'
           onClick={(e) => handleItemClick(e, 'sign-in')}
         >
-          View Upcoming Appointments w/ Google Calendar
+          View Upcoming Appointments with Google Calendar
         </Button>
       }
 
