@@ -202,26 +202,21 @@ app.put('/api/updateMentorSkills', (req, res) => {
   })
 });
 
-app.put('/api/calendly', (req, res) => {
-  console.log(req.body);
-  addMentorCalendar(req.body, (err, result) => {
+app.put('/api/addMentorCalendar/*', (req, res) => {
+  addMentorCalendar(req.body.id, req.body.calUrl, (err, result) => {
     if (err) {
-      console.log(err)
       res.send(err)
     } else {
-      console.log(result)
-      res.send(result)
+      res.send(result.rows)
     }
   })
 })
 
-app.post('/api/calendly', (req, res) => {
-  getMentorCalendar(req.body, (err, result) => {
+app.get('/api/getMentorCalendar/*', (req, res) => {
+  getMentorCalendar(req.params[0], (err, result) => {
     if (err) {
-      console.log(err)
       res.send(err)
     } else {
-      console.log('getting url: ' + result.rows[0].calendly)
       res.send(result.rows[0].calendly)
     }
   })

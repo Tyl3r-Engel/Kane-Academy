@@ -14,6 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import logo from '../../../dist/kaLogoBlack.png';
+import proPic from '../../../dist/blankProf.png';
 
 const pages = ['Home', 'Messages'];
 const settings = ['Profile', 'Logout'];
@@ -138,7 +139,7 @@ const NavBar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="KA Profile" src={proPic} />
               </IconButton>
             </Tooltip>
             <Menu
