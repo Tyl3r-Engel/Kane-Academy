@@ -8,7 +8,6 @@ import Blurb from './Blurb.jsx'
 import PlansAndPricing from './PlansAndPricing.jsx'
 import averageReviews from './helpers/averageReviews';
 import Reviews from './Reviews.jsx'
-import Search from './Search';
 import ProfileSetCalendar from './ProfileSetCalendar';
 import NavBar from '../shared/navBar';
 import Box from '@mui/material/Box';
