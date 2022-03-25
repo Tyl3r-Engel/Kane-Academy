@@ -13,6 +13,7 @@ table, th, td {
 
 .profileRoot {
   margin: auto;
+  /* margin-top: 20px; */
   width: 98vw;
   height:98vh;
 }

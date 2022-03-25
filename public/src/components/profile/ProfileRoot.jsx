@@ -95,7 +95,7 @@ export default function ProfileRoot() {
         <div className="profileRoot">
           <ProfileContext.Provider value={ProfileProvider}>
             <NavBar />
-            <Box sx={{ flexGrow: 1 }}>
+            <Box sx={{ flexGrow: 1, marginTop: '20px' }}>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <Blurb />
