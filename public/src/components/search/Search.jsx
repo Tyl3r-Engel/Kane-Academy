@@ -15,6 +15,7 @@ export default function Search() {
   const { query } = useContext(SearchContext)
   const [searchData, setSearchData] = useState([]);
   const [recentData, setRecentData] = useState([]);
+  const pHolder = 'https://www.russorizio.com/wp-content/uploads/2016/07/ef3-placeholder-image.jpg';
 
   function fetchSearchData() {
     requestSearchData(results => {
@@ -140,7 +141,7 @@ export default function Search() {
                 <div key={Math.random() * 50000} data-index={elem.item.id} style={{display: 'inline-block', padding: '10px'}}>
                   <Card sx={{ width: 200, height: 240 }}>
                     <Card id='muiPrimary' sx={{ width: 200 }}>
-                    <CardMedia component="img" height="120" image={elem.item.photo || ''} alt="placeholder" />
+                    <CardMedia component="img" height="120" image={elem.item.photo || pHolder} alt="placeholder" />
                       <CardContent>
                         <Typography gutterBottom variant="p" component="div">
                           {elem.item.first_name + " " + elem.item.last_name.substring(0, 1)}
