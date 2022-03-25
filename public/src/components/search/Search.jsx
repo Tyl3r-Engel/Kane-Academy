@@ -143,13 +143,13 @@ export default function Search() {
                     <CardMedia component="img" height="120" image={elem.item.photo || ''} alt="placeholder" />
                       <CardContent>
                         <Typography gutterBottom variant="p" component="div">
-                          {JSON.stringify(elem.item.first_name+" "+elem.item.last_name)}
+                          {elem.item.first_name + " " + elem.item.last_name.substring(0, 1)}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                          {JSON.stringify(elem.item.name)}
+                          {elem.item.name}
                         </Typography>
                         <Typography variant="body2">
-                          {JSON.stringify(elem.item.skills)}
+                          {elem.item.skills}
                         </Typography>
                       </CardContent>
                       <CardActions>

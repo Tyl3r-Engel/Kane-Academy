@@ -13,7 +13,7 @@ export default function VideoCall() {
   return (
     <>
       <Button onClick={handleOpen} title='Video Call'>
-        <VideoCameraFrontIcon></VideoCameraFrontIcon>
+        <VideoCameraFrontIcon sx={{color: '#4F80AD'}}></VideoCameraFrontIcon>
       </Button>
       {open && (
         <VideoCallProvider>

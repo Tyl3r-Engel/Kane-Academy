@@ -7,8 +7,8 @@ export default function SearchBar() {
   const { handleOnSearch, query } = useContext(SearchContext)
   return (
     <div>
-        <form style={{padding: '10px'}}>
-          <TextField id='outlined-basic' label='Search Mentor Skill' autoComplete='off' value={query} onChange={handleOnSearch} />
+        <form style={{padding: '10px', marginTop: '120px'}}>
+          <TextField id='outlined-basic' label='Search by Skill/Mentor' autoComplete='off' value={query} onChange={handleOnSearch} />
           <Button variant='contained' id='muiPrimary' style={{margin: '10px'}}>Search</Button>
         </form>
     </div>

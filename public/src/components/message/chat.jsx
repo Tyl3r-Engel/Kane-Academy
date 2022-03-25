@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+ import React, { useState, useEffect } from 'react';
 import Users from './users';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import { TextField, Paper, Box } from '@mui/material';
 
 export default function Chat({ socket, username }) {
   const [currentMessage, setCurrentMessage] = useState('');
@@ -65,8 +65,30 @@ export default function Chat({ socket, username }) {
 
   return (
     <div className="chat-window">
+      <div className="chatInput">
+      <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center', marginBottom: '15px' }}>
+        <TextField
+          type="text"
+          value={currentMessage}
+          placeholder="Hey..."
+          onChange={(event) => {
+            setCurrentMessage(event.target.value);
+          }}
+          onKeyPress={(event) => {
+            event.key === 'Enter' && sendMessage();
+          }}
+        />
+        <Button id="muiPrimary" variant="contained" onClick={sendMessage} gutterbottom='true'>
+          &#9658;
+        </Button>
+        </Box>
+      </div>
+      <Users socket={socket} selected={selected} setSelected={setSelected} />
+    <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center' }}>
+    <Paper id='muiSecondary' variant='elevation' elevation={5} sx={{margin: '0 auto', width: '500px'}}>
+
       <div className="chatBody">
-        <p>Chat History</p>
+        <p id='muiSecondaryText'>Chat History</p>
       </div>
 
       <div className="chat-body">
@@ -79,36 +101,18 @@ export default function Chat({ socket, username }) {
             >
               <div>
                 <div className="message-content">
-                  <p>{messageContent.message}</p>
+                  <p><em style={{color: '#4F80AD'}}>{messageContent.author}:</em> {messageContent.message}</p>
                 </div>
-                <div className="message-meta">
-                  <p id="author">
-                    <small>{messageContent.author}</small>
-                  </p>
-                </div>
+
+
               </div>
             </div>
           );
         })}
       </div>
+    </Paper>
 
-      <div className="chatInput">
-        <TextField
-          type="text"
-          value={currentMessage}
-          placeholder="Hey..."
-          onChange={(event) => {
-            setCurrentMessage(event.target.value);
-          }}
-          onKeyPress={(event) => {
-            event.key === 'Enter' && sendMessage();
-          }}
-        />
-        <Button id="muiPrimary" variant="contained" onClick={sendMessage}>
-          &#9658;
-        </Button>
-      </div>
-      <Users socket={socket} selected={selected} setSelected={setSelected} />
+
       {/* <TextField
         type="private"
         value={priId}
@@ -117,6 +121,7 @@ export default function Chat({ socket, username }) {
           setPriId(event.target.value);
         }}
       /> */}
+    </Box>
     </div>
   );
 }
