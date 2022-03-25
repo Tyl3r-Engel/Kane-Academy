@@ -5,22 +5,34 @@ import TextField from '@mui/material/TextField';
 
 export default function Chat({ socket, username }) {
   const [currentMessage, setCurrentMessage] = useState('');
-  const [PriMessage, setPriMessage] = useState([]);
   const [messageLog, setMessageLog] = useState([]);
   const [priId, setPriId] = useState('');
+  const [selected, setSelected] = useState({
+    active: false,
+    username: '',
+    userid: '',
+  });
+  useEffect(() => {
+    // console.log(selected, ' selected ', priId);
+    if (selected.active) {
+      setPriId(selected.userid);
+    } else {
+      setPriId('');
+    }
+  }, [selected]);
   const sendMessage = async () => {
     if (currentMessage !== '') {
+      // console.log(priId.length);
       if (priId.length > 4) {
         const messageData = {
-          author: username,
+          author: `sent to ${selected.username} by self`,
           message: currentMessage,
         };
-        socket.emit('private message', {
+        await socket.emit('private message', {
           author: username,
           message: currentMessage,
           to: priId,
         });
-        await socket.emit('send', messageData);
         setMessageLog((list) => [...list, messageData]);
         setCurrentMessage('');
       } else {
@@ -28,18 +40,14 @@ export default function Chat({ socket, username }) {
           author: username,
           message: currentMessage,
         };
-        await socket.emit('private message', {
-          author: username,
-          message: currentMessage,
-          send: priId,
-        });
-        setMessageLog((list) => [...list, messageData]);
+        await socket.emit('send', messageData);
         setCurrentMessage('');
       }
     }
   };
   useEffect(async () => {
     await socket.on('receive', (data) => {
+      // console.log(data, 'from chat');
       setMessageLog((list) => [...list, data]);
     });
     await socket.on('Userconnect', (data) =>
@@ -71,7 +79,7 @@ export default function Chat({ socket, username }) {
             >
               <div>
                 <div className="message-content">
-                  <p>Message: {messageContent.message}</p>
+                  <p>{messageContent.message}</p>
                 </div>
                 <div className="message-meta">
                   <p id="author">
@@ -96,17 +104,19 @@ export default function Chat({ socket, username }) {
             event.key === 'Enter' && sendMessage();
           }}
         />
-        <Button id='muiPrimary' variant='contained' onClick={sendMessage}>&#9658;</Button>
+        <Button id="muiPrimary" variant="contained" onClick={sendMessage}>
+          &#9658;
+        </Button>
       </div>
-      <Users socket={socket} />
-      <TextField
+      <Users socket={socket} selected={selected} setSelected={setSelected} />
+      {/* <TextField
         type="private"
         value={priId}
         placeholder="id..."
         onChange={(event) => {
           setPriId(event.target.value);
         }}
-      />
+      /> */}
     </div>
   );
 }

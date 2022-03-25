@@ -36,8 +36,8 @@ export default function Messages() {
             }}
           />
           <Button
-            id='muiPrimary'
-            variant='contained'
+            id="muiPrimary"
+            variant="contained"
             onClick={(e) => {
               e.preventDefault();
               join(username, setUsername);
@@ -48,7 +48,10 @@ export default function Messages() {
           </Button>
         </div>
       ) : (
-        <Chat socket={socket} username={username} />
+        <Chat
+          socket={socket}
+          username={username}
+        />
       )}
     </div>
   );

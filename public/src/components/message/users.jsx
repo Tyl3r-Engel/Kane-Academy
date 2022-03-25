@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import Button from '@mui/material/Button';
+import Button from '@mui/base/ButtonUnstyled';
 import TextField from '@mui/material/TextField';
 
-export default function Users({ socket }) {
+export default function Users({ socket, selected, setSelected }) {
   const [users, setUsers] = useState([]);
-  const [selected, setSelected] = useState({
-    active: false,
-    userid: '',
-  });
+  // console.log(socket, selected, setSelected);
+
   useEffect(async () => {
     await socket.on('users', (users) => {
       users.forEach((user) => {
@@ -26,28 +24,58 @@ export default function Users({ socket }) {
   return (
     <div>
       {users.map((user, index) => {
+        // console.log(user, 'user list');
+        if (selected.userid === user.userID) {
+          return (
+            <Button
+              className={`userID.${user.self}.selected`}
+              key={index}
+              name={user.userID}
+              id={user.username}
+              onClick={(e) => {
+                // console.log(e.target.name);
+                e.target.active = true;
+                if (selected.active && selected.userid === e.target.name) {
+                  setSelected({ active: false, username: '', userid: '' });
+                  return;
+                }
+                setSelected({
+                  active: true,
+                  username: e.target.id,
+                  userid: e.target.name,
+                });
+                socket.emit('t');
+              }}
+            >
+              {user.username}
+              {user.self ? <sub>Self</sub> : null}
+            </Button>
+          );
+        }
         return (
-          <div
+          <Button
             className={`userID.${user.self}`}
             key={index}
             name={user.userID}
+            id={user.username}
             onClick={(e) => {
+              // console.log(e.target.name);
               e.target.active = true;
-              if (selected.userid === e.target.name) {
-                setSelected({ active: false, userid: '' });
+              if (selected.active && selected.userid === e.target.name) {
+                setSelected({ active: false, username: '', userid: '' });
                 return;
               }
               setSelected({
                 active: true,
+                username: e.target.id,
                 userid: e.target.name,
               });
-              socket.emit('t')
+              socket.emit('t');
             }}
           >
-            <p>
-              {`Username: ${user.username} `} <sub>{`Id: ${user.userID}`}</sub>
-            </p>
-          </div>
+            {user.username}
+            {user.self ? <sub>Self</sub> : null}
+          </Button>
         );
       })}
     </div>

@@ -14,10 +14,24 @@ const { login, completeSignup } = require('../db/controllers/auth');
 const { signup } = require('../db/controllers/signup');
 
 const morgan = require('morgan');
-const { getFName} = require('../db/controllers/currentUserName');
-const { addMentorCalendar, getMentorCalendar} = require('../db/controllers/mentorCalendars');
-const { addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile, searchProfiles } = require('../db/controllers/mentorProfiles.js');
-const { addMentorSkills, initMentorSkills, updateMentorSkills, getMentorSkills } = require('../db/controllers/mentorSkills.js');
+const { getFName } = require('../db/controllers/currentUserName');
+const {
+  addMentorCalendar,
+  getMentorCalendar,
+} = require('../db/controllers/mentorCalendars');
+const {
+  addMentorProfile,
+  getMentorProfile,
+  updateMentorProfile,
+  queryMentorProfile,
+  searchProfiles,
+} = require('../db/controllers/mentorProfiles.js');
+const {
+  addMentorSkills,
+  initMentorSkills,
+  updateMentorSkills,
+  getMentorSkills,
+} = require('../db/controllers/mentorSkills.js');
 
 const { addReview, getReviews } = require('../db/controllers/reviews.js');
 const { addSkills, getSkills } = require('../db/controllers/skills.js');
@@ -209,22 +223,22 @@ app.put('/api/updateMentorSkills', (req, res) => {
 app.put('/api/addMentorCalendar/*', (req, res) => {
   addMentorCalendar(req.body.id, req.body.calUrl, (err, result) => {
     if (err) {
-      res.send(err)
+      res.send(err);
     } else {
-      res.send(result.rows)
+      res.send(result.rows);
     }
   });
 });
 
 app.get('/api/getMentorCalendar/*', (req, res) => {
   getMentorCalendar(req.params[0], (err, result) => {
-    console.log(req.params[0])
+    console.log(req.params[0]);
     if (err) {
-      console.log('error', err)
-      res.send(err)
+      console.log('error', err);
+      res.send(err);
     } else {
-      console.log('success', result.rows)
-      res.send(result.rows[0].calendly)
+      // console.log('success', result.rows);
+      res.send(result.rows[0].calendly);
     }
   });
 });
@@ -242,9 +256,9 @@ app.get('/api/getProfile/*', (req, res) => {
 app.get('/api/getFirstName/*', (req, res) => {
   getFName(req.params[0], (err, result) => {
     if (err) {
-      res.send(null)
+      res.send(null);
     } else {
-      console.log(result.rows[0].first_name)
+      // console.log(result.rows[0].first_name);
       res.send(result.rows[0].first_name);
     }
   });
@@ -257,21 +271,21 @@ app.get('/api/searchProfiles', (req, res) => {
     } else {
       res.send(result.rows);
     }
-  })
-})
+  });
+});
 
 app.get('/api/searchData', (req, res) => {
   getMentorSkills((err, result) => {
     if (err) {
-      res.send(null)
+      res.send(null);
     } else {
-      res.send(result.rows)
+      res.send(result.rows);
     }
-  })
-})
+  });
+});
 
 app.put('/api/updateMentorProfile', (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   updateMentorProfile(req.body.id, req.body.about, (err, result) => {
     if (err) {
       res.send('err');
@@ -319,31 +333,30 @@ app.post('/api/addReview', (req, res) => {
 const { Server } = require('socket.io');
 const cors = require('cors');
 const server = require('http').createServer(app);
-
-const cors = require('cors');
 app.use(cors());
 const io = require('socket.io')(server, {
   cors: {
     origin: '*',
-    methods: ['GET', 'POST']
-  }
-})
-const videoCall = io.of('videoCall')
-videoCall.on('connection', socket => {
+    methods: ['GET', 'POST'],
+  },
+});
+const videoCall = io.of('videoCall');
+videoCall.on('connection', (socket) => {
   socket.on('rendered', () => {
-    socket.emit('me', socket.id)
-  })
+    socket.emit('me', socket.id);
+  });
   socket.on('disconnect', () => {
-    socket.broadcast.emit('callEnded')
-  })
-  socket.on('callUser', ({ userToCall, signalData, from, name}) => {
-    videoCall.to(userToCall).emit('callUser', { signal: signalData, from, name })
-  })
-  socket.on('answerCall', data => {
-    videoCall.to(data.to).emit('callAccepted', data.signal)
-  })
-})
-
+    socket.broadcast.emit('callEnded');
+  });
+  socket.on('callUser', ({ userToCall, signalData, from, name }) => {
+    videoCall
+      .to(userToCall)
+      .emit('callUser', { signal: signalData, from, name });
+  });
+  socket.on('answerCall', (data) => {
+    videoCall.to(data.to).emit('callAccepted', data.signal);
+  });
+});
 
 ///////////////////////////////////////
 const chat = io.of('/chat');
@@ -362,33 +375,34 @@ chat.on('connection', (socket) => {
     `${socket.username} joined room ${socket.adapter.rooms}`
   );
   // console.log(socket);
-  // socket.onAny((event, ...args) => {
-  //   console.log(event, args);
-  // });
+  socket.onAny((event, ...args) => {
+    console.log(event, args);
+  });
   socket.on('send', (data) => {
     chat.emit('receive', data);
   });
 
   socket.on('disconnect', () => {
-    console.log(users, 'before');
+    // console.log(users, 'before');
     for (let i = 0; i < users.length; i++) {
       if (users[i].userID === socket.id) {
         users.splice(i, 1);
       }
     }
 
-    console.log(users, 'after');
     console.log('User Disconnected', socket.id);
     chat.emit('users', users);
   });
   socket.on('t', (data) => {
-    console.log(socket.id);
+   // console.log(socket.id);
   });
   socket.on('private message', (data) => {
-    chat.to(data.send).emit('private message', {
+    console.log(data.to, 'data to');
+    chat.to(data.to).emit('private message', {
       data,
       from: socket.id,
     });
+    // console.log('privite fired');
   });
 });
 chat.use((socket, next) => {
