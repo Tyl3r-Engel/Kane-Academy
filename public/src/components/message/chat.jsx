@@ -96,7 +96,7 @@ export default function Chat({ socket, username }) {
             event.key === 'Enter' && sendMessage();
           }}
         />
-        <Button onClick={sendMessage}>&#9658;</Button>
+        <Button id='muiPrimary' variant='contained' onClick={sendMessage}>&#9658;</Button>
       </div>
       <Users socket={socket} />
       <TextField

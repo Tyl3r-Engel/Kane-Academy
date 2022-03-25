@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import ErrorMessage from './ErrorMessage';
 import { FormControl, Button, TextField, Typography } from '@mui/material';
+import logo from '../../../dist/kaLogoBlack.png';
 
 export default function LoginRoot() {
   const [email, updateEmail] = React.useState('');
@@ -28,6 +29,7 @@ export default function LoginRoot() {
 
   return (
     <div style={{margin: '0 auto', width: '250px'}}>
+      <img src={logo} style={{'marginTop': '-30px', 'marginBottom': '-30px', 'width': 'auto', 'height': '250px'}}></img>
       <Typography variant="h2" component="div" gutterBottom align="center">Log in</Typography>
       <FormControl fullWidth>
         <TextField
@@ -35,14 +37,14 @@ export default function LoginRoot() {
             minLength: 1,
             maxLength: 40
           }}
-          label="email"
+          label="Email"
           type="email"
           value={email}
           onChange={(e) => updateEmail(e.target.value)}
           required />
         <br />
         <TextField
-          label="password"
+          label="Password"
           type="password"
           width="250px"
           value={password}
@@ -54,9 +56,11 @@ export default function LoginRoot() {
           required
         />
         <br />
-        <Button variant="contained" onClick={handleSubmit}>Submit</Button>
+        <Button id='muiPrimary' variant="contained" onClick={handleSubmit}>Submit</Button>
         <br />
-        <Button variant="contained" href="/login/federated/google" color="secondary">Sign in with Google</Button>
+        <Button id='muiSecondary' variant="contained" href="/login/federated/google">Sign in with Google</Button>
+        <br />
+        <Button variant="text" href="/signup">Not registered? Sign Up</Button>
       </FormControl>
       {error && (<ErrorMessage error={error} />)}
     </div>

@@ -14,22 +14,10 @@ const { login, completeSignup } = require('../db/controllers/auth');
 const { signup } = require('../db/controllers/signup');
 
 const morgan = require('morgan');
-const {
-  addMentorCalendar,
-  getMentorCalendar,
-} = require('../db/controllers/mentorCalendars');
-const {
-  addMentorProfile,
-  getMentorProfile,
-  updateMentorProfile,
-  queryMentorProfile,
-  searchProfiles,
-} = require('../db/controllers/mentorProfiles.js');
-const {
-  addMentorSkills,
-  initMentorSkills,
-  updateMentorSkills,
-} = require('../db/controllers/mentorSkills.js');
+const { getFName} = require('../db/controllers/currentUserName');
+const { addMentorCalendar, getMentorCalendar} = require('../db/controllers/mentorCalendars');
+const { addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile, searchProfiles } = require('../db/controllers/mentorProfiles.js');
+const { addMentorSkills, initMentorSkills, updateMentorSkills, getMentorSkills } = require('../db/controllers/mentorSkills.js');
 
 const { addReview, getReviews } = require('../db/controllers/reviews.js');
 const { addSkills, getSkills } = require('../db/controllers/skills.js');
@@ -218,27 +206,25 @@ app.put('/api/updateMentorSkills', (req, res) => {
   });
 });
 
-app.put('/api/calendly', (req, res) => {
-  console.log(req.body);
-  addMentorCalendar(req.body, (err, result) => {
+app.put('/api/addMentorCalendar/*', (req, res) => {
+  addMentorCalendar(req.body.id, req.body.calUrl, (err, result) => {
     if (err) {
-      console.log(err);
-      res.send(err);
+      res.send(err)
     } else {
-      console.log(result);
-      res.send(result);
+      res.send(result.rows)
     }
   });
 });
 
-app.post('/api/calendly', (req, res) => {
-  getMentorCalendar(req.body, (err, result) => {
+app.get('/api/getMentorCalendar/*', (req, res) => {
+  getMentorCalendar(req.params[0], (err, result) => {
+    console.log(req.params[0])
     if (err) {
-      console.log(err);
-      res.send(err);
+      console.log('error', err)
+      res.send(err)
     } else {
-      console.log('getting url: ' + result.rows[0].calendly);
-      res.send(result.rows[0].calendly);
+      console.log('success', result.rows)
+      res.send(result.rows[0].calendly)
     }
   });
 });
@@ -253,6 +239,17 @@ app.get('/api/getProfile/*', (req, res) => {
   });
 });
 
+app.get('/api/getFirstName/*', (req, res) => {
+  getFName(req.params[0], (err, result) => {
+    if (err) {
+      res.send(null)
+    } else {
+      console.log(result.rows[0].first_name)
+      res.send(result.rows[0].first_name);
+    }
+  });
+});
+
 app.get('/api/searchProfiles', (req, res) => {
   searchProfiles((err, result) => {
     if (err) {
@@ -260,8 +257,18 @@ app.get('/api/searchProfiles', (req, res) => {
     } else {
       res.send(result.rows);
     }
-  });
-});
+  })
+})
+
+app.get('/api/searchData', (req, res) => {
+  getMentorSkills((err, result) => {
+    if (err) {
+      res.send(null)
+    } else {
+      res.send(result.rows)
+    }
+  })
+})
 
 app.put('/api/updateMentorProfile', (req, res) => {
   console.log(req.body);
@@ -318,23 +325,25 @@ app.use(cors());
 const io = require('socket.io')(server, {
   cors: {
     origin: '*',
-    methods: ['GET', 'POST'],
-  },
-});
-app.use(cors());
-
-io.of('videoCall').on('connection', (socket) => {
-  socket.emit('me', socket.id);
+    methods: ['GET', 'POST']
+  }
+})
+const videoCall = io.of('videoCall')
+videoCall.on('connection', socket => {
+  socket.on('rendered', () => {
+    socket.emit('me', socket.id)
+  })
   socket.on('disconnect', () => {
-    socket.broadcast.emit('callEnded');
-  });
-  socket.on('callUser', ({ userToCall, signalData, from, name }) => {
-    io.to(userToCall).emit('callUser', { signal: signalData, from, name });
-  });
-  socket.on('answerCall', (data) => {
-    io.to(data.to).emit('callAccepted', data.signal);
-  });
-});
+    socket.broadcast.emit('callEnded')
+  })
+  socket.on('callUser', ({ userToCall, signalData, from, name}) => {
+    videoCall.to(userToCall).emit('callUser', { signal: signalData, from, name })
+  })
+  socket.on('answerCall', data => {
+    videoCall.to(data.to).emit('callAccepted', data.signal)
+  })
+})
+
 
 ///////////////////////////////////////
 const chat = io.of('/chat');

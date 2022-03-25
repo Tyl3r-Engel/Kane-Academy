@@ -33,7 +33,13 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader', 'source-map-loader'],
+        use: ["style-loader", "css-loader", "source-map-loader"]
+      },
+      {
+        test: /\.(jpg|png)$/,
+        use: {
+          loader: 'url-loader',
+        },
       },
     ],
   },

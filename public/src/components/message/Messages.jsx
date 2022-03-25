@@ -36,6 +36,8 @@ export default function Messages() {
             }}
           />
           <Button
+            id='muiPrimary'
+            variant='contained'
             onClick={(e) => {
               e.preventDefault();
               join(username, setUsername);

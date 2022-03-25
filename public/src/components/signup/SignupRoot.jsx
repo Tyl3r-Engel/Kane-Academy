@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import ErrorMessage from '../login/ErrorMessage';
 import { FormControl, Button, Radio, Typography, FormLabel, FormControlLabel, TextField } from '@mui/material';
+import logo from '../../../dist/kaLogoBlack.png';
 
 export default function SignupRoot() {
   const [mentor, updateMentor] = React.useState(false);
@@ -36,7 +37,8 @@ export default function SignupRoot() {
 
   return (
     <div style={{margin: '0 auto', width: '250px'}}>
-      <Typography variant="h2" component="div" gutterBottom align="center">Sign Up:</Typography>
+    <img src={logo} style={{'marginTop': '-30px', 'marginBottom': '-30px', 'width': 'auto', 'height': '250px'}}></img>
+      <Typography variant="h2" component="div" gutterBottom align="center">Sign Up</Typography>
       <FormControl fullWidth align="center">
         <FormLabel>Account Type</FormLabel>
           <FormControlLabel
@@ -93,14 +95,14 @@ export default function SignupRoot() {
             minLength: 1,
             maxLength: 40
           }}
-          label="email"
+          label="Email"
           type="email"
           value={email}
           onChange={(e) => updateEmail(e.target.value)}
           required />
         <br />
         <TextField
-          label="password"
+          label="Password"
           type="password"
           width="250px"
           value={password}
@@ -112,9 +114,11 @@ export default function SignupRoot() {
           required
         />
         <br />
-        <Button variant="contained" onClick={handleSubmit}>Submit</Button>
+        <Button id='muiPrimary' variant="contained" onClick={handleSubmit}>Submit</Button>
         <br />
-        <Button variant="contained" href="/login/federated/google" color="secondary">Sign in with Google</Button>
+        <Button id='muiSecondary' variant="contained" href="/login/federated/google">Sign in with Google</Button>
+        <br />
+        <Button variant="text" href="/login">already registered? Log in</Button>
       </FormControl>
       {error && (<ErrorMessage error={error} />)}
     </div>

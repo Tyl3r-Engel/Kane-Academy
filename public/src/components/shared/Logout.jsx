@@ -16,7 +16,7 @@ export default function Logout() {
   }
 
   return (
-    <Button variant='contained' onClick={(e) => logout(e)}>
+    <Button id='muiPrimary' variant='contained' onClick={(e) => logout(e)}>
       Logout
     </Button>
   )

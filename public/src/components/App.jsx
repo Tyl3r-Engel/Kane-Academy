@@ -9,11 +9,14 @@ import FakeData from './FakeData';
 import CompleteSignup from './signup/CompleteSignup';
 import MsgRoot from './message/msgRoot';
 import Messages from './message/Messages';
+import { ThemeProvider } from '@material-ui/core/styles';
+import theme from './shared/themes';
 
 export default function App() {
   return (
     <div className="App">
-      <Messages />
+      {/* <Messages /> */}
+      <ThemeProvider theme={theme}>
       <Router>
         <Routes>
           <Route path="/" element={<HomeRoot />} />
@@ -26,6 +29,7 @@ export default function App() {
           <Route path="/fakedata" element={FakeData()} />
         </Routes>
       </Router>
+      </ThemeProvider>
     </div>
   );
 }

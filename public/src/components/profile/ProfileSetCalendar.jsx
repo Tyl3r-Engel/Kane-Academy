@@ -6,15 +6,19 @@ import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import requestCurrentSession from './axios/requestCurrentSession';
+import requestMentorCalendar from './axios/requestMentorCalendar';
+import updateMentorCalendar from './axios/updateMentorCalendar';
+import { ProfileContext } from './ProfileRoot';
 import { PopupModal } from "react-calendly";
 
 export default function ProfileSetCalendar() {
-  const [avail, setAvail] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [openC, setOpenC] = React.useState(false);
   const [hasSub, setHasSub] = React.useState(false);
   const [calUrl, setCalUrl] = React.useState(null);
   const [calUrlTemp, setCalUrlTemp] = React.useState(null);
+
+  const {currentProfile, setCurrentProfile, loggedInUser, reviewsAverage, skillsList, editable} = React.useContext(ProfileContext);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -36,42 +40,28 @@ export default function ProfileSetCalendar() {
   }
 
   let urlSubmit = () => {
-    requestCurrentSession((mId) => {
-      mId[0].sess.replace('/', '')
-      mId[0].sess.replace("\"", '')
-      axios.put('/api/calendly', {
-        calendly: calUrlTemp,
-        mentId: JSON.parse(mId[0].sess).passport.user.id
-      }, (result) => console.log(result))
+    updateMentorCalendar(currentProfile.id, calUrlTemp, () => {
+      urlGet();
+      setOpen(false);
     })
-    .then(() => {
-      setCalUrl(calUrlTemp);
-      handleClose();
-    });
   }
 
   let urlGet = () => {
-    requestCurrentSession((mId) => {
-      mId[0].sess.replace('/', '')
-      mId[0].sess.replace("\"", '')
-      axios.post('/api/calendly', {
-        mentId: JSON.parse(mId[0].sess).passport.user.id
-      })
-      .then((result) => {
-        console.log(result.data)
-        setCalUrl(result.data)
-      })
+    requestMentorCalendar(currentProfile.id, (result) => {
+      setCalUrl(result)
     })
   }
 
+
   React.useEffect(() => {
     urlGet()
-    console.log('calurl: ' + calUrl)
-  }, [calUrl]);
+  }, []);
 
   return (
     <div id='allThingsCal'>
-      <Button variant="contained" onClick={() => handleOpen()}>Edit Schedule</Button>
+      {editable
+      &&
+      <Button id='muiPrimary' variant="contained" onClick={() => handleOpen()}>Edit Schedule</Button>}
 
       <Modal
         open={open}
@@ -97,7 +87,7 @@ export default function ProfileSetCalendar() {
             </ul>
           </Typography>
           <TextField id="outlined-basic" fullWidth={true} label="Calendar URL" variant="outlined" onChange={(e) => urlInput(e)}></TextField>
-          <Button id='subURL' fullWidth={true} variant="contained" onClick={() => urlSubmit()}>Finish</Button>
+          <Button id='muiPrimary' fullWidth={true} variant="contained" onClick={() => urlSubmit()}>Finish</Button>
         </Box>
       </Modal>
 
@@ -105,7 +95,7 @@ export default function ProfileSetCalendar() {
 
       {calUrl ? (
         <div id='popArea'>
-        <Button id='openPop' variant="contained" onClick={() => setOpenC(true)}>Schedule Time w/ Me</Button>
+        <Button id='muiSecondary' variant="contained" onClick={() => {setOpenC(true)}}>Schedule Time w/ Me</Button>
         <PopupModal
         url={calUrl}
         rootElement={document.getElementById("popArea")}
