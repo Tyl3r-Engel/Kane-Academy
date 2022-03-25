@@ -7,7 +7,6 @@ import updateMentorProfile from './axios/updateMentorProfile';
 import updateProfilePhoto from './axios/updateProfilePhoto';
 import addSkill from './axios/addSkill';
 import { styled } from '@mui/material/styles';
-=======
 import { Avatar, Button, Modal, Box, Typography, TextField, Paper, Grid } from '@mui/material';
 
 export default function Blurb() {
