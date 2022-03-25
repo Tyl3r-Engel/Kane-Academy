@@ -85,8 +85,23 @@ const VideoCallProvider = ({ children }) => {
   )
 }
 
+const SearchContext = createContext({})
+const SearchProvider = ({ children }) => {
+  const [query, setQuery] = useState('')
+  function handleOnSearch(event) {
+    setQuery(event.target.value);
+  }
+  return (
+    <SearchContext.Provider value={{handleOnSearch, query}}>
+      {children}
+    </SearchContext.Provider>
+  )
+}
+
 export {
   AppContext,
   VideoCallContext,
-  VideoCallProvider
+  VideoCallProvider,
+  SearchContext,
+  SearchProvider,
 };
