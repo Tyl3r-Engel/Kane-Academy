@@ -55,6 +55,11 @@ html {
   color: darkslateblue;
 }
 
+#searchUL {
+  padding: 0;
+  margin-left: 0;
+}
+
 /* #homeBody {
   display: grid;
   grid-template-areas:

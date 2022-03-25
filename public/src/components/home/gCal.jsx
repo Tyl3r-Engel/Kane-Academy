@@ -69,7 +69,7 @@ export default function HomeRoot() {
             // elevation={3}
             // variant='elevation'
             onClick={(e) => handleItemClick(e, 'sign-in')}
-            sx={{'borderRadius': '100%', 'width': '350px', 'height': '350px', 'cursor': 'pointer', 'marginTop': '50px'}}
+            sx={{'borderRadius': '100%', 'width': '350px', 'height': '350px', 'cursor': 'pointer', 'margin': '0 auto', 'marginTop': '50px'}}
           >
           <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignContent: 'center' }}>
             <Typography variant='overline' id='muiSecondaryText' align='center' sx={{'alignContent': 'center', 'margin': 'auto', 'width': '50%', 'marginTop': '100px'}}>View Upcoming Appointments with Google Calendar</Typography>
