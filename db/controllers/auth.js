@@ -17,7 +17,7 @@ const googleSignup = (issuer, profile, cb) => {
         cb(err);
       } else {
         if (results.rows[0] !== undefined) {
-          addMentorProfile(results.rows[0].id, '', () => {
+          addMentorProfile(results.rows[0].id, '', '', '', () => {
             initMentorSkills(results.rows[0].id, 1, () => {
               cb(null, results.rows[0]);
             })
