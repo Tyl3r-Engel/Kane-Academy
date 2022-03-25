@@ -16,7 +16,7 @@ const { signup } = require('../db/controllers/signup');
 const morgan = require('morgan');
 const { getFName} = require('../db/controllers/currentUserName');
 const { addMentorCalendar, getMentorCalendar} = require('../db/controllers/mentorCalendars');
-const { addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile, searchProfiles } = require('../db/controllers/mentorProfiles.js');
+const { addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile, searchProfiles, updateMentorPhoto } = require('../db/controllers/mentorProfiles.js');
 const { addMentorSkills, initMentorSkills, updateMentorSkills, getMentorSkills } = require('../db/controllers/mentorSkills.js');
 
 const { addReview, getReviews } = require('../db/controllers/reviews.js');
@@ -267,6 +267,20 @@ app.get('/api/searchData', (req, res) => {
 app.put('/api/updateMentorProfile', (req, res) => {
   console.log(req.body);
   updateMentorProfile(req.body.id, req.body.about, (err, result) => {
+
+    if (err) {
+      res.send('err');
+    } else {
+      res.send(result.rows);
+    }
+
+  })
+
+});
+
+app.put('/api/updateMentorPhoto', (req, res) => {
+  console.log(req.body);
+  updateMentorPhoto(req.body.id, req.body.photo, (err, result) => {
 
     if (err) {
       res.send('err');

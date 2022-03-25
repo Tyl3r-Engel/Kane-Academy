@@ -58,6 +58,7 @@ export default function Search() {
 
   return (
     <div>
+      <div id='homeSearchField'>
       <h1>Search</h1>
       <form>
         <label>Looking for a genius?</label>
@@ -66,6 +67,8 @@ export default function Search() {
         <TextField id='outlined-basic' label='Search Mentor Skill' autoComplete='false' value={query} onChange={handleOnSearch} />
         <Button id='muiPrimary' variant='contained'>Search</Button>
       </form>
+      </div>
+      <div id='homeSearchResults'>
       <h2>Genius Skills</h2>
       <ul>
         {query ? fuseSearchResults.map((elem, i) => (
@@ -90,14 +93,15 @@ export default function Search() {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button id='muiSecondary'size="small">Learn</Button>
-                  <Button id='muiSecondary'size="small">Share</Button>
+                  <Button id='muiSecondary' size="small">Learn</Button>
+                  <Button id='muiSecondary' size="small">Share</Button>
                 </CardActions>
               </Card>
             </Card>
           </div>))
           : null}
       </ul>
+      </div>
     </div>
   )
 }

@@ -4,10 +4,52 @@ import Ratings from 'react-ratings-declarative';
 import averageReviews from './helpers/averageReviews';
 import updateMentorSkills from './axios/updateMentorSkills';
 import updateMentorProfile from './axios/updateMentorProfile';
+import updateProfilePhoto from './axios/updateProfilePhoto';
 import addSkill from './axios/addSkill';
+import { Avatar, Button, Modal, Box, Typography, TextField } from '@mui/material';
+// 'https://i.imgur.com/KOwCIw8.png'
 
 export default function Blurb() {
-  const {currentProfile, setCurrentProfile, loggedInUser, reviewsAverage, skillsList, editable} = useContext(ProfileContext)
+  const profilePic = '';
+  const [open, setOpen] = React.useState(false);
+  const [profPic, setProfPic] = React.useState('');
+  const [profPicTemp, setProfPicTemp] = React.useState('');
+  const {currentProfile, setCurrentProfile, loggedInUser, reviewsAverage, skillsList, editable} = useContext(ProfileContext);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+
+  let photoInput = (e) => {
+    setProfPicTemp(e.target.value);
+  }
+
+  let photoSubmit = () => {
+    updateProfilePhoto(currentProfile.id, profPicTemp, () => {
+      photoGet();
+      setOpen(false);
+    })
+  }
+
+  let photoGet = () => {
+      setProfPic(currentProfile.photo);
+  }
+
+  React.useEffect(() => {
+    photoGet()
+  }, []);
+
 
   function handleChange(event) {
     setCurrentProfile({...currentProfile, [event.target.name]: event.target.value})
@@ -83,6 +125,31 @@ export default function Blurb() {
     if (skillsList !== null) {
       return(
         <div className="blurb">
+          <Avatar variant='circular' src={profPic} alt='Profile Pic' sx={{ 'width': '100px', 'height': '100px' }}></Avatar>
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                Paste a Link to a Profile Picture Below
+              </Typography>
+              <TextField
+                id="outlined-basic"
+                fullWidth={true}
+                label="Photo URL"
+                variant="outlined"
+                name={currentProfile.photo}
+                onChange={(e) => photoInput(e)}
+                value={currentProfile.photo}
+                >
+              </TextField>
+              <Button id='muiPrimary' fullWidth={true} variant="contained" onClick={() => photoSubmit()}>Finish</Button>
+            </Box>
+          </Modal>
+          <Button id='muiPrimary' variant="contained" onClick={() => handleOpen()}>Update Photo</Button>
           <div>
             Name: {currentProfile.first_name} {currentProfile.last_name}
           </div>
@@ -189,6 +256,7 @@ export default function Blurb() {
   } else {
     return(
       <div className="blurb">
+      <Avatar variant='circular' src={profPic} alt='Profile Pic' sx={{ 'width': '100px', 'height': '100px' }}></Avatar>
         <div>
           {currentProfile.first_name} {currentProfile.last_name}
         </div>
