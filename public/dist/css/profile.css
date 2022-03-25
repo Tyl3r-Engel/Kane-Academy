@@ -40,12 +40,22 @@ table, th, td {
   color: white;
 }
 
+#muiGradient2 {
+  background-image: radial-gradient(circle, #c0a0ca, #a797c6, #8c8fc0, #6f88b8, #4f80ad);
+  color: white;
+}
+
+#muiSecondaryText {
+  color: darkslateblue;
+  font-weight: 900;
+}
+
 html {
   background-color: #DDE9F9;
   color: darkslateblue;
 }
 
-#homeBody {
+/* #homeBody {
   display: grid;
   grid-template-areas:
     "Search Cal Cal Cal"
@@ -69,17 +79,17 @@ html {
 #homeSearchResults {
   width: 600px;
   grid-area: Skill;
-}
+} */
 
-#calContainer {
+/* #calContainer {
   /* display: flex;
   flex-direction: column; */
-}
 
-#calButtons {
+
+/* #calButtons {
   margin: 20px auto;
 }
 
 #calCal {
   margin: 0 auto;
-}
+} */

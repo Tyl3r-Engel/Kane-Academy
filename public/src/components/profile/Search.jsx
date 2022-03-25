@@ -7,6 +7,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import placeholderImg from '../../../dist/placeholder.png';
@@ -68,13 +69,16 @@ export default function Search() {
   }
 
   return (
-    <>
-      <div>
-        <form style={{padding: '10px'}}>
-          <TextField id='outlined-basic' label='Search Mentor Skill' autoComplete='false' value={query} onChange={handleOnSearch} />
-          <Button variant='contained' style={{margin: '10px'}}>Search</Button>
-        </form>
-
+    <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }} id='calContainer'>
+      <div id='homeSearchField'>
+      <h1>Search</h1>
+      <form>
+        <label>Looking for a genius?</label>
+        <br />
+        <br />
+        <TextField id='outlined-basic' label='Search Mentor Skill' autoComplete='false' value={query} onChange={handleOnSearch} />
+        <Button id='muiPrimary' variant='contained'>Search</Button>
+      </form>
         <ul>
           {query ? fuseSearchResults.map((elem, i) => (
             <div style={{display: 'inline-block', padding: '10px'}}>
@@ -175,6 +179,6 @@ export default function Search() {
             : null}
         </ul>
       </div>
-    </>
+    </Box>
   )
 }

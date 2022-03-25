@@ -5,6 +5,7 @@ import averageReviews from './helpers/averageReviews';
 import updateMentorSkills from './axios/updateMentorSkills';
 import updateMentorProfile from './axios/updateMentorProfile';
 import updateProfilePhoto from './axios/updateProfilePhoto';
+import requestProfile from './axios/requestProfile';
 import addSkill from './axios/addSkill';
 import { styled } from '@mui/material/styles';
 import { Avatar, Button, Modal, Box, Typography, TextField, Paper, Grid } from '@mui/material';
@@ -37,8 +38,11 @@ export default function Blurb() {
 
   let photoSubmit = () => {
     updateProfilePhoto(currentProfile.id, profPicTemp, () => {
-      photoGet();
-      setOpen(false);
+      requestProfile(currentProfile.id, (result) => {
+        setCurrentProfile(result[0])
+        setOpen(false);
+        photoGet();
+      })
     })
   }
 
@@ -116,7 +120,7 @@ export default function Blurb() {
     if (skillsList !== null) {
       return(
         <div className="blurb">
-          <Avatar variant='circular' src={profPic} alt='Profile Pic' sx={{ 'width': '100px', 'height': '100px' }}></Avatar>
+          <Avatar variant='circular' src={currentProfile.photo} alt='Profile Pic' sx={{ 'width': '100px', 'height': '100px' }}></Avatar>
           <Modal
             open={open}
             onClose={handleClose}
@@ -134,7 +138,7 @@ export default function Blurb() {
                 variant="outlined"
                 name={currentProfile.photo}
                 onChange={(e) => photoInput(e)}
-                value={currentProfile.photo}
+                value={profPicTemp}
                 >
               </TextField>
               <Button id='muiPrimary' fullWidth={true} variant="contained" onClick={() => photoSubmit()}>Finish</Button>
@@ -154,7 +158,7 @@ export default function Blurb() {
                     variant="outlined"
                     name={Object.keys(currentProfile.skills)[0]}
                     onChange={changeSkills}
-                    value={Object.values(currentProfile.skills)[0].skill}>
+                    value={Object.values(currentProfile.skills)[0].skill || ''}>
                   </TextField>
                 {/* </Item> */}
               </Grid>
@@ -166,7 +170,7 @@ export default function Blurb() {
                     variant="outlined"
                     name={Object.keys(currentProfile.skills)[0]}
                     onChange={changePrice}
-                    value={Object.values(currentProfile.skills)[0].price}>
+                    value={Object.values(currentProfile.skills)[0].price || ''}>
                   </TextField>
                 {/* </Item> */}
               </Grid>
@@ -177,7 +181,7 @@ export default function Blurb() {
                   variant="outlined"
                   name={Object.keys(currentProfile.skills)[1]}
                   onChange={changeSkills}
-                  value={Object.values(currentProfile.skills)[1].skill}>
+                  value={Object.values(currentProfile.skills)[1].skill || ''}>
                 </TextField>
               </Grid>
               <Grid item xs={1}>
@@ -187,7 +191,7 @@ export default function Blurb() {
                   variant="outlined"
                   name={Object.keys(currentProfile.skills)[1]}
                   onChange={changePrice}
-                  value={Object.values(currentProfile.skills)[1].price}>
+                  value={Object.values(currentProfile.skills)[1].price || ''}>
                 </TextField>
               </Grid>
               <Grid item xs={1}>
@@ -197,7 +201,7 @@ export default function Blurb() {
                   variant="outlined"
                   name={Object.keys(currentProfile.skills)[2]}
                   onChange={changeSkills}
-                  value={Object.values(currentProfile.skills)[2].skill}>
+                  value={Object.values(currentProfile.skills)[2].skill || ''}>
                 </TextField>
               </Grid>
               <Grid item xs={1}>
@@ -207,7 +211,7 @@ export default function Blurb() {
                   variant="outlined"
                   name={Object.keys(currentProfile.skills)[2]}
                   onChange={changePrice}
-                  value={Object.values(currentProfile.skills)[2].price}>
+                  value={Object.values(currentProfile.skills)[2].price || ''}>
                 </TextField>
               </Grid>
               <Grid item xs={1}>
@@ -217,7 +221,7 @@ export default function Blurb() {
                   variant="outlined"
                   name={Object.keys(currentProfile.skills)[3]}
                   onChange={changeSkills}
-                  value={Object.values(currentProfile.skills)[3].skill}>
+                  value={Object.values(currentProfile.skills)[3].skill || ''}>
                 </TextField>
               </Grid>
               <Grid item xs={1}>
@@ -227,7 +231,7 @@ export default function Blurb() {
                   variant="outlined"
                   name={Object.keys(currentProfile.skills)[3]}
                   onChange={changePrice}
-                  value={Object.values(currentProfile.skills)[3].price}>
+                  value={Object.values(currentProfile.skills)[3].price || ''}>
                 </TextField>
               </Grid>
               <Grid item xs={1}>
@@ -237,7 +241,7 @@ export default function Blurb() {
                   variant="outlined"
                   name={Object.keys(currentProfile.skills)[4]}
                   onChange={changeSkills}
-                  value={Object.values(currentProfile.skills)[4].skill}>
+                  value={Object.values(currentProfile.skills)[4].skill || ''}>
                 </TextField>
               </Grid>
               <Grid item xs={1}>
@@ -247,7 +251,7 @@ export default function Blurb() {
                   variant="outlined"
                   name={Object.keys(currentProfile.skills)[4]}
                   onChange={changePrice}
-                  value={Object.values(currentProfile.skills)[4].price}>
+                  value={Object.values(currentProfile.skills)[4].price || ''}>
                 </TextField>
               </Grid>
             </Grid>
@@ -277,7 +281,7 @@ export default function Blurb() {
   } else {
     return(
       <div className="blurb">
-        <Avatar variant='circular' src={profPic} alt='Profile Pic' sx={{ 'width': '100px', 'height': '100px' }}></Avatar>
+        <Avatar variant='circular' src={currentProfile.photo} alt='Profile Pic' sx={{ 'width': '100px', 'height': '100px' }}></Avatar>
         <h1>{currentProfile.first_name} {currentProfile.last_name}</h1>
         <div>
           <h2>Currently Teaching</h2>
