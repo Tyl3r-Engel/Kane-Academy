@@ -11,9 +11,6 @@ import Reviews from './Reviews.jsx'
 import Search from './Search';
 import ProfileSetCalendar from './ProfileSetCalendar';
 import NavBar from '../shared/navBar';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
 
 export const ProfileContext = React.createContext();
 
@@ -96,27 +93,9 @@ export default function ProfileRoot() {
         <div className="profileRoot">
           <ProfileContext.Provider value={ProfileProvider}>
             <NavBar />
-            <Box sx={{ flexGrow: 1 }}>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <Blurb />
-                  <h2>Availability</h2>
-                  <ProfileSetCalendar />
-                  <Search />
-                </Grid>
-                <Grid item xs={6}>
-                  <Reviews />
-                </Grid>
-              </Grid>
-            </Box>
-            {/* <Box sx={{ flexGrow: 1 }}>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                </Grid>
-                <Grid item xs={6}>
-                </Grid>
-              </Grid>
-            </Box> */}
+            <Blurb />
+            <Reviews />
+            <ProfileSetCalendar />
           </ProfileContext.Provider>
         </div>
       </>

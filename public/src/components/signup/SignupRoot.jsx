@@ -14,12 +14,8 @@ export default function SignupRoot() {
 
   const handleSubmit = (e) => {
     // Note: Add more verification to ensure good inputs
-    const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (email === '' || password === '' || firstName === '' || lastName === '') {
       updateError('Please fill in all required fields');
-      return;
-    } else if (!email.match(regexEmail)) {
-      updateError('Please use a valid email address');
       return;
     }
     e.preventDefault();

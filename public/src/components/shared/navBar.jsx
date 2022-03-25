@@ -89,7 +89,7 @@ export default function NavBar() {
   }
 
   return (
-    <AppBar position="sticky" id='muiGradient'>
+    <AppBar position="static" id='muiGradient'>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <img src={logo} style={{'marginTop': '-40px', 'marginBottom': '-40px', 'width': '150px', 'height': 'auto'}}></img>
@@ -146,16 +146,13 @@ export default function NavBar() {
           <Box sx={{ flexGrow: 0 }}>
             {currentUser
             &&
-            <div>
-            <Typography variant='h7'>{currentUser[0].first_name}</Typography>{' '}
-
+            <Typography variant='h7'>{currentUser[0].first_name}</Typography>
+            }{' '}
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="KA Profile" src={currentUser[0].photo} />
+                <Avatar alt="KA Profile" src={proPic} />
               </IconButton>
             </Tooltip>
-            </div>
-            }
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"
