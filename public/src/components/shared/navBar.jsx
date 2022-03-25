@@ -89,7 +89,7 @@ export default function NavBar() {
   }
 
   return (
-    <AppBar position="static" id='muiGradient'>
+    <AppBar position="sticky" id='muiGradient'>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <img src={logo} style={{'marginTop': '-40px', 'marginBottom': '-40px', 'width': '150px', 'height': 'auto'}}></img>

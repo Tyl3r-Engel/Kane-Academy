@@ -173,70 +173,70 @@ export default function Blurb() {
               placeholder="Your skill..."
               name={Object.keys(currentProfile.skills)[0]}
               onChange={changeSkills}
-              value={Object.values(currentProfile.skills)[0].skill}>
+              value={Object.values(currentProfile.skills)[0].skill || ''}>
             </input>
             <span>$<input
               type="number"
               placeholder="Your rate for 30 minutes"
               name={Object.keys(currentProfile.skills)[0]}
               onChange={changePrice}
-              value={Object.values(currentProfile.skills)[0].price}>
+              value={Object.values(currentProfile.skills)[0].price || ''}>
             </input></span>
             <input
               type="text"
               placeholder="Your skill..."
               name={Object.keys(currentProfile.skills)[1]}
               onChange={changeSkills}
-              value={Object.values(currentProfile.skills)[1].skill}>
+              value={Object.values(currentProfile.skills)[1].skill || ''}>
             </input>
             <span>$<input
               type="number"
               placeholder="Your rate for 30 minutes"
               name={Object.keys(currentProfile.skills)[1]}
               onChange={changePrice}
-              value={Object.values(currentProfile.skills)[1].price}>
+              value={Object.values(currentProfile.skills)[1].price || ''}>
             </input></span>
             <input
               type="text"
               placeholder="Your skill..."
               name={Object.keys(currentProfile.skills)[2]}
               onChange={changeSkills}
-              value={Object.values(currentProfile.skills)[2].skill}>
+              value={Object.values(currentProfile.skills)[2].skill || ''}>
             </input>
             <span>$<input
               type="number"
               placeholder="Your rate for 30 minutes"
               name={Object.keys(currentProfile.skills)[2]}
               onChange={changePrice}
-              value={Object.values(currentProfile.skills)[2].price}>
+              value={Object.values(currentProfile.skills)[2].price || ''}>
             </input></span>
             <input
               type="text"
               placeholder="Your skill..."
               name={Object.keys(currentProfile.skills)[3]}
               onChange={changeSkills}
-              value={Object.values(currentProfile.skills)[3].skill}>
+              value={Object.values(currentProfile.skills)[3].skill || ''}>
             </input>
             <span>$<input
               type="number"
               placeholder="Your rate for 30 minutes"
               name={Object.keys(currentProfile.skills)[3]}
               onChange={changePrice}
-              value={Object.values(currentProfile.skills)[3].price}>
+              value={Object.values(currentProfile.skills)[3].price || ''}>
             </input></span>
             <input
               type="text"
               placeholder="Your skill..."
               name={Object.keys(currentProfile.skills)[4]}
               onChange={changeSkills}
-              value={Object.values(currentProfile.skills)[4].skill}>
+              value={Object.values(currentProfile.skills)[4].skill || ''}>
             </input>
             <span>$<input
               type="number"
               placeholder="Your rate for 30 minutes"
               name={Object.keys(currentProfile.skills)[4]}
               onChange={changePrice}
-              value={Object.values(currentProfile.skills)[4].price}>
+              value={Object.values(currentProfile.skills)[4].price || ''}>
             </input></span>
             <input
               type="submit" value="Save Changes"></input>
