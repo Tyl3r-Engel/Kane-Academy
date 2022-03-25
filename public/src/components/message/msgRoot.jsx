@@ -10,5 +10,5 @@ export default function MsgRoot() {
       <Messages />
       <VideoCall />
     </div>
-  )
+  );
 }
