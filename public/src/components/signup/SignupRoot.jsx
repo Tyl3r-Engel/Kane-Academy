@@ -95,14 +95,14 @@ export default function SignupRoot() {
             minLength: 1,
             maxLength: 40
           }}
-          label="email"
+          label="Email"
           type="email"
           value={email}
           onChange={(e) => updateEmail(e.target.value)}
           required />
         <br />
         <TextField
-          label="password"
+          label="Password"
           type="password"
           width="250px"
           value={password}
@@ -117,6 +117,8 @@ export default function SignupRoot() {
         <Button id='muiPrimary' variant="contained" onClick={handleSubmit}>Submit</Button>
         <br />
         <Button id='muiSecondary' variant="contained" href="/login/federated/google">Sign in with Google</Button>
+        <br />
+        <Button variant="text" href="/login">already registered? Log in</Button>
       </FormControl>
       {error && (<ErrorMessage error={error} />)}
     </div>
