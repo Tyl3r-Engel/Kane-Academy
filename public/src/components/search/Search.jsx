@@ -69,7 +69,7 @@ export default function Search() {
     <>
     <div>
       <ul>
-        {query ? 
+        {query ?
           (
             // fuseSearchResults.map((elem, i) => (
             //   <div style={{display: 'inline-block', padding: '10px'}}>
@@ -131,17 +131,16 @@ export default function Search() {
         }
         </ul>
       </div>
-      
+
       <div id='homeSearchResults'>
-        <h2>Genius Skills</h2>
-        <ul>
+        <ul id='searchUL'>
           {query &&
             (
               fuseSearchResults.map((elem, i) => (
-                <div key={Math.random() * 50000} onClick={handleClick} data-index={elem.item.id} style={{display: 'inline-block', padding: '10px'}}>
-                  <Card sx={{ maxWidth: 200, maxHeight: 300 }}>
-                    <Card id='muiPrimary' sx={{ maxWidth: 345 }}>
-                    <CardMedia component="img" height="80" image={placeholderImg} alt="placeholder" />
+                <div key={Math.random() * 50000} data-index={elem.item.id} style={{display: 'inline-block', padding: '10px'}}>
+                  <Card sx={{ width: 200, height: 240 }}>
+                    <Card id='muiPrimary' sx={{ width: 200 }}>
+                    <CardMedia component="img" height="120" image={elem.item.photo || ''} alt="placeholder" />
                       <CardContent>
                         <Typography gutterBottom variant="p" component="div">
                           {JSON.stringify(elem.item.first_name+" "+elem.item.last_name)}
@@ -154,7 +153,7 @@ export default function Search() {
                         </Typography>
                       </CardContent>
                       <CardActions>
-                        <Button id='muiSecondary' size="small">Learn</Button>
+                        <Button onClick={(e) => handleClick(e)} value={elem.item.mentor_id} id='muiSecondary' size="small" fullWidth='true'>Learn</Button>
                       </CardActions>
                     </Card>
                   </Card>

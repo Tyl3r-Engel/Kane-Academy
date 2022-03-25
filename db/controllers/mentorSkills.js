@@ -24,11 +24,11 @@ const updateMentorSkills = (mentorObj, cb) => {
 
 const getMentorSkills = (cb) => {
   const queryString = `
-  SELECT mentor_skills.id AS mentor_skills_id, mentor_skills.mentor_id, mentor_skills.skill_id, users.first_name, users.last_name, users.mentor, skills.name, skills.category, skills.description
-  FROM mentor_skills LEFT JOIN users ON mentor_skills.mentor_id = users.id LEFT JOIN skills ON skills.id = mentor_skills.skill_id WHERE users.mentor = true ORDER BY skill_id desc;
+  SELECT mentor_skills.id AS mentor_skills_id, mentor_skills.mentor_id, mentor_skills.skill_id, users.first_name, users.last_name, users.mentor, skills.name, skills.category, skills.description, mentor_profiles.photo
+  FROM mentor_skills LEFT JOIN users ON mentor_skills.mentor_id = users.id LEFT JOIN skills ON skills.id = mentor_skills.skill_id LEFT JOIN mentor_profiles ON mentor_profiles.mentor_id = mentor_skills.mentor_id WHERE users.mentor = true ORDER BY skill_id desc;
   `
   pool.query(queryString, cb)
-} 
+}
 
 module.exports = {
   addMentorSkills, initMentorSkills, updateMentorSkills, getMentorSkills

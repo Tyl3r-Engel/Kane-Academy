@@ -9,7 +9,7 @@ export default function SearchBar() {
     <div>
         <form style={{padding: '10px'}}>
           <TextField id='outlined-basic' label='Search Mentor Skill' autoComplete='off' value={query} onChange={handleOnSearch} />
-          <Button variant='contained' style={{margin: '10px'}}>Search</Button>
+          <Button variant='contained' id='muiPrimary' style={{margin: '10px'}}>Search</Button>
         </form>
     </div>
   )

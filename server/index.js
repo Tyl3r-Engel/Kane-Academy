@@ -25,6 +25,7 @@ const {
   updateMentorProfile,
   queryMentorProfile,
   searchProfiles,
+  updateMentorPhoto
 } = require('../db/controllers/mentorProfiles.js');
 const {
   addMentorSkills,

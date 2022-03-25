@@ -22,20 +22,22 @@ export default function HomeRoot() {
   return (
     <div>
       <NavBar />
-      <Container maxWidth='xl'>
-      <Grid container spacing={3}>
-        <Grid item xs={4}>
+      <Container maxWidth='xl' sx={{'marginTop': '20px'}}>
+      <Grid container spacing={2}>
         <SearchProvider>
-            <div id='homeSearchBar'><SearchBar /></div>
-            <div id='homeSearch'><Search /></div>
+        <Grid item xs={4}>
+          <Item><SearchBar /></Item>
+        </Grid>
+        <Grid item xs={4}>
+          <Item><GCal /></Item>
+        </Grid>
+        <Grid item xs={4}>
+          <Item><About /></Item>
+        </Grid>
+        <Grid item xs={12}>
+          <Item><Search /></Item>
+        </Grid>
         </SearchProvider>
-        </Grid>
-        <Grid item xs={4}>
-        <Item><GCal /></Item>
-        </Grid>
-        <Grid item xs={4}>
-        <Item><About /></Item>
-        </Grid>
       </Grid>
       </Container>
     </div>
