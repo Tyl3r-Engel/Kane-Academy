@@ -7,23 +7,22 @@ table, th, td {
   border-bottom: 1px solid black;
 }
 
-.blurb {
-  width: 60%
-}
+/* .blurb { */
+  /* width: 60%; */
+/* } */
 
 .profileRoot {
-  /* margin: auto;
-  width: 60%; */
+  margin: auto;
+  width: 98vw;
+  height:98vh;
 }
 
 .reviewsWindow {
-  min-height: 10px;
-  max-height: 300px;
-  padding-left: 1em;
-  overflow-y:scroll;
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-  border-style:ridge
+  /* width: 95vw; */
+  height:50vh;
+  overflow-y: scroll;
+  padding-right: 17px; /* Increase/decrease this value for cross-browser compatibility */
+  box-sizing: content-box; /* So the width will be 100% + 17px */
 }
 
 #muiPrimary {

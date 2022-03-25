@@ -215,9 +215,12 @@ app.put('/api/addMentorCalendar/*', (req, res) => {
 
 app.get('/api/getMentorCalendar/*', (req, res) => {
   getMentorCalendar(req.params[0], (err, result) => {
+    console.log(req.params[0])
     if (err) {
+      console.log('error', err)
       res.send(err)
     } else {
+      console.log('success', result.rows)
       res.send(result.rows[0].calendly)
     }
   })
