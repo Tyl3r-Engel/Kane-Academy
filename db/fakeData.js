@@ -93,7 +93,9 @@ async function fakeMentorProfile() {
   for (var i = 1; i < 11; i++) {
     let mentor_id = i
     let about = faker.lorem.paragraph();
-    addMentorProfile(mentor_id, about, (err, result) => {
+    let calendly = ''
+    let photo = faker.image.avatar()
+    addMentorProfile(mentor_id, about, calendly, photo, (err, result) => {
       if (err) {
         console.log('Error in fakeMentorProfile', err)
       }

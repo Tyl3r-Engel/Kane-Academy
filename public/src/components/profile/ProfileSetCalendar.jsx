@@ -47,9 +47,12 @@ export default function ProfileSetCalendar() {
   }
 
   let urlGet = () => {
-    requestMentorCalendar(currentProfile.id, (result) => {
-      setCalUrl(result)
-    })
+    console.log(currentProfile)
+    if (currentProfile !== undefined) {
+      requestMentorCalendar(currentProfile.id, (result) => {
+        setCalUrl(result)
+      })
+    }
   }
 
 
@@ -57,6 +60,9 @@ export default function ProfileSetCalendar() {
     urlGet()
   }, []);
 
+  if (currentProfile === undefined) {
+    return(null)
+  }
   return (
     <div id='allThingsCal'>
       {editable

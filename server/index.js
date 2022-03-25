@@ -131,7 +131,7 @@ app.post('/signup', (req, res) => {
           id: results.rows[0].id,
           mentor: req.body.mentor,
         };
-        addMentorProfile(req.session.passport.user.id, '', () => {
+        addMentorProfile(req.session.passport.user.id, '', '', '', () => {
           initMentorSkills(req.session.passport.user.id, 1, () => {
             res.redirect('../profile');
           });
