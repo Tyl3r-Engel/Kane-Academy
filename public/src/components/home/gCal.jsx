@@ -1,6 +1,7 @@
 import React from 'react';
 import ApiCalendar from 'react-google-calendar-api';
 import Button from '@mui/material/Button';
+import { Box } from '@mui/material';
 
 export default function HomeRoot() {
   const [sign, setSign] = React.useState(false);
@@ -42,8 +43,8 @@ export default function HomeRoot() {
   }, [sign])
 
   return (
-    <div id='calContainer'>
-
+    <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }} id='calContainer'>
+      <div id='calButtons'>
       {!sign
       &&
         <Button
@@ -65,14 +66,16 @@ export default function HomeRoot() {
           Sign Out of Google Calendar
         </Button>
       }
-
+      </div>
+      <div id='calCal'>
       {myEvents.length !== 0
       &&
         <iframe src={`https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23c0a0ca&ctz=America%2FDenver&showTz=1&showCalendars=1&showTabs=1&showPrint=0&showNav=1&mode=AGENDA&
         src=ZGVubmlzLm0uYmVyZXppbkBnbWFpbC5jb20&color=%23039BE5&src=${uMail}%40gmail.com&ctz=America%2F${timeZ}`}
-        style={{"border": "0"}} width="800" height="600" frameBorder="0" scrolling="no"></iframe>
+        style={{"border": "0"}} width="500" height="500" frameBorder="0" scrolling="no"></iframe>
 
 
       }
-    </div>
+      </div>
+    </Box>
   )}

@@ -18,7 +18,8 @@ import proPic from '../../../dist/blankProf.png';
 import requestFirstName from '../profile/axios/requestFirstName';
 // import { ProfileContext } from '../profile/ProfileRoot';
 // import { HomeContext } from '../home/HomeRoot';
-// import requestCurrentSession from '../profile/axios/requestCurrentSession';
+import requestCurrentSession from '../profile/axios/requestCurrentSession';
+import requestProfile from '../profile/axios/requestProfile.js';
 
 export const NavContext = React.createContext();
 
@@ -40,37 +41,22 @@ const logout = (e) => {
 export default function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  // const loggedInUser = React.useContext(ProfileContext);
-  // const loggedInUserH = React.useContext(HomeContext);
-  // const [fName, setFName] = React.useState('')
-  // const [loggedInUserN, setLoggedInUserN] = React.useState(null);
+  const [session, setSession] = React.useState(null);
+  const [currentUser, setCurrentUser] = React.useState(null);
 
-  // if (loggedInUserN === null) {
-  //   requestCurrentSession((result) => {
-  //     result[0].sess.replace('/', '')
-  //     result[0].sess.replace("\"", '')
-  //     setLoggedInUserN(JSON.parse(result[0].sess).passport.user)
-  //   })
-  // }
-
-  // const NavProvider = React.useMemo(() => (
-  //   {
-  //     loggedInUserN
-  //   }
-  // ), [loggedInUserN]);
-
-  // let nameGet = () => {
-  //     requestFirstName(loggedInUser.id, (result) => {
-  //       console.log('res: ' + result)
-  //       setFName(result)
-  //     })
-  // }
-
-
-  // React.useEffect(() => {
-  //   console.log(loggedInUser)
-  //   nameGet()
-  // }, [loggedInUser]);
+  if (session === null) {
+    requestCurrentSession((result) => {
+      result[0].sess.replace('/', '')
+      result[0].sess.replace("\"", '')
+      setSession(JSON.parse(result[0].sess).passport.user)
+    })
+  } else {
+    if (currentUser === null) {
+      requestProfile(session.id, (result) => {
+        setCurrentUser(result)
+      })
+    }
+  }
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -103,18 +89,10 @@ export default function NavBar() {
   }
 
   return (
-    <AppBar position="static" id='muiSecondary'>
+    <AppBar position="static" id='muiGradient'>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <img src={logo} style={{'marginTop': '-40px', 'marginBottom': '-40px', 'width': '150px', 'height': 'auto'}}></img>
-          {/* <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
-          >
-            Kane Academy
-          </Typography> */}
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -152,14 +130,6 @@ export default function NavBar() {
               ))}
             </Menu>
           </Box>
-          {/* <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
-          >
-            LOGO
-          </Typography> */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
@@ -174,7 +144,10 @@ export default function NavBar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            {/* {fName}{' '} */}
+            {currentUser
+            &&
+            <Typography variant='h7'>{currentUser[0].first_name}</Typography>
+            }{' '}
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="KA Profile" src={proPic} />

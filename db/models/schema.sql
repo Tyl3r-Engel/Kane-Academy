@@ -80,6 +80,7 @@ CREATE TABLE mentor_profiles (
   mentor_id INT NOT NULL,
   about TEXT,
   calendly TEXT,
+  photo TEXT,
   CONSTRAINT fk_user_id_6
     FOREIGN KEY(mentor_id)
       REFERENCES users(id)

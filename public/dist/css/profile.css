@@ -35,7 +35,51 @@ table, th, td {
   color: white;
 }
 
+#muiGradient {
+  background-image: linear-gradient(to left bottom, #4f80ad, #6f88b8, #8c8fc0, #a797c6, #c0a0ca);
+  color: white;
+}
+
 html {
   background-color: #DDE9F9;
   color: darkslateblue;
+}
+
+#homeBody {
+  display: grid;
+  grid-template-areas:
+    "Search Cal Cal Cal"
+    "Skill Cal Cal Cal"
+    "Skill Cal Cal Cal"
+    "Skill Cal Cal Cal";
+}
+
+#homeContainer {
+
+}
+
+#homeCal {
+  grid-area: Cal;
+}
+
+#homeSearchField {
+  grid-area: Search;
+}
+
+#homeSearchResults {
+  width: 600px;
+  grid-area: Skill;
+}
+
+#calContainer {
+  /* display: flex;
+  flex-direction: column; */
+}
+
+#calButtons {
+  margin: 20px auto;
+}
+
+#calCal {
+  margin: 0 auto;
 }
