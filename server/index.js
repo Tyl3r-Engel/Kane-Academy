@@ -335,10 +335,8 @@ io.of('videoCall').on('connection', (socket) => {
 });
 
 ///////////////////////////////////////
-io.use(cors);
 const chat = io.of('/chat');
 chat.on('connection', (socket) => {
-  console.log(`User Connected: ${socket.id}`);
   const users = [];
   for (let [id, socket] of chat.sockets) {
     users.push({
@@ -346,13 +344,40 @@ chat.on('connection', (socket) => {
       username: socket.handshake.auth.name,
     });
   }
-  console.log(users, ' users');
   socket.join('123123');
-  socket.emit('users', users);
-  console.log(`User with ID: ${socket.id} joined room`);
+  chat.emit('users', users);
+  chat.emit(
+    'Userconnect',
+    `${socket.username} joined room ${socket.adapter.rooms}`
+  );
+  // console.log(socket);
+  // socket.onAny((event, ...args) => {
+  //   console.log(event, args);
+  // });
+  socket.on('send', (data) => {
+    chat.emit('receive', data);
+  });
 
   socket.on('disconnect', () => {
+    console.log(users, 'before');
+    for (let i = 0; i < users.length; i++) {
+      if (users[i].userID === socket.id) {
+        users.splice(i, 1);
+      }
+    }
+
+    console.log(users, 'after');
     console.log('User Disconnected', socket.id);
+    chat.emit('users', users);
+  });
+  socket.on('t', (data) => {
+    console.log(socket.id);
+  });
+  socket.on('private message', (data) => {
+    chat.to(data.send).emit('private message', {
+      data,
+      from: socket.id,
+    });
   });
 });
 chat.use((socket, next) => {

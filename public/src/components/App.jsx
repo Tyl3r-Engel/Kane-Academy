@@ -8,11 +8,12 @@ import SignupRoot from './signup/SignupRoot';
 import FakeData from './FakeData';
 import CompleteSignup from './signup/CompleteSignup';
 import MsgRoot from './message/msgRoot';
+import Messages from './message/Messages';
 
 export default function App() {
   return (
     <div className="App">
-      {/* <Messages /> */}
+      <Messages />
       <Router>
         <Routes>
           <Route path="/" element={<HomeRoot />} />

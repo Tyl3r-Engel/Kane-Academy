@@ -7,8 +7,8 @@ export default function MsgRoot() {
   return (
     <div>
       <NavBar />
-      <Messages />
+      {/* <Messages /> */}
       <VideoCall />
     </div>
-  )
+  );
 }
