@@ -151,7 +151,7 @@ export default function NavBar() {
 
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="KA Profile" src={currentUser[0].photo} />
+                <Avatar alt="KA Profile" src={currentUser[0].photo} sx={{width: '60px', height: '60px'}} />
               </IconButton>
             </Tooltip>
             </div>

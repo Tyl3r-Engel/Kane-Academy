@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import Button from '@mui/base/ButtonUnstyled';
+import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
 export default function Users({ socket, selected, setSelected }) {
   const [users, setUsers] = useState([]);
+
   // console.log(socket, selected, setSelected);
 
   useEffect(async () => {
@@ -22,7 +23,7 @@ export default function Users({ socket, selected, setSelected }) {
   }, [socket]);
 
   return (
-    <div>
+    <div style={{marginBottom: '15px'}}>
       {users.map((user, index) => {
         // console.log(user, 'user list');
         if (selected.userid === user.userID) {
@@ -30,8 +31,10 @@ export default function Users({ socket, selected, setSelected }) {
             <Button
               className={`userID.${user.self}.selected`}
               key={index}
+              variant='contained'
               name={user.userID}
-              id={user.username}
+              id={selected.userid === user.userID ? 'muiSecondary' : 'muiPrimary'}
+              un={user.username}
               onClick={(e) => {
                 // console.log(e.target.name);
                 e.target.active = true;
@@ -41,7 +44,7 @@ export default function Users({ socket, selected, setSelected }) {
                 }
                 setSelected({
                   active: true,
-                  username: e.target.id,
+                  username: e.target.un,
                   userid: e.target.name,
                 });
                 socket.emit('t');
@@ -56,8 +59,10 @@ export default function Users({ socket, selected, setSelected }) {
           <Button
             className={`userID.${user.self}`}
             key={index}
+            variant='contained'
             name={user.userID}
-            id={user.username}
+            un={user.username}
+            id={selected.userid === user.userID ? 'muiSecondary' : 'muiPrimary'}
             onClick={(e) => {
               // console.log(e.target.name);
               e.target.active = true;
@@ -67,7 +72,7 @@ export default function Users({ socket, selected, setSelected }) {
               }
               setSelected({
                 active: true,
-                username: e.target.id,
+                username: e.target.un,
                 userid: e.target.name,
               });
               socket.emit('t');

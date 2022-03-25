@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Chat from './chat';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
 
 const socket = io('http://localhost:3001/chat', {
   autoConnect: false,
@@ -27,6 +28,7 @@ export default function Messages() {
       {!showChat ? (
         <div className="joinChatContainer">
           <h3>Text Chat</h3>
+          <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center' }}>
           <TextField
             id="outlined-basic"
             label="Display Name"
@@ -46,6 +48,7 @@ export default function Messages() {
           >
             Join
           </Button>
+          </Box>
         </div>
       ) : (
         <Chat
