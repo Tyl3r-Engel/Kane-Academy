@@ -5,10 +5,9 @@ import averageReviews from './helpers/averageReviews';
 import updateMentorSkills from './axios/updateMentorSkills';
 import updateMentorProfile from './axios/updateMentorProfile';
 import updateProfilePhoto from './axios/updateProfilePhoto';
-import requestProfile from './axios/requestProfile';
 import addSkill from './axios/addSkill';
-import { styled } from '@mui/material/styles';
-import { Avatar, Button, Modal, Box, Typography, TextField, Paper, Grid } from '@mui/material';
+import { Avatar, Button, Modal, Box, Typography, TextField } from '@mui/material';
+// 'https://i.imgur.com/KOwCIw8.png'
 
 export default function Blurb() {
   const profilePic = '';
@@ -38,11 +37,8 @@ export default function Blurb() {
 
   let photoSubmit = () => {
     updateProfilePhoto(currentProfile.id, profPicTemp, () => {
-      requestProfile(currentProfile.id, (result) => {
-        setCurrentProfile(result[0])
-        setOpen(false);
-        photoGet();
-      })
+      photoGet();
+      setOpen(false);
     })
   }
 
@@ -54,14 +50,6 @@ export default function Blurb() {
     photoGet()
   }, []);
 
-
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  }));
 
   function handleChange(event) {
     setCurrentProfile({...currentProfile, [event.target.name]: event.target.value})
@@ -75,21 +63,18 @@ export default function Blurb() {
 
   function changePrice(event) {
     let payload = currentProfile.skills[event.target.name]
-    payload.price = '$' + event.target.value.replace('$', '')
+    payload.price = event.target.value
     setCurrentProfile({...currentProfile, skills: {...currentProfile.skills, [event.target.name]: payload}})
   }
 
   function submitAbout(event) {
     event.preventDefault();
-    console.log('submitAbout')
     updateMentorProfile(currentProfile.id, currentProfile.about, (data) => {
     })
-    submitSkills(event)
   }
 
   function submitSkills(event) {
     event.preventDefault()
-    console.log('submitSkills')
     var currentSkills = Object.values(currentProfile.skills)
     for (var i = 0; i < currentSkills.length; i++) {
       var existingSkill = false
@@ -113,6 +98,26 @@ export default function Blurb() {
     }
   }
 
+  if (loggedInUser !== undefined && currentProfile !== undefined) {
+    if (loggedInUser.mentor === false && currentProfile.id === loggedInUser.id) {
+      return (
+        <div>
+          Your Average Learner Rating:&nbsp;
+            {<Ratings
+                rating={reviewsAverage || 0}
+                widgetRatedColors="purple"
+              >
+              <Ratings.Widget className="reviewStar" widgetDimension="25px"/>
+              <Ratings.Widget className="reviewStar" widgetDimension="25px"/>
+              <Ratings.Widget className="reviewStar" widgetDimension="25px"/>
+              <Ratings.Widget className="reviewStar" widgetDimension="25px"/>
+              <Ratings.Widget className="reviewStar" widgetDimension="25px"/>
+            </Ratings>}
+        </div>
+      )
+    }
+  }
+
   if (currentProfile === undefined) {
     return (<div>This user currently has an empty profile.</div>)
   }
@@ -120,7 +125,7 @@ export default function Blurb() {
     if (skillsList !== null) {
       return(
         <div className="blurb">
-          <Avatar variant='circular' src={currentProfile.photo} alt='Profile Pic' sx={{ 'width': '100px', 'height': '100px' }}></Avatar>
+          <Avatar variant='circular' src={profPic} alt='Profile Pic' sx={{ 'width': '100px', 'height': '100px' }}></Avatar>
           <Modal
             open={open}
             onClose={handleClose}
@@ -138,140 +143,110 @@ export default function Blurb() {
                 variant="outlined"
                 name={currentProfile.photo}
                 onChange={(e) => photoInput(e)}
-                value={profPicTemp}
+                value={currentProfile.photo}
                 >
               </TextField>
               <Button id='muiPrimary' fullWidth={true} variant="contained" onClick={() => photoSubmit()}>Finish</Button>
             </Box>
           </Modal>
           <Button id='muiPrimary' variant="contained" onClick={() => handleOpen()}>Update Photo</Button>
-          <h1>{currentProfile.first_name} {currentProfile.last_name}</h1>
-          <form onSubmit={submitSkills}>
-          <p>Please select up to five skills:</p>
-          <Box sx={{ flexGrow: 1 }}>
-            <Grid container spacing={2} columns={2}>
-              <Grid item xs={1}>
-                {/* <Item> */}
-                  <TextField
-                    id="outlined-basic"
-                    label="Your First Skill"
-                    variant="outlined"
-                    name={Object.keys(currentProfile.skills)[0]}
-                    onChange={changeSkills}
-                    value={Object.values(currentProfile.skills)[0].skill || ''}>
-                  </TextField>
-                {/* </Item> */}
-              </Grid>
-              <Grid item xs={1}>
-                {/* <Item> */}
-                  <TextField
-                    id="outlined-basic"
-                    label="30 Minute Rate"
-                    variant="outlined"
-                    name={Object.keys(currentProfile.skills)[0]}
-                    onChange={changePrice}
-                    value={Object.values(currentProfile.skills)[0].price || ''}>
-                  </TextField>
-                {/* </Item> */}
-              </Grid>
-              <Grid item xs={1}>
-                <TextField
-                  id="outlined-basic"
-                  label="Your Second Skill"
-                  variant="outlined"
-                  name={Object.keys(currentProfile.skills)[1]}
-                  onChange={changeSkills}
-                  value={Object.values(currentProfile.skills)[1].skill || ''}>
-                </TextField>
-              </Grid>
-              <Grid item xs={1}>
-                <TextField
-                  id="outlined-basic"
-                  label="30 Minute Rate"
-                  variant="outlined"
-                  name={Object.keys(currentProfile.skills)[1]}
-                  onChange={changePrice}
-                  value={Object.values(currentProfile.skills)[1].price || ''}>
-                </TextField>
-              </Grid>
-              <Grid item xs={1}>
-                <TextField
-                  id="outlined-basic"
-                  label="Your Third Skill"
-                  variant="outlined"
-                  name={Object.keys(currentProfile.skills)[2]}
-                  onChange={changeSkills}
-                  value={Object.values(currentProfile.skills)[2].skill || ''}>
-                </TextField>
-              </Grid>
-              <Grid item xs={1}>
-                <TextField
-                  id="outlined-basic"
-                  label="30 Minute Rate"
-                  variant="outlined"
-                  name={Object.keys(currentProfile.skills)[2]}
-                  onChange={changePrice}
-                  value={Object.values(currentProfile.skills)[2].price || ''}>
-                </TextField>
-              </Grid>
-              <Grid item xs={1}>
-                <TextField
-                  id="outlined-basic"
-                  label="Your Fourth Skill"
-                  variant="outlined"
-                  name={Object.keys(currentProfile.skills)[3]}
-                  onChange={changeSkills}
-                  value={Object.values(currentProfile.skills)[3].skill || ''}>
-                </TextField>
-              </Grid>
-              <Grid item xs={1}>
-                <TextField
-                  id="outlined-basic"
-                  label="30 Minute Rate"
-                  variant="outlined"
-                  name={Object.keys(currentProfile.skills)[3]}
-                  onChange={changePrice}
-                  value={Object.values(currentProfile.skills)[3].price || ''}>
-                </TextField>
-              </Grid>
-              <Grid item xs={1}>
-                <TextField
-                  id="outlined-basic"
-                  label="Your Fifth Skill"
-                  variant="outlined"
-                  name={Object.keys(currentProfile.skills)[4]}
-                  onChange={changeSkills}
-                  value={Object.values(currentProfile.skills)[4].skill || ''}>
-                </TextField>
-              </Grid>
-              <Grid item xs={1}>
-                <TextField
-                  id="outlined-basic"
-                  label="30 Minute Rate"
-                  variant="outlined"
-                  name={Object.keys(currentProfile.skills)[4]}
-                  onChange={changePrice}
-                  value={Object.values(currentProfile.skills)[4].price || ''}>
-                </TextField>
-              </Grid>
-            </Grid>
+          <div>
+            Name: {currentProfile.first_name} {currentProfile.last_name}
+          </div>
+          <div>
+          Average Rating:&nbsp;
+            {<Ratings
+                rating={reviewsAverage || 0}
+                widgetRatedColors="purple"
+              >
+              <Ratings.Widget className="reviewStar" widgetDimension="25px"/>
+              <Ratings.Widget className="reviewStar" widgetDimension="25px"/>
+              <Ratings.Widget className="reviewStar" widgetDimension="25px"/>
+              <Ratings.Widget className="reviewStar" widgetDimension="25px"/>
+              <Ratings.Widget className="reviewStar" widgetDimension="25px"/>
+            </Ratings>}
+          </div>
+          <form onSubmit={submitSkills} style={{width: "400px"}}>
+            <p>Please select up to five skills:</p>
+            <input
+              type="text"
+              placeholder="Your skill..."
+              name={Object.keys(currentProfile.skills)[0]}
+              onChange={changeSkills}
+              value={Object.values(currentProfile.skills)[0].skill}>
+            </input>
+            <span>$<input
+              type="number"
+              placeholder="Your rate for 30 minutes"
+              name={Object.keys(currentProfile.skills)[0]}
+              onChange={changePrice}
+              value={Object.values(currentProfile.skills)[0].price}>
+            </input></span>
+            <input
+              type="text"
+              placeholder="Your skill..."
+              name={Object.keys(currentProfile.skills)[1]}
+              onChange={changeSkills}
+              value={Object.values(currentProfile.skills)[1].skill}>
+            </input>
+            <span>$<input
+              type="number"
+              placeholder="Your rate for 30 minutes"
+              name={Object.keys(currentProfile.skills)[1]}
+              onChange={changePrice}
+              value={Object.values(currentProfile.skills)[1].price}>
+            </input></span>
+            <input
+              type="text"
+              placeholder="Your skill..."
+              name={Object.keys(currentProfile.skills)[2]}
+              onChange={changeSkills}
+              value={Object.values(currentProfile.skills)[2].skill}>
+            </input>
+            <span>$<input
+              type="number"
+              placeholder="Your rate for 30 minutes"
+              name={Object.keys(currentProfile.skills)[2]}
+              onChange={changePrice}
+              value={Object.values(currentProfile.skills)[2].price}>
+            </input></span>
+            <input
+              type="text"
+              placeholder="Your skill..."
+              name={Object.keys(currentProfile.skills)[3]}
+              onChange={changeSkills}
+              value={Object.values(currentProfile.skills)[3].skill}>
+            </input>
+            <span>$<input
+              type="number"
+              placeholder="Your rate for 30 minutes"
+              name={Object.keys(currentProfile.skills)[3]}
+              onChange={changePrice}
+              value={Object.values(currentProfile.skills)[3].price}>
+            </input></span>
+            <input
+              type="text"
+              placeholder="Your skill..."
+              name={Object.keys(currentProfile.skills)[4]}
+              onChange={changeSkills}
+              value={Object.values(currentProfile.skills)[4].skill}>
+            </input>
+            <span>$<input
+              type="number"
+              placeholder="Your rate for 30 minutes"
+              name={Object.keys(currentProfile.skills)[4]}
+              onChange={changePrice}
+              value={Object.values(currentProfile.skills)[4].price}>
+            </input></span>
+            <input
+              type="submit" value="Save Changes"></input>
+          </form>
             <br></br>
-            <Grid item xs={9}>
-              <form onSubmit={submitAbout}>
-                <TextField
-                  id="outlined-basic"
-                  name="about"
-                  label="About Me"
-                  variant="outlined"
-                  fullWidth={true}
-                  value={currentProfile.about}
-                  onChange={handleChange}>
-                </TextField>
-                <br></br>
-                <Button id='muiPrimary' variant="contained" onClick={submitAbout} fullWidth={true}>Save Changes</Button>
-              </form>
-            </Grid>
-          </Box>
+          <form onSubmit={submitAbout}>
+            <p>Tell students a little bit about yourself!:</p>
+            <textarea name="about" rows="5" cols="50" value={currentProfile.about} onChange={handleChange}></textarea>
+            <br></br>
+            <input type="submit" value="Save Changes"></input>
           </form>
         </div>
       )
@@ -281,18 +256,29 @@ export default function Blurb() {
   } else {
     return(
       <div className="blurb">
-        <Avatar variant='circular' src={currentProfile.photo} alt='Profile Pic' sx={{ 'width': '100px', 'height': '100px' }}></Avatar>
-        <h1>{currentProfile.first_name} {currentProfile.last_name}</h1>
+      <Avatar variant='circular' src={profPic} alt='Profile Pic' sx={{ 'width': '100px', 'height': '100px' }}></Avatar>
         <div>
-          <h2>Currently Teaching</h2>
-              {Object.values(currentProfile.skills).map((entry) => {
-                return <span key={entry.skill} style={{fontSize: "x-large"}}>{entry.skill}, </span>
-              })}
+          {currentProfile.first_name} {currentProfile.last_name}
         </div>
-        <div style={{fontSize: "large"}}>
-          <h2>About Me</h2>
-          {currentProfile.about}
+        <div>
+          {<Ratings
+              rating={reviewsAverage || 0}
+              widgetRatedColors="purple"
+            >
+            <Ratings.Widget className="reviewStar" widgetDimension="25px"/>
+            <Ratings.Widget className="reviewStar" widgetDimension="25px"/>
+            <Ratings.Widget className="reviewStar" widgetDimension="25px"/>
+            <Ratings.Widget className="reviewStar" widgetDimension="25px"/>
+            <Ratings.Widget className="reviewStar" widgetDimension="25px"/>
+          </Ratings>}
         </div>
+        <div>
+          Teaching:&nbsp;
+            {Object.values(currentProfile.skills).map((entry) => {
+              return <span key={entry.skill}>{entry.skill}, </span>
+            })}
+        </div>
+        <div>About Me: {currentProfile.about}</div>
       </div>
     )
   }
