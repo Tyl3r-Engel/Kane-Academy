@@ -18,7 +18,7 @@ export default function VideoPlayer () {
       <Paper style={{ padding: '10px', border: '2px solid black', margin: '10px' }}>
         <Grid item md={6}>
           <Typography variant='h5' gutterBottom>{call.name}</Typography>
-          <video style={{width: '500px'}} playsInline muted ref={userVideo} autoPlay />
+          <video style={{width: '500px'}} playsInline ref={userVideo} autoPlay />
         </Grid>
       </Paper>
       )}
