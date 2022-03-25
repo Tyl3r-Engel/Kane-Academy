@@ -1,10 +1,12 @@
 const { pool } = require('../pool');
 
-const addMentorProfile = (mentor_id, about, cb) => {
-  const queryString = `INSERT INTO mentor_profiles (mentor_id, about)
-  VALUES ($1, $2)`;
+const addMentorProfile = (mentor_id, about, calendly, photo, cb) => {
+  calendly = calendly || ''
+  photo = photo || ''
+  const queryString = `INSERT INTO mentor_profiles (mentor_id, about, calendly, photo)
+  VALUES ($1, $2, $3, $4)`;
 
-  pool.query(queryString, [mentor_id, about], cb);
+  pool.query(queryString, [mentor_id, about, calendly, photo], cb);
 }
 
 const queryMentorProfile = (mentor_id, cb) => {

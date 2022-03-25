@@ -47,7 +47,9 @@ export default function Blurb() {
   }
 
   let photoGet = () => {
+    if (currentProfile !== undefined) {
       setProfPic(currentProfile.photo);
+    }
   }
 
   React.useEffect(() => {
@@ -81,7 +83,6 @@ export default function Blurb() {
 
   function submitAbout(event) {
     event.preventDefault();
-    console.log('submitAbout')
     updateMentorProfile(currentProfile.id, currentProfile.about, (data) => {
     })
     submitSkills(event)
@@ -89,7 +90,6 @@ export default function Blurb() {
 
   function submitSkills(event) {
     event.preventDefault()
-    console.log('submitSkills')
     var currentSkills = Object.values(currentProfile.skills)
     for (var i = 0; i < currentSkills.length; i++) {
       var existingSkill = false
