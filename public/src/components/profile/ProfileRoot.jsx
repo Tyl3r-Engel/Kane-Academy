@@ -101,7 +101,6 @@ export default function ProfileRoot() {
                   <Blurb />
                   <h2>Availability</h2>
                   <ProfileSetCalendar />
-                  <Search />
                 </Grid>
                 <Grid item xs={6}>
                   <Reviews />
