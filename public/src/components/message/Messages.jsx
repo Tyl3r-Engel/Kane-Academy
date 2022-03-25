@@ -10,20 +10,16 @@ const socket = io('http://localhost:3001/chat', {
 });
 function join(username, setUsername) {
   let name = username;
-  if (!name) {
+  // console.log(name, ' name1');
+  if (name === null) {
     name = 'NoBody' + Math.floor(Math.random() * 1000);
-  }
-  // console.log(name);
-  if (!username) {
     setUsername(name);
   }
   socket.auth = { name };
-  socket.connect('http://localhost:3001/chat');
+  socket.connect();
 }
-
 export default function Messages() {
   const [username, setUsername] = useState(null);
-  // const [room, setRoom] = useState('');
   const [showChat, setShowChat] = useState(false);
 
   return (
@@ -32,16 +28,14 @@ export default function Messages() {
         <div className="joinChatContainer">
           <h3>Text Chat</h3>
           <TextField
-            id='outlined-basic'
+            id="outlined-basic"
             label="Display Name"
-            onChange={(event) => {
+            onChange={(e) => {
               e.preventDefault();
-              setUsername(event.target.value);
+              setUsername(e.target.value);
             }}
           />
-
           <Button
-            variant='contained'
             onClick={(e) => {
               e.preventDefault();
               join(username, setUsername);
@@ -50,7 +44,6 @@ export default function Messages() {
           >
             Join
           </Button>
-
         </div>
       ) : (
         <Chat socket={socket} username={username} />
