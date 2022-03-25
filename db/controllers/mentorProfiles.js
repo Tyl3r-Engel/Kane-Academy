@@ -35,7 +35,7 @@ const searchProfiles = (cb) => {
 
 const getMentorProfile = (mentor_id, cb) => {
   const queryString = `
-  SELECT mp.about, users.id, users.mentor, users.first_name, users.last_name, users.email, (
+  SELECT mp.photo, mp.about, users.id, users.mentor, users.first_name, users.last_name, users.email, (
     SELECT JSON_OBJECT_AGG(
       ms.id, JSON_BUILD_OBJECT(
         'id', ms.id,
@@ -59,6 +59,12 @@ const updateMentorProfile = (mentor_id, about, cb) => {
   pool.query(queryString, [mentor_id, about], cb)
 }
 
+const updateMentorPhoto = (mentor_id, photo, cb) => {
+  const queryString = `UPDATE mentor_profiles SET photo = $2 WHERE mentor_id = $1`
+
+  pool.query(queryString, [mentor_id, photo], cb)
+}
+
 module.exports = {
-  addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile, searchProfiles
+  addMentorProfile, getMentorProfile, updateMentorProfile, queryMentorProfile, searchProfiles, updateMentorPhoto
 };

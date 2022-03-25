@@ -93,11 +93,8 @@ export default function ProfileRoot() {
         <div className="profileRoot">
           <ProfileContext.Provider value={ProfileProvider}>
             <NavBar />
-            <Search />
-            <Logout />
             <Blurb />
             <Reviews />
-            {/* <PlansAndPricing /> */}
             <ProfileSetCalendar />
           </ProfileContext.Provider>
         </div>

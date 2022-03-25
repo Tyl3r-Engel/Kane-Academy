@@ -138,6 +138,8 @@ export default function Search() {
             </div>))}
         <Button id='muiPrimary' variant='contained'>Search</Button>
       </form>
+      </div>
+      <div id='homeSearchResults'>
       <h2>Genius Skills</h2>
       <ul>
         {query ? fuseSearchResults.map((elem, i) => (
@@ -162,14 +164,15 @@ export default function Search() {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button id='muiSecondary'size="small">Learn</Button>
-                  <Button id='muiSecondary'size="small">Share</Button>
+                  <Button id='muiSecondary' size="small">Learn</Button>
+                  <Button id='muiSecondary' size="small">Share</Button>
                 </CardActions>
               </Card>
             </Card>
           </div>))
           : null}
       </ul>
+      </div>
     </div>
   )
 }
