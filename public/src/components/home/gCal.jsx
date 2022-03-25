@@ -62,22 +62,21 @@ export default function HomeRoot() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }} id='calContainer'>
       <div id='calButtons'>
-      {!sign
-      &&
+
 
           <Paper
             id='muiGradient2'
             // elevation={3}
             // variant='elevation'
             onClick={(e) => handleItemClick(e, 'sign-in')}
-            sx={{'borderRadius': '100%', 'width': '350px', 'height': '350px', 'cursor': 'pointer'}}
+            sx={{'borderRadius': '100%', 'width': '350px', 'height': '350px', 'cursor': 'pointer', 'marginTop': '50px'}}
           >
           <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignContent: 'center' }}>
-            <Typography variant='overline' id='muiSecondaryText' align='center' sx={{'alignContent': 'center'}}>View Upcoming Appointments with Google Calendar</Typography>
+            <Typography variant='overline' id='muiSecondaryText' align='center' sx={{'alignContent': 'center', 'margin': 'auto', 'width': '50%', 'marginTop': '100px'}}>View Upcoming Appointments with Google Calendar</Typography>
         </Box>
           </Paper>
-      }
 
+{/*
       {sign
       &&
         <Button
@@ -87,22 +86,22 @@ export default function HomeRoot() {
         >
           Sign Out of Google Calendar
         </Button>
-      }
+      } */}
       </div>
       <div id='calCal'>
       {myEvents.length !== 0
       &&
-//        <Modal
-//          open={open}
-//          onClose={handleClose}
-//          aria-labelledby="modal-modal-title"
-//          aria-describedby="modal-modal-description"
-//        >
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
           <iframe src={`https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23c0a0ca&ctz=America%2FDenver&showTz=1&showCalendars=1&showTabs=1&showPrint=0&showNav=1&mode=AGENDA&
           src=ZGVubmlzLm0uYmVyZXppbkBnbWFpbC5jb20&color=%23039BE5&src=${uMail}%40gmail.com&ctz=America%2F${timeZ}`}
-          style={{"border": "0"}} width="500" height="500" frameBorder="0" scrolling="no"></iframe>
+          style={style} width="500" height="500" frameBorder="0" scrolling="no"></iframe>
 
-//        </Modal>
+        </Modal>
       }
       </div>
     </Box>

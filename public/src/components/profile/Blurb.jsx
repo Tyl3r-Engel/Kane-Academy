@@ -5,6 +5,7 @@ import averageReviews from './helpers/averageReviews';
 import updateMentorSkills from './axios/updateMentorSkills';
 import updateMentorProfile from './axios/updateMentorProfile';
 import updateProfilePhoto from './axios/updateProfilePhoto';
+import requestProfile from './axios/requestProfile';
 import addSkill from './axios/addSkill';
 import { Avatar, Button, Modal, Box, Typography, TextField } from '@mui/material';
 // 'https://i.imgur.com/KOwCIw8.png'
@@ -37,8 +38,11 @@ export default function Blurb() {
 
   let photoSubmit = () => {
     updateProfilePhoto(currentProfile.id, profPicTemp, () => {
-      photoGet();
-      setOpen(false);
+      requestProfile(currentProfile.id, (result) => {
+        setCurrentProfile(result[0])
+        setOpen(false);
+        photoGet();
+      })
     })
   }
 
@@ -125,7 +129,7 @@ export default function Blurb() {
     if (skillsList !== null) {
       return(
         <div className="blurb">
-          <Avatar variant='circular' src={profPic} alt='Profile Pic' sx={{ 'width': '100px', 'height': '100px' }}></Avatar>
+          <Avatar variant='circular' src={currentProfile.photo} alt='Profile Pic' sx={{ 'width': '100px', 'height': '100px' }}></Avatar>
           <Modal
             open={open}
             onClose={handleClose}
@@ -143,7 +147,7 @@ export default function Blurb() {
                 variant="outlined"
                 name={currentProfile.photo}
                 onChange={(e) => photoInput(e)}
-                value={currentProfile.photo}
+                value={profPicTemp}
                 >
               </TextField>
               <Button id='muiPrimary' fullWidth={true} variant="contained" onClick={() => photoSubmit()}>Finish</Button>
@@ -256,7 +260,7 @@ export default function Blurb() {
   } else {
     return(
       <div className="blurb">
-      <Avatar variant='circular' src={profPic} alt='Profile Pic' sx={{ 'width': '100px', 'height': '100px' }}></Avatar>
+      <Avatar variant='circular' src={currentProfile.photo} alt='Profile Pic' sx={{ 'width': '100px', 'height': '100px' }}></Avatar>
         <div>
           {currentProfile.first_name} {currentProfile.last_name}
         </div>

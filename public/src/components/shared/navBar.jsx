@@ -146,13 +146,16 @@ export default function NavBar() {
           <Box sx={{ flexGrow: 0 }}>
             {currentUser
             &&
-            <Typography variant='h7'>{currentUser[0].first_name}</Typography>
-            }{' '}
+            <div>
+            <Typography variant='h7'>{currentUser[0].first_name}</Typography>{' '}
+
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="KA Profile" src={proPic} />
+                <Avatar alt="KA Profile" src={currentUser[0].photo} />
               </IconButton>
             </Tooltip>
+            </div>
+            }
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"
