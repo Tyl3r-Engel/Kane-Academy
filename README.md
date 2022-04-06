@@ -45,6 +45,11 @@
 
 <br>
 
+### Usage
+>A user can login through Google or create an account after witch the user will be prompted to pick either genius or learner. A genius can customize their profile by navigating to their profile via the nav bar. A learner can use the search bar to look for a skill to learn or a genius also on the learners home page is the option to link their Google calender. The nav bar also has a messages tab that allow users to communicate through messaging and video chat.
+
+<br>
+
 #### Needed Files
 > For any of the google features to work you will need a ```.env``` as well as a ```apiGoogleconfig.json``` file.
 
